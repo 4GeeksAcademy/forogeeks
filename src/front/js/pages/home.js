@@ -6,7 +6,8 @@ export const Home = () => {
 
 	return (
 		<div className="text-center mt-5">
-			<h1 className="text-primary">Hello Rigo!!</h1>
+			<h1 className="text-primary">Ya funciona</h1>
+			<button className="btn btn-primary"></button>
 		</div>
 	);
 };
