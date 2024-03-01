@@ -2,23 +2,23 @@
 //$font-family-sans-serif: 'Open Sans', sans-serif;
 
 // COLORS
-$primary: #C167EF;
-$secondary: #10BCEE;
-$dark: #2B3041;
-$light: #F3F6F9;
+$primary: #c167ef;
+$secondary: #10bcee;
+$dark: #395eda;
+$light: #f3f6f9;
 
 // SPACERS
 $spacer: 1rem !default;
 $spacers: (
-    0: 0,
-    1: $spacer * .25,
-    2: $spacer * .5,
-    3: $spacer,
-    4: $spacer * 1.5,
-    5: $spacer * 3,
-    6: $spacer * 6,
-    7: $spacer * 8,
-    8: $spacer * 12,
+	0: 0,
+	1: $spacer * 0.25,
+	2: $spacer * 0.5,
+	3: $spacer,
+	4: $spacer * 1.5,
+	5: $spacer * 3,
+	6: $spacer * 6,
+	7: $spacer * 8,
+	8: $spacer * 12,
 ) !default;
 $line-height-base: 1.7;
 $headings-margin-bottom: $spacer * 1;
