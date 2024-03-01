@@ -1,3 +1,4 @@
+@charset "UTF-8";
 // FONT
 //$font-family-sans-serif: 'Open Sans', sans-serif;
 
@@ -26,3 +27,5 @@ $enable-negative-margins: true;
 
 // HEADINGS
 $headings-font-weight: bold;
+
+@import "../../../node_modules/bootstrap/scss/bootstrap";

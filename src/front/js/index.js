@@ -4,6 +4,8 @@ import ReactDOM from "react-dom";
 
 //import your own components
 import Layout from "./layout";
+
+// STYLES
 import "../css/styles.css";
 import "../css/bootstrap.css";
 
