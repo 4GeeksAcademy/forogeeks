@@ -22,25 +22,75 @@ npm install
     npm run sass:watch
     ```
 
+---
+
 -   **🐱 Git: 🐱**
 
-    -   **Cambiar de Rama:**
+    -   **🐱 Cambiar de Rama:**
 
         ```
         git checkout nombre-de-la-rama
         ```
 
-    -   **Hacer un Commit:**
+    -   **🐱 Hacer un Commit:**
 
         ```
         git add .
         git commit -m "Descripción del cambio"
         ```
 
-    -   **Subir Cambios para que se aprueben:**
+    -   **🐱 Subir Cambios para que se aprueben:**
 
         ```
         git push origin nombre-de-la-rama
         ```
 
+    -   **🐱 Agregar mas cambios a un commit ya hecho:**
+
+        ```
+        git commit --amend -m "Change version"
+        ```
+
+    -   **🐱 Si todavia no has hecho push de tus cambios al repositorio y
+        quieres desacer el commit**
+
+            * --soft si quieres desacer pero mantener el codigo escrito
+
+            ```
+            git reset --soft HEAD~1
+            ```
+
+            * --hard si tambien quieres que se borren los cambios
+
+            ```
+            git reset --hard HEAD~1
+            ```
+
+    -   **🐱 Has pusheado el commit y estaba mal:**
+
+        ```
+        git log
+        ```
+
+        Copia el commit que al que te interesa volver
+
+        ```
+        git revert b4wfb32s (ej de commitId)
+        ```
+
+        Esto creara un commit que va a desacer todos los cambios y volver al que
+        has indicado
+
 ---
+
+-   **🌅 Cambiar favicon**
+
+    ```
+    1. Ir al archivo => webpack.common.js
+
+    2. 	Abajo en plugins/favicon poner el nombre de la imagen donde pone
+    		favicon: "ejemplo.jpg",
+
+    Nota: La imagen debe estar en la carpeta public
+
+    ```
