@@ -62,13 +62,16 @@
 		]
 	},
 	"dependencies": {
+		"@tabler/icons-react": "^2.47.0",
 		"bootstrap": "^5.3.3",
 		"prop-types": "^15.6.1",
+		"qs": "^6.11.2",
 		"react": "^16.8.4",
 		"react-dom": "^16.8.4",
 		"react-polyfills": "0.0.1",
 		"react-router-dom": "^6.3.0",
 		"sass": "^1.71.1",
-		"tailwind": "^4.0.0"
+		"tailwind": "^4.0.0",
+		"ws": "^8.16.0"
 	}
 }

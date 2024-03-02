@@ -94,3 +94,24 @@ npm install
     Nota: La imagen debe estar en la carpeta public
 
     ```
+
+---
+
+-   **🟢 Add icons**
+
+```
+👀 Ver iconos
+ ➡️ https://tabler.io/icons
+```
+
+```
+👉 Add iconos
+1. import { IconArrowLeft } from '@tabler/icons-react';
+
+2. <IconArrowLeft color={opcional} size={opcional} stroke={opcional} />
+
+name	type	default
+size	Number	24
+color	String	currentColor
+stroke	Number	2
+```
