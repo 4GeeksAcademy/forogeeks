@@ -19,7 +19,7 @@ const Layout = () => {
 	// 	return <BackendURL />;
 
 	return (
-		<div>
+		<div className="main-container">
 			<BrowserRouter basename={basename}>
 				<Navbar />
 				<Routes>

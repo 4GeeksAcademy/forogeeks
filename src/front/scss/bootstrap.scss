@@ -4,7 +4,7 @@
 
 // COLORS
 $primary: #c167ef;
-$secondary: #10bcee;
+$secondary: #c7e0e8;
 $dark: #395eda;
 $light: #f3f6f9;
 
@@ -27,5 +27,8 @@ $enable-negative-margins: true;
 
 // HEADINGS
 $headings-font-weight: bold;
+
+// ROW
+$my-gutter-x: 10px;
 
 @import "../../../node_modules/bootstrap/scss/bootstrap";
