@@ -21,7 +21,7 @@ export const Home = () => {
 					<Icon name="LOGOUT" />
 				</button>
 				<Icon name="LOGOUT" size="40" />
-				<IconArrowLeft color="red" size={48} />
+				<IconArrowLeft color="green" size={48} />
 			</div>
 		</div>
 	);
