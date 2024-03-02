@@ -62,6 +62,7 @@
 		]
 	},
 	"dependencies": {
+		"@tabler/icons-react": "^2.47.0",
 		"bootstrap": "^5.3.3",
 		"prop-types": "^15.6.1",
 		"react": "^16.8.4",
