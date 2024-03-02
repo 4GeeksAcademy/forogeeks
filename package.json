@@ -13,20 +13,6 @@
 		"sass:build": "sass --no-source-map src/front/scss:src/front/css",
 		"sass:watch": "sass --no-source-map --watch src/front/scss:src/front/css"
 	},
-	"author": {
-		"name": "Alejandro Sanchez",
-		"url": "http://alesanchezr.com/"
-	},
-	"contributors": [
-		{
-			"name": "Alejandro Sanchez",
-			"url": "http://alesanchezr.com/"
-		},
-		{
-			"name": "Ignacio Cordoba",
-			"url": "http://github.com/nachovz"
-		}
-	],
 	"license": "ISC",
 	"devDependencies": {
 		"@babel/cli": "^7.16.0",
