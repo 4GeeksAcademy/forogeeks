@@ -9,5 +9,8 @@ import Layout from "./layout";
 import "../css/styles.css";
 import "../css/bootstrap.css";
 
+//JS
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
 //render your react application
 ReactDOM.render(<Layout />, document.querySelector("#app"));

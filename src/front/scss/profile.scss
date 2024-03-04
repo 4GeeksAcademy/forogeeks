@@ -1,0 +1,23 @@
+.profile-container {
+  height: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .profile-image {
+    padding-top: 30px;
+  }
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  .separator {
+    border: none;
+    border-top: 1px solid black;
+    margin: 20px 0;
+    width: 80%;
+  }
+}

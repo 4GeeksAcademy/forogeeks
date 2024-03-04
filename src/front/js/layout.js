@@ -3,12 +3,12 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 // IMPORT PAGES
 import { Home } from "./pages/home.jsx";
+import { Profile } from "./pages/profile.jsx";
 import injectContext from "./store/appContext";
 
 // IMPORT COMPONENTS
 import { Navbar } from "./components/navbar.jsx";
 import { Footer } from "./components/footer.jsx";
-
 //create your first component
 const Layout = () => {
 	//the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -24,6 +24,7 @@ const Layout = () => {
 				<Navbar />
 				<Routes>
 					<Route element={<Home />} path="/" />
+					<Route element={<Profile />} path="/profile" />
 				</Routes>
 				<Footer />
 			</BrowserRouter>
