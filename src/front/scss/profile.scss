@@ -1,23 +1,68 @@
-.profile-container {
+/* Estilos para la versión de escritorio */
+@media (min-width: 768px) {
+  .profile-container {
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    .profile-image {
+      padding-top: 30px;
+    }
+
+    h4 {
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    .separator {
+      border: none;
+      border-top: 1px solid black;
+      margin: 20px 0;
+      width: 80%;
+    }
+  }
+}
+
+/* Estilos para la versión móvil */
+.mobile-container {
   height: 800px;
+  font-size: 20px;
+}
+
+/* Estilos para el modal */
+.modal {
+  /* Oculta el modal por defecto */
+  display: none; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+}
+/* Muestra el modal cuando la clase show está presente */
+.modal.fade.show {
+  display: block; 
+}
+
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 10px;
+}
+
+.modal-content {
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  .profile-image {
-    padding-top: 30px;
-  }
-
-  h4 {
-    margin-top: 0;
-    margin-bottom: 20px;
-  }
-
-  .separator {
-    border: none;
-    border-top: 1px solid black;
-    margin: 20px 0;
-    width: 80%;
-  }
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  outline: 0;
 }
