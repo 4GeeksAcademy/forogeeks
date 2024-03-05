@@ -115,3 +115,13 @@ size	Number	24
 color	String	currentColor
 stroke	Number	2
 ```
+
+---
+
+-   **🌈 Text Editor**
+
+```
+https://www.npmjs.com/package/react-quill
+https://medium.com/@aalam-info-solutions-llp/how-to-build-a-text-editor-in-react-js-d5c7fdb321ef
+
+```
