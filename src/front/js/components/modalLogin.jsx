@@ -17,18 +17,19 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
 
     return (
         <>
+        
 
         <Modal show={showLogin} onHide={handleCloseLogin}>
-            <Modal.Header closeButton>
-                <Modal.Title>Login</Modal.Title>
-            </Modal.Header>
+           
             <Modal.Body className="ModalBody m-auto">
+            
+               <h3 class>Login</h3> 
                 <div className="m-auto">
 
 
                     <form className="login100-form validate-form m-auto">
 
-
+                 
                         <div className="wrap-input100 validate-input m-auto" data-validate="Valid email is required: ex@abc.xyz">
                             <p className="text1 p-1">Email</p>
                             <input className="input100 m-auto " type="text" name="email" placeholder="username@gmail.com" />
@@ -45,7 +46,7 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
 
                         <div className="  p-t-12 mt-2 ">
                             <span className="txt1">
-                                Forgot
+                                Forgot.
                             </span>
                             <a className="txt2" href="#">
                                 Username / Password?
@@ -63,7 +64,7 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
                             <a className="txt2" href="#">
                                 <div className="IconsModalLogin d-flex justify-content-between ">
 
-                            <span className="IconGoogle" ><IconBrandGoogleFilled className="Google m-auto" /></span>
+                            <span className="IconGoogle" ><IconBrandGoogle className="Google m-auto" /></span>
                             <span><IconBrandGithub/></span>
                             <span><IconBrandFacebook/></span>
                             </div>
@@ -83,12 +84,7 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
 
 
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseLogin}>
-                
-                </Button>
-
-            </Modal.Footer>
+          
         </Modal>
         <ModalRegister showRegister={showRegister} handleCloseRegister={handleCloseRegister} />
         </>
