@@ -67,6 +67,7 @@
 		"prop-types": "^15.6.1",
 		"qs": "^6.11.2",
 		"react": "^16.8.4",
+		"react-bootstrap": "^2.10.1",
 		"react-dom": "^16.8.4",
 		"react-polyfills": "0.0.1",
 		"react-quill": "^2.0.0",
