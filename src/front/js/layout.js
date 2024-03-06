@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 // IMPORT PAGES
 import { Home } from "./pages/home.jsx";
+import { Threads } from "./pages/threads.jsx";
 import { Profile } from "./pages/profile.jsx";
 import injectContext from "./store/appContext";
 
@@ -19,16 +20,17 @@ const Layout = () => {
 	// 	return <BackendURL />;
 
 	return (
-		<div className="main-container">
-			<BrowserRouter basename={basename}>
-				<Navbar />
+		<BrowserRouter basename={basename}>
+			<Navbar />
+			<div className="main-container">
 				<Routes>
 					<Route element={<Home />} path="/" />
 					<Route element={<Profile />} path="/profile" />
+					<Route element={<Threads />} path="/threads/:category" />
 				</Routes>
 				<Footer />
-			</BrowserRouter>
-		</div>
+			</div>
+		</BrowserRouter>
 	);
 };
 
