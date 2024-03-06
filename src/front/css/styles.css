@@ -8,3 +8,37 @@
     width: 90vw;
   }
 }
+/* Modal*/
+input[type=text] {
+  width: 24rem;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+
+input[type=password] {
+  width: 24rem;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+
+.txt2 {
+  color: #003465;
+}
+
+.Buttonlogin {
+  width: 24rem;
+  background-color: #003465 !important;
+}
+
+.IconGoogle {
+  border-radius: 0.4rem;
+  background-color: #003465;
+  width: 6rem;
+  height: 2.2rem;
+}
+
+.Google {
+  color: #24b5c6;
+}
