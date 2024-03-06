@@ -2,16 +2,23 @@ import { IconBrandGoogleFilled } from "@tabler/icons-react";
 import { IconBrandGoogleHome } from "@tabler/icons-react";
 import { IconBrandFacebook, IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import React from "react";
+import { useState } from "react";
+import { ModalRegister } from "./modalRegister.jsx";
 
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 
-export const ModalLogin = ({ show, handleClose }) => {
+export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
+    //Login
+    const [showRegister, setShowRegister] = useState(false);
+    const handleCloseRegister = () => setShowRegister(false);
+	const handleShowRegister = () => setShowRegister(true);
 
     return (
+        <>
 
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={showLogin} onHide={handleCloseLogin}>
             <Modal.Header closeButton>
                 <Modal.Title>Login</Modal.Title>
             </Modal.Header>
@@ -24,7 +31,7 @@ export const ModalLogin = ({ show, handleClose }) => {
 
                         <div className="wrap-input100 validate-input m-auto" data-validate="Valid email is required: ex@abc.xyz">
                             <p className="text1 p-1">Email</p>
-                            <input className="input100 m-auto" type="text" name="email" placeholder="username@gmail.com" />
+                            <input className="input100 m-auto " type="text" name="email" placeholder="username@gmail.com" />
 
 
                         </div>
@@ -46,7 +53,7 @@ export const ModalLogin = ({ show, handleClose }) => {
                         </div>
 
                         <div className="container-login100-form-btn mt-5" >
-                            <Button className="Buttonlogin text-white " onClick={handleClose}>
+                            <Button className="Buttonlogin text-white " onClick={handleCloseLogin}>
                                 Sign In
                             </Button>
                         </div>
@@ -66,7 +73,7 @@ export const ModalLogin = ({ show, handleClose }) => {
 
                         <div className="text-center p-t-136 mt-4">
                             <span>Don`t have an account yet? </span>
-                            <a className="txt2" href="#">
+                            <a className="txt2" href="#" onClick={handleShowRegister}>
                                 Register for free
                                 <i className="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                             </a>
@@ -77,13 +84,14 @@ export const ModalLogin = ({ show, handleClose }) => {
 
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="secondary" onClick={handleCloseLogin}>
                 
                 </Button>
 
             </Modal.Footer>
         </Modal>
-
+        <ModalRegister showRegister={showRegister} handleCloseRegister={handleCloseRegister} />
+        </>
 
 
     )

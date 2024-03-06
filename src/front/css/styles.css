@@ -42,3 +42,10 @@ input[type=password] {
 .Google {
   color: #24b5c6;
 }
+
+input[type=textname] {
+  width: 14rem;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}

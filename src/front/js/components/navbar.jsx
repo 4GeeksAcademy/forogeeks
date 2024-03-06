@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ModalLogin } from "./modalLogin.jsx";
+import { ModalRegister } from "./modalRegister.jsx";
 
 
 
@@ -15,12 +16,21 @@ import { IconSun } from "@tabler/icons-react";
 
 
 export const Navbar = () => {
-	const [show, setShow] = useState(false);
 
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	//Login
+	const [showLogin, setShowLogin] = useState(false);
+
+	const handleCloseLogin = () => setShowLogin(false);
+	const handleShowLogin= () => setShowLogin(true);
+
+	//Register
+	const [showRegister, setShowRegister] = useState(false);
+
+	const handleCloseRegister = () => setShowRegister(false);
+	const handleShowRegister = () => setShowRegister(true);
 	return (
 		<>
+
 			<nav class=" navbar navbar-expand-sm rounded-5 navbar-light bg-light mt-2">
 				<div class="container">
 					<a class="navbar-brand">
@@ -83,19 +93,29 @@ export const Navbar = () => {
 						</ul>
 						<div>
 							<ul className="navbar-nav">
+							<li className="nav-item">
+									<button type="button" className="btn btn-light" onClick={handleShowRegister}>Register</button>
+
+								</li>
 								<li className="nav-item">
-									<button type="button" className="btn btn-light" onClick={handleShow}>Login</button>
+									<button type="button" className="btn btn-light" onClick={handleShowLogin}>Login</button>
 
 								</li>
 								<li className="nav-item">
 									<IconSun width={30} height={30} stroke={1} />
+								</li>
+									<li className="nav-item">
+									
+
 								</li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</nav>
-			<ModalLogin show={show} handleClose={handleClose} />
+			<ModalLogin showLogin={showLogin} handleCloseLogin={handleCloseLogin} />
+			<ModalRegister showRegister={showRegister} handleCloseRegister={handleCloseRegister} />
+			
 		</>
 	);
 };
