@@ -8,13 +8,13 @@
     width: 90vw;
   }
 }
-<<<<<<< HEAD
+
 .navbar-toggler:focus,
 .navbar-toggler:active,
 .navbar-toggler-icon:focus {
   outline: none;
   box-shadow: none;
-=======
+}
 /* Modal*/
 input[type=text] {
   width: 24rem;
@@ -44,5 +44,4 @@ input[type=textname] {
   padding: 12px 20px;
   margin: 8px 0;
   box-sizing: border-box;
->>>>>>> Nain
 }

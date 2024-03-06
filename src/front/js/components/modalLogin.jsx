@@ -1,12 +1,9 @@
-import { IconBrandGoogleFilled } from "@tabler/icons-react";
-import { IconBrandGoogleHome } from "@tabler/icons-react";
 import { IconBrandFacebook, IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import React from "react";
 import { useState } from "react";
 import { ModalRegister } from "./modalRegister.jsx";
 
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { Modal, Button } from "react-bootstrap";
 
 
 export const ModalLogin = ({ showLogin, handleCloseLogin }) => {

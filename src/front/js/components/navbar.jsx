@@ -3,12 +3,6 @@ import { Link } from "react-router-dom";
 import { ModalLogin } from "./modalLogin.jsx";
 import { ModalRegister } from "./modalRegister.jsx";
 
-
-
-import { useState } from 'react';
-
-
-
 // ICONS
 import { IconBrandCodesandbox } from "@tabler/icons-react";
 import { IconUserCircle } from "@tabler/icons-react";
