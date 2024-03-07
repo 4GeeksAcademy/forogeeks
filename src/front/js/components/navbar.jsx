@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ModalLogin } from "./modalLogin.jsx";
-import { ModalRegister } from "./modalRegister.jsx";
+import { ModalLogin } from "./Modal/modalLogin.jsx";
+import { ModalRegister } from "./Modal/modalRegister.jsx";
 
 // ICONS
 import { IconBrandCodesandbox } from "@tabler/icons-react";
@@ -17,7 +17,21 @@ import { IconCircleDotted } from "@tabler/icons-react";
 import { IconMessageCircle2Filled } from "@tabler/icons-react";
 import Icon from "./icons/icon.jsx";
 
-export const Navbar = () => {
+export const Navbar = ({estadoButton}) => {
+	//Login
+	const [showLogin, setShowLogin] = useState(false); const handleCloseLogin = () => setShowLogin(false); const handleShowLogin = () => setShowLogin(true);
+
+	//Register
+	const [showRegister, setShowRegister] = useState(false); const handleCloseRegister = () => setShowRegister(false); const handleShowRegister = () => setShowRegister(true);
+	//butuuon Login y register
+    const [buttonVisible, setButtonVisible] = useState(true);
+
+  const toggleButtonVisibility = () => {
+    setButtonVisible(!buttonVisible);
+  };
+
+
+	//Raul
 	let [isMovileSize, setIsMobileSize] = useState(false);
 
 	useEffect(() => {
@@ -31,6 +45,7 @@ export const Navbar = () => {
 	}, []);
 
 	return (
+		<>
 		<nav
 			className="navbar navbar-expand-sm rounded-0 navbar-primary-light bg-primary mt-0 p-1 w-100 navbar-dark"
 			style={{ lineHeight: "1" }}>
@@ -75,6 +90,17 @@ export const Navbar = () => {
 							</li>
 						</div>
 					</ul>
+					{/* NButton Modal */}
+					{ buttonVisible &&
+					
+					<button type="button" className="btn btn-light" onClick={() => { handleShowLogin(); toggleButtonVisibility(); }}> Login</button>
+				}
+					{ buttonVisible &&
+					
+					<button type="button" className="btn btn-light"  onClick={toggleButtonVisibility}> Register</button>
+				}
+
+
 					{/* NOTIFICACIONES */}
 					<ul className="navbar-nav ">
 						<li className="nav-item dropdown text-white ">
@@ -193,5 +219,7 @@ export const Navbar = () => {
 				</div>
 			</div>
 		</nav>
+		<ModalLogin showLogin={showLogin} handleCloseLogin={handleCloseLogin} ></ModalLogin>
+		</>
 	);
 };
