@@ -1,5 +1,5 @@
 import React from "react";
-import { IconUserCircle } from "@tabler/icons-react";
+import { IconUserCircle, IconPencil } from "@tabler/icons-react";
 
 const ProfileConfigurationPc = ({ showEmail, showPassword }) => {
   return (
@@ -18,8 +18,16 @@ const ProfileConfigurationPc = ({ showEmail, showPassword }) => {
         </div>
         {/* Título de la sección */}
         <div className="user-info">
-          <h1 className="display-6 fw-semibold">username</h1>
-          <p>Me gusta React y JS</p>
+          {/* Texto de usuario */}
+          <div className="d-flex align-items-center">
+            <h1 className="display-6 fw-semibold">username</h1>
+            <IconPencil className="mb-4 ms-1" />
+          </div>
+          {/* Descripción */}
+          <div className="d-flex align-items-center">
+            <p>Me gusta React y JS</p>
+            <IconPencil className="mb-4 ms-1" />
+          </div>
         </div>
         {/* Resto del contenido */}
         <div className="profile-configuration">
