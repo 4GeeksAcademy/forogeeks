@@ -6,6 +6,7 @@ import { Home } from "./pages/home.jsx";
 import { Threads } from "./pages/threads.jsx";
 import { Profile } from "./pages/profile.jsx";
 import injectContext from "./store/appContext";
+import { Chat } from "./pages/chat.jsx";
 
 // IMPORT COMPONENTS
 import { Navbar } from "./components/navbar.jsx";
@@ -28,6 +29,7 @@ const Layout = () => {
 					<Route element={<Home />} path="/" />
 					<Route element={<Profile />} path="/profile" />
 					<Route element={<Threads />} path="/threads/:category" />
+					<Route element={<Chat />} path="/chat" />
 				</Routes>
 				<Footer />
 			</div>
