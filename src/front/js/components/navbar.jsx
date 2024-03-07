@@ -12,12 +12,12 @@ import { IconSettings2 } from "@tabler/icons-react";
 import { IconLogout } from "@tabler/icons-react";
 import { IconBookmark } from "@tabler/icons-react";
 import { IconSearch } from "@tabler/icons-react";
-import { IconBell } from "@tabler/icons-react";
+import { IconBellFilled } from "@tabler/icons-react";
 import { IconCircleDotted } from "@tabler/icons-react";
 import { IconMessageCircle2Filled } from "@tabler/icons-react";
 import Icon from "./icons/icon.jsx";
 
-export const Navbar = ({ estadoButton }) => {
+export const Navbar = () => {
 	//Login
 	const [showLogin, setShowLogin] = useState(false); const handleCloseLogin = () => setShowLogin(false); const handleShowLogin = () => setShowLogin(true);
 
@@ -26,7 +26,6 @@ export const Navbar = ({ estadoButton }) => {
 
 	// Temporal para el modal
 	const isUserLogged = false;
-
 
 	//Raul
 	let [isMovileSize, setIsMobileSize] = useState(false);
@@ -44,7 +43,7 @@ export const Navbar = ({ estadoButton }) => {
 	return (
 		<>
 			<nav
-				className="navbar navbar-expand-sm rounded-0 navbar-primary-light bg-primary mt-0 p-1 w-100 navbar-dark"
+				className="navbar fixed-top navbar-expand-sm rounded-0 navbar-primary-light bg-primary mt-0 p-1 w-100 navbar-dark"
 				style={{ lineHeight: "1" }}>
 				<div className="container-fluid w-100 m-0 d-flex justify-content-between">
 					<Link to="/" style={{ textDecoration: "none" }}>
@@ -128,7 +127,7 @@ export const Navbar = ({ estadoButton }) => {
 										className="nav-link d-flex align-items-center"
 										href="#"
 										data-bs-toggle="dropdown">
-										<IconBell size={30} stroke={1} />
+										<IconBellFilled size={30} stroke={1} />
 
 										{isMovileSize && (
 											<span className="ms-2">Notificaciones</span>
@@ -183,8 +182,9 @@ export const Navbar = ({ estadoButton }) => {
 											width={30}
 											height={30}
 											stroke={1}
+											color="white"
 										/>
-										<span className="ms-2">Hey! @usuario</span>
+										<span className="ms-2 text-white">Hey! @usuario</span>
 									</a>
 
 									<div

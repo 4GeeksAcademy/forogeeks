@@ -14,11 +14,5 @@ import "../css/modal-login.css";
 //JS
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-//JS
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-
-//JS
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-
 //render your react application
 ReactDOM.render(<Layout />, document.querySelector("#app"));

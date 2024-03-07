@@ -1,8 +1,11 @@
-.Modal {
-	background: rgba(0, 123, 255, 0.1);
+// General
+.main-container {
+	width: 65vw;
+	margin: 0 auto;
 }
 
-//}
-.ModalBody {
-	margin: auto;
+@media (max-width: 768px) {
+	.main-container {
+		width: 90vw;
+	}
 }
