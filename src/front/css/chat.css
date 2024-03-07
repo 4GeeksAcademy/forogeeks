@@ -62,6 +62,23 @@
     margin-right: auto;
     font-weight: bold;
   }
+  .chat-small-date {
+    font-size: 12px;
+  }
+  .chat-icon-send {
+    margin-bottom: 140px;
+  }
+  .chat-icon-send:hover {
+    color: rgb(9, 0, 173);
+    cursor: pointer;
+  }
+  .chat-icon:hover {
+    color: rgb(9, 0, 173);
+    cursor: pointer;
+  }
+  .chat-username-text {
+    font-weight: bold;
+  }
 }
 /* Estilos para la versión móvil */
 .mobile-container {
