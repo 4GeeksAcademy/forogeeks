@@ -32,7 +32,7 @@ export const Navbar = () => {
 
 	return (
 		<nav
-			className="navbar navbar-expand-sm rounded-0 navbar-primary-light bg-primary mt-0 p-1 w-100 navbar-dark"
+			className="navbar fixed-top navbar-expand-sm rounded-0 navbar-primary-light bg-primary mt-0 p-1 w-100 navbar-dark"
 			style={{ lineHeight: "1" }}>
 			<div className="container-fluid w-100 m-0 d-flex justify-content-between">
 				<Link to="/" style={{ textDecoration: "none" }}>
@@ -64,13 +64,13 @@ export const Navbar = () => {
 						}>
 						<div className="input-group">
 							<li
-								className="nav-item w-100 "
-								style={{ width: "65vw" }}>
+								className="nav-item w-100 d-flex align-items-center"
+								style={{ width: "65vw", height: "30px" }}>
 								<input
-									className="form-control rounded-5 border-0 w-100"
+									className="form-control rounded-5 border-0 w-100 "
 									type="text"
 									placeholder="Search"
-									style={{ width: "100%", lineHeight: "1.2" }}
+									style={{ width: "100%", lineHeight: "1.2", height: "30px" }}
 								/>
 							</li>
 						</div>
