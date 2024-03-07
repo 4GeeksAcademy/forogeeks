@@ -7,29 +7,64 @@
     flex-direction: column;
     width: 100%;
   }
+  .chat-textbar-icons {
+    margin-top: 600px;
+    margin-left: 20px;
+    position: absolute;
+    left: 0;
+  }
+  .chat-textbar-container {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 97.5%;
+  }
+  .chat-textbar {
+    width: calc(100% - 20px);
+    margin: 10px;
+    border-radius: 10px;
+    text-align: left;
+  }
+  .chat-container-card {
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: left;
+    width: 100%;
+    overflow-y: auto;
+  }
+  .chat {
+    margin-top: 20px;
+    background-color: #f9e9fc;
+  }
+  .chat-img {
+    width: 20%;
+    border-radius: 50%;
+  }
+  .message-sended {
+    background-color: #9be3fd;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    width: 50%;
+    text-align: left;
+    margin-left: auto;
+    font-weight: bold;
+  }
+  .message-received {
+    background-color: #f9e9fc;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    width: 50%;
+    text-align: left;
+    margin-right: auto;
+    font-weight: bold;
+  }
 }
 /* Estilos para la versión móvil */
 .mobile-container {
   height: 800px;
   font-size: 20px;
-}
-
-.chat-container-card {
-  height: 800px;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: left;
-  width: 100%;
-  overflow-y: auto; /* Hacer el contenedor scrollable */
-}
-
-.chat {
-  margin-top: 20px;
-  background-color: #f9e9fc;
-}
-
-.chat-img {
-  width: 20%;
-  border-radius: 50%;
 }
