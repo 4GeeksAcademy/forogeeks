@@ -1,34 +1,11 @@
 import React from "react";
-import { IconUserCircle, IconPencil } from "@tabler/icons-react";
 
 const ChatView = ({ showEmail, showPassword }) => {
   return (
     <div className="col-md-8">
       {/* Contenedor de configuración del perfil en versión de escritorio */}
-      <div className="shadow rounded-4 p-3 mb-2 profile-container d-flex flex-column position-relative">
+      <div className="shadow rounded-4 p-3 mb-2 chat-container d-flex flex-column position-relative">
         {/* Contenedor de la imagen */}
-        <div className="profile-image-container position-relative w-100">
-          <img
-            className="profile-image border rounded h-75"
-            src="https://static.vecteezy.com/system/resources/thumbnails/002/558/861/small/blue-background-with-hexagonal-grid-header-abstract-stainless-steel-banner-modern-creative-design-temlates-colorful-illustration-vector.jpg"
-            alt=""
-          />
-          {/* Ícono superpuesto */}
-          <IconUserCircle size={100} className="icon-sticker" />
-        </div>
-        {/* Título de la sección */}
-        <div className="user-info">
-          {/* Texto de usuario */}
-          <div className="d-flex align-items-center">
-            <h1 className="display-6 fw-semibold">username</h1>
-            <IconPencil className="mb-4 ms-1" />
-          </div>
-          {/* Descripción */}
-          <div className="d-flex align-items-center">
-            <p>Me gusta React y JS</p>
-            <IconPencil className="mb-4 ms-1" />
-          </div>
-        </div>
         {/* Resto del contenido */}
         <div className="profile-configuration">
           {showEmail && (

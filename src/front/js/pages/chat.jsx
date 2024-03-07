@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 // IMPORTAR COMPONENTES
 import ChatCardMobile from "../components/Chat/ChatCardMobile.jsx";
-import ChatCardPc from "../components/Chat/ChatCardPc.jsx";
+import IncomingChatPc from "../components/Chat/IncomingChat.jsx";
 import ChatView from "../components/Chat/ChatView.jsx";
 
 export const Chat = () => {
@@ -57,7 +57,7 @@ export const Chat = () => {
           <ChatCardMobile />
         ) : (
           <>
-            <ChatCardPc
+            <IncomingChatPc
               handleShowEmail={handleShowEmail}
               handleShowPassword={handleShowPassword}
             />

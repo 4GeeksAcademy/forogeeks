@@ -59,7 +59,7 @@ class Threads(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     title = db.Column(db.String(120), unique=False, nullable=False)
-    thread_content = db.relationship('Message', backref='thread', lazy=True)
+    content = db.Column(db.String(120), unique=False, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
