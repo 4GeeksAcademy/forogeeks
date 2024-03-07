@@ -6,6 +6,7 @@
     flex-direction: column;
     width: 100%;
 
+    /* Contenedor de la imagen */
     .profile-image-container {
       position: relative; /* Hace que el posicionamiento absoluto del ícono sea relativo a este contenedor */
       width: 100%; /* Cubrir todo el ancho del bloque */
@@ -13,6 +14,7 @@
       overflow: hidden; /* Recortar cualquier contenido que se desborde del contenedor */
     }
 
+    /* Imagen de perfil */
     .profile-image {
       width: 100%;
       height: auto;
@@ -111,10 +113,16 @@
 }
 
 .profile-container-card {
-  height: 800px;
+  height: 250px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: left;
   width: 100%;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
