@@ -29,6 +29,18 @@
   }
 
   .chat-container-card {
+    height: 800px; /* Ajusta según sea necesario */
+    display: flex;
+    flex-direction: column;
+    justify-content: start; /* Cambiado de start a flex-end */
+    align-items: left;
+    width: 100%;
+    overflow-y: auto;
+    padding-bottom: 50px; /* Añadido para dejar espacio para las barras de texto */
+    overflow-y: scroll;
+  }
+
+  .chat-container-messages {
     height: calc(100% - 200px); /* Ajusta según sea necesario */
     display: flex;
     flex-direction: column;
@@ -38,6 +50,7 @@
     overflow-y: auto;
     padding-bottom: 50px; /* Añadido para dejar espacio para las barras de texto */
     overflow-y: scroll;
+    scrollbar-width: none;
   }
 
   .chat-container-card::-webkit-scrollbar {
@@ -51,7 +64,8 @@
   }
 
   .chat-img {
-    width: 20%;
+    max-width: 20%; /* Hace que la imagen sea responsive */
+    height: auto; /* Ajusta la altura automáticamente */
     border-radius: 50%;
   }
 
@@ -85,6 +99,16 @@
     color: rgb(9, 0, 173);
     cursor: pointer;
   }
+  .chat-card-pc{
+    height: 150px;
+    font-size: 20px;
+    background-color: #f9e9fc;
+  }
+  
+  .chat-img-pc{
+    width: 30%;
+    border-radius: 50%;
+  }
 }
 
 /* Estilos para la versión móvil */
@@ -104,7 +128,6 @@
 }
 
 .chat-container-card-mobile {
-  
   display: flex;
   flex-direction: column;
   justify-content: start; /* Cambiado de start a flex-end */
@@ -120,3 +143,4 @@
   width: 0px; /* Ancho de la barra de desplazamiento */
   background: transparent; /* Color de fondo de la barra de desplazamiento */
 }
+
