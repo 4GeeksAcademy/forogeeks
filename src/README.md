@@ -81,6 +81,18 @@ npm install
         Esto creara un commit que va a desacer todos los cambios y volver al que
         has indicado
 
+        -   **🐱 Forzar el merge de main a tu rama por la fuerza:**
+
+        ```
+        git merge --strategy-option=theirs main
+        ```
+
+        -   **🐱 Abortar merge:**
+
+        ```
+        git merge --abort
+        ```
+
 ---
 
 -   **🌅 Cambiar favicon**
