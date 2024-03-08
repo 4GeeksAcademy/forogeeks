@@ -11,7 +11,7 @@ const ChatViewMobile = () => {
                     <ChatReceivedMessageMobile
                         author="@manuel22"
                         date="12:00"
-                        content="Hola, necesito ayuda"
+                        content="Hola"
                     />
                     <ChatSendedMessageMobile
                         author="@javier_lol"

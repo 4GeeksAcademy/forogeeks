@@ -5,7 +5,7 @@ import ChatSendedMessage from "./ChatSendedMessage.jsx";
 import ChatTextBarIcons from "./ChatTextBarIcons.jsx";
 import ChatTextBar from "./ChatTextBar.jsx";
 
-const receivedMessage = [{ author: "@manuel22", date: "12:53:16 PM", content: "Hola, ¿cómo estás? ¿Puedo ayudarte con algo?" }];
+const receivedMessage = [{ author: "@manuel22", date: "12:53:16 PM", content: "Hola" }];
 const sendedMessage = [{ author: "@javier_lol", date: "4:31:16 AM", content: "Hola, necesito ayuda con mi cuenta" }];
 
 const ChatView = () => {
