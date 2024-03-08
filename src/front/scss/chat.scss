@@ -72,14 +72,14 @@
 
   .message-sended {
     background-color: #9be3fd;
-    padding: 10px;
-    margin: 10px;
-    margin-left: auto;
-    border-radius: 10px;
-    text-align: start;
-    font-weight: bold;
-    display: inline-block;
-    word-wrap: break-word;
+  padding: 10px;
+  margin: 10px;
+  margin-left: auto;
+  border-radius: 10px;
+  text-align: start;
+  font-weight: bold;
+  display: inline-block;
+  word-wrap: break-word;
   }
 
   .message-received {
@@ -187,7 +187,6 @@
 .chat-textbar-container-mobile {
   position: relative;
   display: flex;
-  top: 50px;
   align-items: center; /* Alinea verticalmente los elementos */
   margin: 0 auto; /* Centra horizontalmente */
   width: 95%; /* Utiliza el 90% del ancho del contenedor */

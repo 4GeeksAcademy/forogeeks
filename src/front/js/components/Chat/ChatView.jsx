@@ -1,78 +1,94 @@
-import React from "react";
-import { IconFilePlus, IconCode, IconLetterA, IconLink, IconSend } from "@tabler/icons-react";
-import ChatReceivedMessage from "./ChatReceivedMessage.jsx";
+import React, { useEffect, useState } from "react";
+import ChatTextBar from "./ChatTextBar.jsx";
 import ChatSendedMessage from "./ChatSendedMessage.jsx";
 import ChatTextBarIcons from "./ChatTextBarIcons.jsx";
-import ChatTextBar from "./ChatTextBar.jsx";
-
-const receivedMessage = [{ author: "@manuel22", date: "12:53:16 PM", content: "Hola" }];
-const sendedMessage = [{ author: "@javier_lol", date: "4:31:16 AM", content: "Hola, necesito ayuda con mi cuenta" }];
+import io from "socket.io-client";
 
 const ChatView = () => {
+  const [receivedMessages, setReceivedMessages] = useState([]); // Estado para almacenar los mensajes recibidos
+  const [sentMessages, setSentMessages] = useState([]); // Estado para almacenar los mensajes enviados
+  const [socket, setSocket] = useState(null); // Estado para almacenar el socket
+
+  useEffect(() => {
+    const newSocket = io(`wss://127.0.0.1:3001`); // Crear un nuevo socket
+    newSocket.on('message', (message) => {
+      // Manejar los mensajes recibidos
+      console.log('Received message:', message);
+    });
+    setSocket(newSocket); // Actualizar el estado del socket
+
+    return () => {
+      newSocket.close(); // Cerrar el socket cuando el componente se desmonte
+    };
+  }, []);
+
+  const author = "Me "+new Date().toLocaleTimeString();
+  // Función para enviar un mensaje
+  const sendMessage = (messageContent) => {
+    if (messageContent.trim() !== "") {
+      const message = {
+        author: author,
+        date: new Date().toLocaleTimeString(),
+        content: messageContent.trim()
+      };
+
+      // Enviar el mensaje al backend
+      fetch("http://localhost:3001/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(message)
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Actualizar el estado de los mensajes enviados
+          setSentMessages(prevMessages => [...prevMessages, message]);
+        })
+        .catch(error => {
+          console.error("Error sending message:", error);
+        });
+    }
+  };
+
+
 
   return (
     <div className="col-md-8">
-      {/* Contenedor de configuración del perfil en versión de escritorio */}
       <div className="shadow rounded-4 p-3 mb-2 chat-container d-flex flex-column position-relative">
         <div className="chat-title p-4">
           <h2>Necesito ayuda</h2>
         </div>
 
-        <div className="chat-container-messages overflow-auto"> {/* Agregar clase overflow-auto */}
-          {sendedMessage.map((message, index) => {
-            return (
-              <ChatSendedMessage
-                key={index}
-                author={message.author}
-                date={message.date}
-                content={message.content}
-              />
-            );
-          })}
-          {receivedMessage.map((message, index) => {
-            return (
-              <ChatReceivedMessage
-                key={index}
-                author={message.author}
-                date={message.date}
-                content={message.content}
-              />
-            );
-          })}
-          {sendedMessage.map((message, index) => {
-            return (
-              <ChatSendedMessage
-                key={index}
-                author={message.author}
-                date={message.date}
-                content={message.content}
-              />
-            );
-          })}
-          {sendedMessage.map((message, index) => {
-            return (
-              <ChatSendedMessage
-                key={index}
-                author={message.author}
-                date={message.date}
-                content={message.content}
-              />
-            );
-          })}
-          {receivedMessage.map((message, index) => {
-            return (
-              <ChatReceivedMessage
-                key={index}
-                author={message.author}
-                date={message.date}
-                content={message.content}
-              />
-            );
-          })}
-        </div>
+        <div className="chat-container-messages overflow-auto">
+          {/* Renderizar los mensajes enviados */}
+          {sentMessages.map((message, index) => (
+            <ChatSendedMessage
+              key={index}
+              author={message.author}
+              date={message.date}
+              content={message.content}
+            />
+          ))}
 
-        <ChatTextBarIcons />
-        <ChatTextBar />
+          {/* Renderizar los mensajes recibidos */}
+          {receivedMessages.map((message, index) => (
+            <div key={index}>
+              {/* Renderizar los mensajes recibidos aquí */}
+              {/* Por ejemplo: */}
+              {/* <div>{message.author}: {message.content}</div> */}
+            </div>
+          ))}
+
+          {/* Componentes para la barra de texto y los iconos */}
+          <ChatTextBarIcons />
+          <ChatTextBar sendMessage={sendMessage} />
+        </div>
       </div>
     </div>
   );
