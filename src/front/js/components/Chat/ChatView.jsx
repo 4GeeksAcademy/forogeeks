@@ -18,7 +18,7 @@ const ChatView = () => {
           <h2>Necesito ayuda</h2>
         </div>
 
-        <div className="chat-container-card overflow-auto"> {/* Agregar clase overflow-auto */}
+        <div className="chat-container-messages overflow-auto"> {/* Agregar clase overflow-auto */}
           {sendedMessage.map((message, index) => {
             return (
               <ChatSendedMessage
