@@ -11,7 +11,7 @@
   .chat-textbar-container,
   .chat-icons {
     position: absolute;
-    bottom: 40px; /* Ajusta según sea necesario */
+    bottom: 10px; /* Ajusta según sea necesario */
     left: 0;
     width: 97.5%;
     z-index: 1; /* Añadido para superponer sobre los mensajes */
@@ -147,7 +147,7 @@
 }
 
 .chat-container-messages-mobile {
-  height: calc(100% - 50px); /* Ajusta según sea necesario */
+  height: calc(100% - 10px); /* Ajusta según sea necesario */
   display: flex;
   flex-direction: column;
   justify-content: start; /* Cambiado de start a flex-end */
@@ -184,6 +184,7 @@
 .chat-textbar-container-mobile {
   position: relative;
   display: flex;
+  top: 50px;
   align-items: center; /* Alinea verticalmente los elementos */
   margin: 0 auto; /* Centra horizontalmente */
   width: 95%; /* Utiliza el 90% del ancho del contenedor */
