@@ -187,3 +187,9 @@
 .chat-icon-mobile {
   margin-right: 10px;
 }
+
+/* Estilos para los enlaces */
+.chat-container-card-mobile a {
+  text-decoration: none;
+  color: inherit;
+}
