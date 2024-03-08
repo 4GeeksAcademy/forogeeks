@@ -88,7 +88,35 @@
 }
 
 /* Estilos para la versión móvil */
-.mobile-container {
+.chat-mobile-container {
   height: 800px;
   font-size: 20px;
+}
+
+.chat-img-mobile {
+  width: 30%;
+  border-radius: 50%;
+}
+
+.chat-card-mobile {
+  background-color: #f9e9fc;
+  height: 80%;
+}
+
+.chat-container-card-mobile {
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: start; /* Cambiado de start a flex-end */
+  align-items: left;
+  width: 100%;
+  overflow-y: auto;
+  padding-bottom: 50px; /* Añadido para dejar espacio para las barras de texto */
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.chat-container-card-mobile::-webkit-scrollbar {
+  width: 0px; /* Ancho de la barra de desplazamiento */
+  background: transparent; /* Color de fondo de la barra de desplazamiento */
 }

@@ -1,12 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Context } from "../store/appContext.js";
+import React, { useState, useEffect } from "react";
 
 // IMPORTAR SCSS
 import "../../scss/chat.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // IMPORTAR COMPONENTES
-import ChatCardMobile from "../components/Chat/ChatCardMobile.jsx";
+import IncomingChatMobile from "../components/Chat/IcomingChatMobile.jsx";
 import IncomingChatPc from "../components/Chat/IncomingChat.jsx";
 import ChatView from "../components/Chat/ChatView.jsx";
 
@@ -24,46 +23,21 @@ export const Chat = () => {
     };
   }, []);
 
-  // Acceso al contexto de la aplicación
-  const { store, actions } = useContext(Context);
   // Estado para el tamaño de la pantalla
   const [isMobile, setIsMobile] = useState(false);
-  // Estado para el modal de econtraseña
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
-  // Estado para la confirmación de contraseña
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  // Estado para la configuración de email en pantallas grandes
-  const [showEmail, setshowEmail] = useState(false);
-  // Estado para la configuración de contraseña en pantallas grandes
-  const [showPassword, setshowPassword] = useState(false);
-
-  // Funciones para mostrar opciones de configuración
-  // Función para mostrar opciones de email
-  const handleShowEmail = () => {
-    setshowEmail(!showEmail);
-    setshowPassword(false);
-  };
-
-  // Función para mostrar opciones de contraseña
-  const handleShowPassword = () => {
-    setshowPassword(!showPassword);
-    setshowEmail(false);
-  };
 
   return (
     <div className="container mt-3">
       <div className="row">
         {isMobile ? (
-          <ChatCardMobile />
+          <IncomingChatMobile />
         ) : (
           <>
             <IncomingChatPc
-              handleShowEmail={handleShowEmail}
-              handleShowPassword={handleShowPassword}
+              
             />
             <ChatView
-              showEmail={showEmail}
-              showPassword={showPassword}
+              
             />
           </>
         )}
