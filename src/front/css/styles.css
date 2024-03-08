@@ -1,14 +1,10 @@
 .main-container {
-  width: 65vw;
-  margin: 0 auto;
+	width: 65vw;
+	margin: 0 auto;
 }
 
 @media (max-width: 768px) {
-  .main-container {
-<<<<<<< HEAD
-    width: 90vw;
-=======
-    width: 100vw;
->>>>>>> da88c8b (Commit)
-  }
+	.main-container {
+		width: 90vw;
+	}
 }

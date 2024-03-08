@@ -13,7 +13,6 @@ import { IconLogout } from "@tabler/icons-react";
 import { IconBookmark } from "@tabler/icons-react";
 import { IconSearch } from "@tabler/icons-react";
 import { IconBellFilled } from "@tabler/icons-react";
-import { IconBellFilled } from "@tabler/icons-react";
 import { IconCircleDotted } from "@tabler/icons-react";
 import { IconMessageCircle2Filled } from "@tabler/icons-react";
 import Icon from "./icons/icon.jsx";
@@ -64,10 +63,14 @@ export const Navbar = () => {
 						aria-label="Toggle navigation">
 						<span className="navbar-toggler-icon"></span>
 					</button>
-					{/* SEARCHBAR */}
+
+					{/* SEARCHBAR, INICIO SESION, USER CONFIG, NOTIFICACIONES */}
 					<div
 						className="collapse navbar-collapse "
 						id="collapsibleNavId">
+
+						{/* SEARCHBAR */}
+
 						<ul
 							className={
 								isMovileSize
@@ -76,132 +79,163 @@ export const Navbar = () => {
 							}>
 							<div className="input-group">
 								<li
-									className="nav-item w-100 d-flex align-items-center"
-									style={{ width: "65vw", height: "30px" }}>
+									className="nav-item w-100 "
+									style={{ width: "65vw" }}>
 									<input
-										className="form-control rounded-5 border-0 w-100 "
+										className="form-control rounded-5 border-0 w-100"
 										type="text"
 										placeholder="Search"
-										style={{ width: "100%", lineHeight: "1.2", height: "30px" }}
+										style={{ width: "100%", lineHeight: "1.2" }}
 									/>
 								</li>
 							</div>
 						</ul>
-						{/* NOTIFICACIONES */}
-						<ul className="navbar-nav ">
-							<li className="nav-item dropdown text-white ">
-								<a
-									className="nav-link d-flex align-items-center"
-									href="#"
-									data-bs-toggle="dropdown">
-									<IconBell size={30} stroke={1} />
 
-									{isMovileSize && (
-										<span className="ms-2">Notificaciones</span>
-									)}
-								</a>
+						{/* NButton Modal */}
 
-								<div
-									className="dropdown-menu dropdown-menu-start rounded-3 shadow-sm border-0 rounded-4 mb-3"
-									style={{ left: "-50px" }}>
-									<a className="dropdown-item" href="#">
-										<div className="d-flex gap-3 align-items-center">
-											<IconMessageCircle2Filled
-												size={20}
-												stroke={1}
-											/>
-											<div className="d-flex flex-column">
-												<span>Nuevo mensaje privado</span>
-												<span className="mt-1 text-muted">
-													@pere69
-												</span>
-											</div>
-										</div>
-									</a>
-									<hr
-										className="hr m-auto my-2 p-0"
-										style={{ width: "80%" }}></hr>
-									<a className="dropdown-item" href="#">
-										<div className="d-flex gap-3 align-items-center">
-											<IconMessageCircle2Filled
-												size={20}
-												stroke={1}
-											/>
-											<div className="d-flex flex-column">
-												<span>Nuevo mensaje privado</span>
-												<span className="mt-1 text-muted">
-													@diego
-												</span>
-											</div>
-										</div>
-									</a>
-								</div>
-							</li>
+						{!isUserLogged && (
+							<>
+								{isMovileSize && (
+									<div className="d-flex justify-content-center m-3 mt-3">
+										<button
+											onClick={handleShowLogin}
+											className="btn btn-secondary rounded-5 p-1 px-3 m-0">
+											Iniciar sesión
+										</button>
+									</div>
+								)}
 
-							{/* USER PROFILE */}
-							<li className="nav-item dropdown">
-								<a
-									className="nav-link d-flex align-items-center"
-									href="#"
-									id="dropdownId"
-									data-bs-toggle="dropdown">
-									<IconUserCircle
-										width={30}
-										height={30}
-										stroke={1}
-									/>
-									<span className="ms-2">Hey! @usuario</span>
-								</a>
+								{!isMovileSize && (
+									<div className="d-flex justify-content-center ">
+										<button
+											onClick={handleShowLogin}
+											className="btn btn-secondary rounded-5 px-3 m-0" style={{ padding: "3px" }}>
+											Iniciar sesión
+										</button>
+									</div>
+								)}
+							</>
+						)}
 
-								<div
-									className="dropdown-menu dropdown-menu-end rounded-3 shadow-sm border-0 rounded-4 mb-3"
-									aria-labelledby="dropdownId">
-									<a className="dropdown-item" href="#">
-										<div className="d-flex gap-2 align-items-center mt-1">
-											<IconSettings2 stroke={1} />
-											Configuración
-										</div>
+
+						{/* BLOQUE NOTIFICACIONES Y USER CONFIG */}
+						{isUserLogged && (
+							<ul className="navbar-nav ">
+								{/* NOTIFICACIONES */}
+								<li className="nav-item dropdown text-white ">
+									<a
+										className="nav-link d-flex align-items-center"
+										href="#"
+										data-bs-toggle="dropdown">
+										<IconBellFilled size={30} stroke={1} />
+
+										{isMovileSize && (
+											<span className="ms-2">Notificaciones</span>
+										)}
 									</a>
-									<a className="dropdown-item" href="#">
-										<div className="d-flex gap-2 align-items-center mt-1">
-											<IconMail stroke={1} />
-											Mensajes privados
-										</div>
-									</a>
-									<a className="dropdown-item" href="#">
-										<div className="d-flex gap-2 align-items-center mt-1">
-											<IconBookmark stroke={1} />
-											Guardados
-										</div>
-									</a>
-									<a className="dropdown-item">
-										<div className="d-flex gap-2 align-items-center">
-											<IconSun stroke={1} />
-											Modo oscuro
-											<div
-												className="form-check form-switch"
-												style={{ marginTop: "3px" }}>
-												<input
-													className="form-check-input"
-													type="checkbox"
-													role="switch"
-													id="flexSwitchCheckDefault"
+
+									<div
+										className="dropdown-menu dropdown-menu-start rounded-3 shadow-sm border-0 rounded-4 mb-3"
+										style={{ left: "-50px" }}>
+										<a className="dropdown-item" href="#">
+											<div className="d-flex gap-3 align-items-center">
+												<IconMessageCircle2Filled
+													size={20}
+													stroke={1}
 												/>
+												<div className="d-flex flex-column">
+													<span>Nuevo mensaje privado</span>
+													<span className="mt-1 text-muted">
+														@pere69
+													</span>
+												</div>
 											</div>
-										</div>
+										</a>
+										<hr
+											className="hr m-auto my-2 p-0"
+											style={{ width: "80%" }}></hr>
+										<a className="dropdown-item" href="#">
+											<div className="d-flex gap-3 align-items-center">
+												<IconMessageCircle2Filled
+													size={20}
+													stroke={1}
+												/>
+												<div className="d-flex flex-column">
+													<span>Nuevo mensaje privado</span>
+													<span className="mt-1 text-muted">
+														@diego
+													</span>
+												</div>
+											</div>
+										</a>
+									</div>
+								</li>
+
+								{/* USER PROFILE */}
+								<li className="nav-item dropdown">
+									<a
+										className="nav-link d-flex align-items-center"
+										href="#"
+										id="dropdownId"
+										data-bs-toggle="dropdown">
+										<IconUserCircle
+											width={30}
+											height={30}
+											stroke={1}
+											color="white"
+										/>
+										<span className="ms-2 text-white">Hey! @usuario</span>
 									</a>
-									<hr
-										className="hr m-auto mt-2 mb-2"
-										style={{ width: "87%" }}></hr>
-									<a className="dropdown-item" href="#">
-										<div className="d-flex gap-2 align-items-center">
-											<IconLogout stroke={1} />
-											Salir
-										</div>
-									</a>
-								</div>
-							</li>
-						</ul>)}
+
+									<div
+										className="dropdown-menu dropdown-menu-end rounded-3 shadow-sm border-0 rounded-4 mb-3"
+										aria-labelledby="dropdownId">
+										<a className="dropdown-item" href="#">
+											<div className="d-flex gap-2 align-items-center mt-1">
+												<IconSettings2 stroke={1} />
+												Configuración
+											</div>
+										</a>
+										<a className="dropdown-item" href="#">
+											<div className="d-flex gap-2 align-items-center mt-1">
+												<IconMail stroke={1} />
+												Mensajes privados
+											</div>
+										</a>
+										<a className="dropdown-item" href="#">
+											<div className="d-flex gap-2 align-items-center mt-1">
+												<IconBookmark stroke={1} />
+												Guardados
+											</div>
+										</a>
+										<a className="dropdown-item">
+											<div className="d-flex gap-2 align-items-center">
+												<IconSun stroke={1} />
+												Modo oscuro
+												<div
+													className="form-check form-switch"
+													style={{ marginTop: "3px" }}>
+													<input
+														className="form-check-input"
+														type="checkbox"
+														role="switch"
+														id="flexSwitchCheckDefault"
+													/>
+												</div>
+											</div>
+										</a>
+										<hr
+											className="hr m-auto mt-2 mb-2"
+											style={{ width: "87%" }}></hr>
+										<a className="dropdown-item" href="#">
+											<div className="d-flex gap-2 align-items-center">
+												<IconLogout stroke={1} />
+												Salir
+											</div>
+										</a>
+									</div>
+								</li>
+							</ul>)}
 
 					</div>
 				</div>
