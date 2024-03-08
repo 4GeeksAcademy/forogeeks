@@ -1,34 +1,26 @@
 import React from "react";
-import { IconUserCircle, IconUpload, IconPencil } from "@tabler/icons-react";
+import { IconLock, IconMail } from "@tabler/icons-react";
 
 const ProfileCardPc = ({ handleShowEmail, handleShowPassword }) => {
   return (
-    <div className="col-md-4 mb-3 mb-md-0 d-flex justify-content-center align-items-center">
+    <div className="col-md-4 mb-3 mb-md-0 d-flex justify-content-start align-items-start">
       {/* Contenedor del perfil en versión de escritorio */}
-      <div className="shadow rounded-4 mb-4 p-3 text-center w-100 profile-container">
+      <div className="shadow rounded-4 mb-4 p-3 w-100 profile-container-card">
         {/* Icono de usuario y opción para subir foto */}
-        <div className="d-flex align-items-center justify-content-center mt-3">
-          <IconUserCircle size={80} strokeWidth={1} />
-          <IconUpload size={25} strokeWidth={2} />
-        </div>
-        {/* Nombre de usuario editable */}
-        <div className="d-flex align-items-center justify-content-center mt-2">
-          <p className="mb-0 ml-2 mx-2 fw-bold">username</p>
-          <IconPencil size={20} strokeWidth={1} />
-        </div>
-        {/* Descripción editable */}
-        <div className="d-flex align-items-center justify-content-center mb-3">
-          <p className="mb-0 ml-2 mx-2 fw-bold">Me gusta react y JS.</p>
-          <IconPencil size={20} strokeWidth={1} />
+        {/* Título editar */}
+        <div className="d-flex mt-2">
+          <h1 className="display-4">Editar</h1>
         </div>
         <hr className="separator" />
         {/* Sección para cambiar email y contraseña */}
-        <div>
+        <div className="user-option d-flex">
+          <IconMail size={20} className="mt-1 mx-1"></IconMail>
           <p className="mb-0 ml-2 mb-2" onClick={handleShowEmail}>
             Cambiar email
           </p>
         </div>
-        <div>
+        <div className="user-option d-flex">
+          <IconLock size={20} className="mt-1 mx-1"></IconLock>
           <p className="mb-0 ml-2 mb-2" onClick={handleShowPassword}>
             Cambiar contraseña
           </p>

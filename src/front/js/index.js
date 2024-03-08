@@ -9,6 +9,7 @@ import Layout from "./layout";
 import "../css/styles.css";
 import "../css/bootstrap.css";
 import "../css/navbar-toggler-icon.css";
+import "../css/modal-login.css";
 
 //JS
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
