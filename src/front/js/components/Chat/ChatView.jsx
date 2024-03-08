@@ -1,11 +1,14 @@
 import React from "react";
 import { IconFilePlus, IconCode, IconLetterA, IconLink, IconSend } from "@tabler/icons-react";
+import ChatReceivedMessage from "./ChatReceivedMessage.jsx";
+import ChatSendedMessage from "./ChatSendedMessage.jsx";
+import ChatTextBarIcons from "./ChatTextBarIcons.jsx";
+import ChatTextBar from "./ChatTextBar.jsx";
 
-const ChatView = ({ showEmail, showPassword }) => {
-  const getCurrentDateTime = () => {
-    const currentDateTime = new Date();
-    return currentDateTime.toLocaleString();
-  };
+const receivedMessage = [{ author: "@manuel22", date: "12:53:16 PM", content: "Hola, ¿cómo estás? ¿Puedo ayudarte con algo?" }];
+const sendedMessage = [{ author: "@javier_lol", date: "4:31:16 AM", content: "Hola, necesito ayuda con mi cuenta" }];
+
+const ChatView = () => {
 
   return (
     <div className="col-md-8">
@@ -14,51 +17,62 @@ const ChatView = ({ showEmail, showPassword }) => {
         <div className="chat-title p-4">
           <h2>Necesito ayuda</h2>
         </div>
-        <div className="chat-message-sended">
-          <div className="d-flex justify-content-end">
-            <div className="message-sended p-3 rounded-4">
-            <div className="d-flex justify-content-between">
-                <h5 className="chat-username-text">@javier_lol</h5>
-                <p className="chat-small-date">{getCurrentDateTime()}</p>
-              </div>
-              <p>
-                Hola, necesito ayuda con el registro de mi cuenta. No puedo
-                ingresar.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="chat-message-received">
-          <div className="d-flex justify-content-start">
-            <div className="message-received p-3 rounded-4">
-              <div className="d-flex justify-content-between">
-                <h5 className="chat-username-text">@manuel22</h5>
-                <p className="chat-small-date">{getCurrentDateTime()}</p>
-              </div>
 
-              <p>
-                Hola, ¿cómo estás? ¿Puedo ayudarte con algo?
-              </p>
-            </div>
-          </div>
+        <div className="chat-container-card overflow-auto"> {/* Agregar clase overflow-auto */}
+          {sendedMessage.map((message, index) => {
+            return (
+              <ChatSendedMessage
+                key={index}
+                author={message.author}
+                date={message.date}
+                content={message.content}
+              />
+            );
+          })}
+          {receivedMessage.map((message, index) => {
+            return (
+              <ChatReceivedMessage
+                key={index}
+                author={message.author}
+                date={message.date}
+                content={message.content}
+              />
+            );
+          })}
+          {sendedMessage.map((message, index) => {
+            return (
+              <ChatSendedMessage
+                key={index}
+                author={message.author}
+                date={message.date}
+                content={message.content}
+              />
+            );
+          })}
+          {sendedMessage.map((message, index) => {
+            return (
+              <ChatSendedMessage
+                key={index}
+                author={message.author}
+                date={message.date}
+                content={message.content}
+              />
+            );
+          })}
+          {receivedMessage.map((message, index) => {
+            return (
+              <ChatReceivedMessage
+                key={index}
+                author={message.author}
+                date={message.date}
+                content={message.content}
+              />
+            );
+          })}
         </div>
-        <div className="chat-textbar-icons mb-2 d-flex justify-content-between">
-          <div className="d-flex">
-            <IconFilePlus className="chat-icon" />
-            <IconCode className="chat-icon ms-2" />
-            <IconLetterA className="chat-icon ms-2" />
-            <IconLink className="chat-icon ms-2" />
-          </div>
-        </div>
-        <div className="d-flex justify-content-end mt-auto">
-          <IconSend className="chat-icon-send ms-2" />
-        </div>
-        <div className="chat-textbar-container">
-          <textarea
-            className="chat-textbar form-control"
-            rows="3"
-          ></textarea>
-        </div>
+
+        <ChatTextBarIcons />
+        <ChatTextBar />
       </div>
     </div>
   );
