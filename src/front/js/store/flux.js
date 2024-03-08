@@ -30,6 +30,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
+			postComentThread: (data) => {
+				const store = getStore();
+				const actions = getActions();
+				const token = localStorage.getItem("token");
+				const myHeaders = new Headers();
+				myHeaders.append;
+
+				fetch("https://localhost:5000/api/post-thread-coment", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(data),
+				})
+					.then((response) => response.json())
+					.then((data) => {
+						console.log(data);
+					})
+					.catch((error) => {
+						console.error("Error:", error);
+					});
+			},
 		},
 	};
 };

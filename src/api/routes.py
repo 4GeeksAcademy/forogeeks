@@ -20,3 +20,9 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+@api.route('/post-thread-coment', methods=['POST'])
+def handle_postThreadComent():
+    request_body = request.get_json()
+    print(request_body)
+    return jsonify(request_body), 200

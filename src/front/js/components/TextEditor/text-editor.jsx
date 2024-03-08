@@ -2,8 +2,6 @@ import React from "react";
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
 
-// import "../../../scss/text-editor.scss";
-
 export const TextEditor = () => {
 	const modules = {
 		toolbar: [
@@ -44,9 +42,9 @@ export const TextEditor = () => {
 	};
 
 	return (
-		<div>
-			<h1 style={{ textAlign: "center" }}></h1>
-			<div style={{ display: "grid", justifyContent: "center" }}>
+		<div className="col-md-12">
+			<div className="border border-1 rounded-3 p-1 mb-3">
+
 				<ReactQuill
 					theme="snow"
 					modules={modules}
@@ -54,9 +52,10 @@ export const TextEditor = () => {
 					placeholder="Escribe aquí..."
 					onChange={handleProcedureContentChange}
 					style={{
-						height: "220px",
 					}}></ReactQuill>
 			</div>
+
 		</div>
+
 	);
 };

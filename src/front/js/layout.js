@@ -10,6 +10,8 @@ import injectContext from "./store/appContext";
 import { Chat } from "./pages/chat.jsx";
 import Background from "./components/Background/background.jsx";
 import { InsideThread } from "./pages/inside-thread.jsx";
+import { Add } from "./components/Thread/TextEditor/Add.jsx";
+import { Edit } from "./components/Thread/TextEditor/Edit.jsx";
 
 // IMPORT COMPONENTS
 import { Navbar } from "./components/navbar.jsx";
@@ -41,6 +43,8 @@ const Layout = () => {
 						element={<InsideThread />}
 						path="/threads/:category/:id"
 					/>
+					<Route path="/Add" component={Add} />
+					<Route path="/Edit/:postID" component={Edit} />
 				</Routes>
 				<Footer />
 			</div>

@@ -1,7 +1,6 @@
 import React, { useContext, createElement } from "react";
 import { Context } from "../store/appContext";
 
-import { Button } from "../components/Button/button.jsx";
 import AsideTrending from "../components/trending.jsx";
 import AsideFourGeeks from "../components/4geeks.jsx";
 import { TextEditor } from "../components/TextEditor/text-editor.jsx";
