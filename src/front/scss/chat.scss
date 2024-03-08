@@ -1,41 +1,48 @@
 /* Estilos para la versión de escritorio */
 @media (min-width: 768px) {
   .chat-container {
-    height: 800px;
+    height: 800px; /* Ajusta según sea necesario */
     display: flex;
     flex-direction: column;
     width: 100%;
   }
 
-  .chat-textbar-icons {
-    margin-top: 600px;
-    margin-left: 20px;
+  .chat-textbar-container,
+  .chat-icons {
     position: absolute;
+    bottom: 40px; /* Ajusta según sea necesario */
     left: 0;
+    width: 97.5%;
+    z-index: 1; /* Añadido para superponer sobre los mensajes */
   }
 
-  .chat-textbar-container {
-    position: absolute; 
-    bottom: 40px;
-    left: 0; 
-    width: 97.5%;
+  .chat-icons {
+    margin-bottom: 110px;
+    margin-left: 7px;
   }
 
   .chat-textbar {
     width: calc(100% - 20px);
     margin: 10px;
     border-radius: 10px;
-    text-align: left;;
+    text-align: left;
   }
 
   .chat-container-card {
-    height: 800px;
+    height: calc(100% - 200px); /* Ajusta según sea necesario */
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: start; /* Cambiado de start a flex-end */
     align-items: left;
     width: 100%;
     overflow-y: auto;
+    padding-bottom: 50px; /* Añadido para dejar espacio para las barras de texto */
+    overflow-y: scroll;
+  }
+
+  .chat-container-card::-webkit-scrollbar {
+    width: 0px; /* Ancho de la barra de desplazamiento */
+    background: transparent; /* Color de fondo de la barra de desplazamiento */
   }
 
   .chat {
@@ -70,26 +77,13 @@
     font-weight: bold;
   }
 
-  .chat-small-date{
+  .chat-small-date {
     font-size: 12px;
   }
 
-  .chat-icon-send{
-    margin-bottom: 140px;
-  }
-
-  .chat-icon-send:hover{
+  .chat-icon:hover {
     color: rgb(9, 0, 173);
     cursor: pointer;
-  }
-
-  .chat-icon:hover{
-    color: rgb(9, 0, 173);
-    cursor: pointer;
-  }
-
-  .chat-username-text{
-    font-weight: bold;
   }
 }
 
