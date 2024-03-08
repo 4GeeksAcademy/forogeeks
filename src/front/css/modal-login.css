@@ -71,7 +71,7 @@ button:hover .arrow:before {
   max-width: 200px;
 }
 
-.input {
+.inputSignUpandRegister {
   width: 110rem;
   height: 45px;
   line-height: 30px;
@@ -85,11 +85,11 @@ button:hover .arrow:before {
   transition: 0.5s ease;
 }
 
-.input::placeholder {
+.inputSignUp::placeholder {
   color: #94a3b8;
 }
 
-.input:focus,
+.inputSignUp:focus,
 input:hover {
   outline: none;
   border-color: rgb(129, 140, 248);
