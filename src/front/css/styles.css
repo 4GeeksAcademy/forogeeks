@@ -5,6 +5,10 @@
 
 @media (max-width: 768px) {
   .main-container {
+<<<<<<< HEAD
     width: 90vw;
+=======
+    width: 100vw;
+>>>>>>> da88c8b (Commit)
   }
 }
