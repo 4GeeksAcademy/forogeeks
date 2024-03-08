@@ -10,7 +10,7 @@ const ChatSendedMessage = ({ author, date, content }) => {
                         <span className="text-muted small">{date}</span>
                         <span className="text-muted small mx-4">{author}</span>
                     </div>
-                    <p className="message-sended w-75">
+                    <p className="message-sended">
                         {content}
                     </p>
                 </div>

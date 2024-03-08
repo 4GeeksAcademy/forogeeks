@@ -11,7 +11,7 @@ const ChatReceivedMessage = ({ author, date, content }) => {
                         <span className="text-muted small ms-4">{date}</span>
                     </div>
 
-                    <p className="message-received w-75">
+                    <p className="message-received">
                         {content}
                     </p>
                 </div>

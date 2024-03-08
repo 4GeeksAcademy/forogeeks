@@ -74,22 +74,24 @@
     background-color: #9be3fd;
     padding: 10px;
     margin: 10px;
-    border-radius: 10px;
-    width: 50%;
-    text-align: left;
     margin-left: auto;
+    border-radius: 10px;
+    text-align: start;
     font-weight: bold;
+    display: inline-block;
+    word-wrap: break-word;
   }
 
   .message-received {
     background-color: #f9e9fc;
     padding: 10px;
     margin: 10px;
+    margin-left: auto;
     border-radius: 10px;
-    width: 50%;
-    text-align: left;
-    margin-right: auto;
+    text-align: start;
     font-weight: bold;
+    display: inline-block;
+    word-wrap: break-word;
   }
 
   .chat-small-date {
@@ -150,8 +152,7 @@
   height: calc(100% - 10px); /* Ajusta según sea necesario */
   display: flex;
   flex-direction: column;
-  justify-content: start; /* Cambiado de start a flex-end */
-  align-items: left;
+  align-items: flex-start; /* Alinea los elementos hacia la derecha */
   width: 100%;
   overflow-y: auto;
   padding-bottom: 50px; /* Añadido para dejar espacio para las barras de texto */
@@ -163,22 +164,24 @@
   background-color: #9be3fd;
   padding: 10px;
   margin: 10px;
-  border-radius: 10px;
-  width: 100%;
-  text-align: left;
   margin-left: auto;
+  border-radius: 10px;
+  text-align: start;
   font-weight: bold;
+  display: inline-block;
+  word-wrap: break-word;
 }
 
 .message-received-mobile {
   background-color: #f9e9fc;
   padding: 10px;
   margin: 10px;
+  margin-left: auto;
   border-radius: 10px;
-  width: 100%;
-  text-align: left;
-  margin-right: auto;
+  text-align: start;
   font-weight: bold;
+  display: inline-block;
+  word-wrap: break-word;
 }
 
 .chat-textbar-container-mobile {
