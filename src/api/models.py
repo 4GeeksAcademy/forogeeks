@@ -13,6 +13,7 @@ class Category(db.Model):
     __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), unique=False, nullable=False)
+    icon = db.Column(db.String(120), unique=False, nullable=True)
 
     def __repr__(self):
         return f'<Category {self.title}>'
@@ -21,6 +22,7 @@ class Category(db.Model):
         return {
             "id": self.id,
             "title": self.title,
+            "icon": self.icon,
             # do not serialize the password, its a security breach
         }
 # 1. User
@@ -50,8 +52,6 @@ class User(db.Model):
             # do not serialize the password, its a security breach
         }
     
-
-    
 # 3. Threads
 class Threads(db.Model):
     __tablename__ = 'threads'
@@ -60,6 +60,7 @@ class Threads(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     title = db.Column(db.String(120), unique=False, nullable=False)
     content = db.Column(db.String(120), unique=False, nullable=False)
+    thread_comments = db.relationship('ThreadComments', backref='thread', lazy=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -128,10 +129,6 @@ class FavoriteThreads(db.Model):
             "thread_id": self.thread_id,
             # do not serialize the password, its a security breach
         }
-    
-
-    
-
 
 
 # 7. Message
@@ -156,7 +153,26 @@ class PrivateMessages(db.Model):
             # do not serialize the password, its a security breach
         }   
 
+class ReportThread(db.Model):
+    __tablename__ = 'report_thread'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    thread_id = db.Column(db.Integer, db.ForeignKey('threads.id'))
+    reason = db.Column(db.String(120), unique=False, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
 
+    def __repr__(self):
+        return f'<ReportThread {self.reason}>'
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "thread_id": self.thread_id,
+            "reason": self.reason,
+            "date": self.date,
+            # do not serialize the password, its a security breach
+        }
     
 
 
