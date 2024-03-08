@@ -4,7 +4,7 @@ import { ModalLogin } from "./Modal/modalLogin.jsx";
 import { ModalRegister } from "./Modal/modalRegister.jsx";
 
 // ICONS
-import { IconBrandCodesandbox } from "@tabler/icons-react";
+
 import { IconUserCircle } from "@tabler/icons-react";
 import { IconSun } from "@tabler/icons-react";
 import { IconMail } from "@tabler/icons-react";
@@ -17,7 +17,7 @@ import { IconCircleDotted } from "@tabler/icons-react";
 import { IconMessageCircle2Filled } from "@tabler/icons-react";
 import Icon from "./icons/icon.jsx";
 
-export const Navbar = ({ estadoButton }) => {
+export const Navbar = () => {
 	//Login
 	const [showLogin, setShowLogin] = useState(false); const handleCloseLogin = () => setShowLogin(false); const handleShowLogin = () => setShowLogin(true);
 
@@ -26,7 +26,6 @@ export const Navbar = ({ estadoButton }) => {
 
 	// Temporal para el modal
 	const isUserLogged = false;
-
 
 	//Raul
 	let [isMovileSize, setIsMobileSize] = useState(false);

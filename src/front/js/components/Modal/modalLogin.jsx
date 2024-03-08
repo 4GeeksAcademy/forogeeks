@@ -76,7 +76,7 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="modalFooter" bg-light>
-                    <button   type="submit" className="Signup m-auto" > <span className="m-auto">Sign up</span>  <div className="arrow-wrapper"> <div className="arrow"></div>   </div> </button>
+                    <button   type="submit" className="ButtonModal m-auto" > <span className="m-auto">Sign up</span>  <div className="arrow-wrapper"> <div className="arrow"></div>   </div> </button>
                 </Modal.Footer>
             </Modal>
             {/* Modal   */}
