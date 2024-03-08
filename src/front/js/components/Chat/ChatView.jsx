@@ -10,7 +10,7 @@ const ChatView = () => {
   const [socket, setSocket] = useState(null); // Estado para almacenar el socket
 
   useEffect(() => {
-    const newSocket = io(`wss://127.0.0.1:3001`); // Crear un nuevo socket
+    const newSocket = io("http://localhost:3001"); 
     newSocket.on('message', (message) => {
       // Manejar los mensajes recibidos
       console.log('Received message:', message);
@@ -22,7 +22,7 @@ const ChatView = () => {
     };
   }, []);
 
-  const author = "Me "+new Date().toLocaleTimeString();
+  const author = "Me " + new Date().toLocaleTimeString();
   // Función para enviar un mensaje
   const sendMessage = (messageContent) => {
     if (messageContent.trim() !== "") {
@@ -55,7 +55,6 @@ const ChatView = () => {
         });
     }
   };
-
 
 
   return (

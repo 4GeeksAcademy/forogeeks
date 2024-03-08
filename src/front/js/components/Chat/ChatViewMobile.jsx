@@ -3,8 +3,9 @@ import ChatSendedMessageMobile from "./ChatSendedMessageMobile.jsx";
 import ChatTextBarMobile from "./ChatTextBarMobile.jsx";
 
 const ChatViewMobile = () => {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([]); // Estado para almacenar los mensajes
 
+    // Función para enviar un mensaje
     const handleSendMessage = (messageContent) => {
         const newMessage = {
             author: "Me",
@@ -13,6 +14,7 @@ const ChatViewMobile = () => {
             sent: true
         };
 
+        // Agregar el nuevo mensaje al estado de los mensajes
         setMessages([...messages, newMessage]);
 
         // Aquí puedes agregar la lógica para enviar el mensaje al backend si es necesario
@@ -23,6 +25,7 @@ const ChatViewMobile = () => {
             <h1 className="p-3">Hola</h1>
             <div className="chat-container-messages-mobile overflow-auto">
                 <div className="chat-container-card-mobile overflow-auto">
+                    {/* Renderizar los mensajes enviados */}
                     {messages.map((message, index) => {
                         if (message.sent) {
                             return (
@@ -36,6 +39,7 @@ const ChatViewMobile = () => {
                         }
                     })}
                 </div>
+                {/* Componente para la barra de texto móvil */}
                 <ChatTextBarMobile onSendMessage={handleSendMessage} />
             </div>
         </div>

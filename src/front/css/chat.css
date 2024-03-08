@@ -174,10 +174,6 @@
 .chat-textbar-container-mobile {
   position: relative;
   display: flex;
-<<<<<<< HEAD
-=======
-  top: 50px;
->>>>>>> edcac5be14b9f17d9c079b4fc6216ad6605d1880
   align-items: center; /* Alinea verticalmente los elementos */
   margin: 0 auto; /* Centra horizontalmente */
   width: 95%; /* Utiliza el 90% del ancho del contenedor */
