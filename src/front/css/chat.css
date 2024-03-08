@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    position: relative;
   }
   .chat-textbar-container,
   .chat-icons {
@@ -100,6 +101,7 @@
 }
 /* Estilos para la versión móvil */
 .chat-mobile-container {
+  position: relative;
   height: 800px;
   font-size: 20px;
 }
@@ -129,4 +131,58 @@
 .chat-container-card-mobile::-webkit-scrollbar {
   width: 0px; /* Ancho de la barra de desplazamiento */
   background: transparent; /* Color de fondo de la barra de desplazamiento */
+}
+
+.chat-container-messages-mobile {
+  height: calc(100% - 50px); /* Ajusta según sea necesario */
+  display: flex;
+  flex-direction: column;
+  justify-content: start; /* Cambiado de start a flex-end */
+  align-items: left;
+  width: 100%;
+  overflow-y: auto;
+  padding-bottom: 50px; /* Añadido para dejar espacio para las barras de texto */
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.message-sended-mobile {
+  background-color: #9be3fd;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  width: 100%;
+  text-align: left;
+  margin-left: auto;
+  font-weight: bold;
+}
+
+.message-received-mobile {
+  background-color: #f9e9fc;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  width: 100%;
+  text-align: left;
+  margin-right: auto;
+  font-weight: bold;
+}
+
+.chat-textbar-container-mobile {
+  position: relative;
+  display: flex;
+  align-items: center; /* Alinea verticalmente los elementos */
+  margin: 0 auto; /* Centra horizontalmente */
+  width: 95%; /* Utiliza el 90% del ancho del contenedor */
+  z-index: 1;
+}
+
+.chat-textbar-mobile {
+  flex: 1; /* Utiliza todo el espacio disponible */
+  border-radius: 10px;
+  text-align: left;
+}
+
+.chat-icon-mobile {
+  margin-right: 10px;
 }
