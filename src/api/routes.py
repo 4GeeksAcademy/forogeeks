@@ -2,12 +2,16 @@ from flask import Flask, jsonify, Blueprint
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from werkzeug.security import check_password_hash
+
+from .models import db, User, Category, Threads, FavoriteThreads, ThreadLikes, ThreadComments
 # Crear un blueprint llamado 'api'
 api = Blueprint('api', __name__)
-CORS(api)
+
 # Inicializar la aplicación Flask
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
+CORS(app, resources={r"/api/*": {"origins": ["https://ominous-guide-665q7xv5pjhr94g-3000.app.github.dev"]}})
 
 # Inicializar el servidor SocketIO
 socketio = SocketIO(app, cors_allowed_origins="*")
