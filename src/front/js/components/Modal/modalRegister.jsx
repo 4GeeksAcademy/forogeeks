@@ -12,24 +12,17 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
     const navigate = useNavigate(); // Obtener la función navigate para redirigir
 
     // Función para manejar el envío del formulario de registro
-    const handleSignup = () => {
-        // Llamar a la acción signup con los datos del formulario
-        const signupPromise = actions.signup(username, email, password);
-        
-        if (signupPromise && typeof signupPromise.then === 'function') {
-            // Si signupPromise es una promesa, procedemos con el manejo de then/catch
-            signupPromise
-                .then(() => {
-                    // Redirigir a la página de perfil después de registrar exitosamente
-                    navigate('/profile');
-                })
-                .catch(error => {
-                    // Manejar cualquier error de registro aquí
-                    console.error('Error registering:', error);
-                });
-        } else {
-            // Si signupPromise no es una promesa, mostrar un error en la consola
-            console.error('Error: signup action did not return a promise');
+    const handleSignup = async () => {
+        try {
+            // Llamar a la acción signup con los datos del formulario
+            await actions.signup(username, email, password);
+            // Redirigir a la página de perfil después de registrar exitosamente
+            navigate('/profile');
+            // Cerrar el modal después de la redirección
+            handleCloseRegister();
+        } catch (error) {
+            // Manejar cualquier error de registro aquí
+            console.error('Error registering:', error);
         }
     };
 
