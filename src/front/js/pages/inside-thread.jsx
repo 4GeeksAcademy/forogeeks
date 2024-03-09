@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Context } from "../store/appContext";
 
 import { ThreadMessage } from "../components/Thread/threadMessage.jsx";
 import { ThreadParentMessage } from "../components/Thread/threadParentMessage.jsx";
@@ -9,13 +11,18 @@ import { TextEditor } from "../components/TextEditor/text-editor.jsx";
 import { IconSquareRoundedPlus } from '@tabler/icons-react';
 
 export const InsideThread = () => {
+    const { store, actions } = useContext(Context);
     const contentTest = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
     const contentTest2 = "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour"
 
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("comentario enviado");
+        console.log("comentario enviado", store.textEditorStore);
     }
+
+
 
     return (
         <div className="container mt-3">
@@ -41,6 +48,7 @@ export const InsideThread = () => {
                         <div className="col-md-12">
                             <form onSubmit={handleSubmit} id="comentar">
                                 <TextEditor />
+                                <button type="submit" className="btn btn-primary">Comment</button>
                             </form>
                         </div>
 
