@@ -1,6 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
+            backendUrl: "https://automatic-bassoon-v469wrv5xxvf6w7q-3001.app.github.dev",
             categories: [
                 {
                     name: "General",
@@ -28,7 +29,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 },
             ],
             logError: null,
-            token: localStorage.getItem("token"),
+            token: "",
             modalRegistersuccess: false,
         },
         actions: {
@@ -131,7 +132,29 @@ login: async (email, password) => {
 
 			// Función para cerrar sesión
 			logout: () => setStore({ token: null })
-        }
+        },
+        getUserInfo: async () => {
+            try {
+                const response = await fetch(process.env.BACKEND_URL + "/api/login", {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}` // Reemplazar 'token' con el token JWT del usuario
+                    }
+                });
+    
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserInfo(data); // Almacenar la información del usuario en el estado
+                    console.log(data)
+                    setIsUserLogged(true)
+                } else {
+                    throw new Error("Failed to fetch user info");
+                }
+            } catch (error) {
+                console.error("Error fetching user info:", error);
+                console.log(token)
+            }
+        },
     };
 };
 

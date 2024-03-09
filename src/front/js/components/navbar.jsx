@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ModalLogin } from "./Modal/modalLogin.jsx";
 import { ModalRegister } from "./Modal/modalRegister.jsx";
+import { useContext } from "react";
+import { Context } from "../store/appContext";
 
 // ICONS
 import { IconBrandCodesandbox } from "@tabler/icons-react";
@@ -18,11 +20,16 @@ import { IconMessageCircle2Filled } from "@tabler/icons-react";
 import Icon from "./icons/icon.jsx";
 
 export const Navbar = () => {
+    const { store, actions } = useContext(Context);
+	const token = localStorage.getItem("token");
+	const backendUrl = store.backendUrl
+
 	//Login
 	const [showLogin, setShowLogin] = useState(false); const handleCloseLogin = () => setShowLogin(false); const handleShowLogin = () => setShowLogin(true);
 
 	//Register
 	const [showRegister, setShowRegister] = useState(false); const handleCloseRegister = () => setShowRegister(false); const handleShowRegister = () => setShowRegister(true);
+
 	// Temporal para el modal
 	//const isUserLogged = true;
 
@@ -35,23 +42,26 @@ export const Navbar = () => {
 	// Función para obtener la información del usuario
 	const getUserInfo = async () => {
 		try {
-		  const response = await fetch("/userinfo", {
-			method: "GET",
-			headers: {
-			  Authorization: `Bearer ${token}` // Reemplazar 'token' con el token JWT del usuario
+			const response = await fetch(`${backendUrl}/api/userinfo`, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}` // Reemplazar 'token' con el token JWT del usuario
+				}
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				setUserInfo(data); // Almacenar la información del usuario en el estado
+				console.log(data)
+				setIsUserLogged(true)
+			} else {
+				throw new Error("Failed to fetch user info");
 			}
-		  });
-	
-		  if (response.ok) {
-			const data = await response.json();
-			setUserInfo(data); // Almacenar la información del usuario en el estado
-		  } else {
-			throw new Error("Failed to fetch user info");
-		  }
 		} catch (error) {
-		  console.error("Error fetching user info:", error);
+			console.error("Error fetching user info:", error);
+			console.log(token)
 		}
-	  };
+	};
 
 	//Raul
 	let [isMovileSize, setIsMobileSize] = useState(false);
@@ -120,7 +130,7 @@ export const Navbar = () => {
 
 						{/* NButton Modal */}
 
-						{!userInfo  && (
+						{!isUserLogged && (
 							<>
 								{isMovileSize && (
 									<div className="d-flex justify-content-center m-3 mt-3">
@@ -146,7 +156,7 @@ export const Navbar = () => {
 
 
 						{/* BLOQUE NOTIFICACIONES Y USER CONFIG */}
-						{userInfo  && (
+						{isUserLogged && (
 							<ul className="navbar-nav ">
 								{/* NOTIFICACIONES */}
 								<li className="nav-item dropdown text-white ">
@@ -211,7 +221,7 @@ export const Navbar = () => {
 											stroke={1}
 											color="white"
 										/>
-										<span className="ms-2 text-white">{userInfo.message}</span>
+										<span className="ms-2 text-white">Hey! {userInfo.email}</span>
 									</a>
 
 									<div

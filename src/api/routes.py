@@ -104,18 +104,34 @@ def login():
     # Devolver el token de acceso y el ID del usuario como JSON
     return jsonify({ "token": access_token, "user_id": user.id })
 
-# Endpoint para manejar la solicitud GET en '/userinfo'
+
 @api.route('/userinfo', methods=['GET'])
-# Proteger el endpoint con JWT (el usuario debe estar autenticado para acceder)
 @jwt_required()
 def userinfo():
-    # Obtener el ID del usuario autenticado del token JWT
-    userId = get_jwt_identity()
-    # Buscar al usuario en la base de datos por su ID
-    user = User.query.filter(User.id == userId).first()
-    # Crear el cuerpo de la respuesta con un mensaje de saludo que incluye el correo electrónico del usuario
-    response_body = {
-        "message": f"Hello {user.email}"
-    }
-    # Devolver el mensaje de saludo como JSON con un código de estado 200 (OK)
-    return jsonify(response_body), 200
+    try:
+        # Obtener el ID del usuario autenticado del token JWT
+        userId = get_jwt_identity()
+        # Buscar al usuario en la base de datos por su ID
+        user = User.query.filter(User.email == userId).first()
+        print(user)
+        if user:
+            # Crear el cuerpo de la respuesta con un mensaje de saludo que incluye el correo electrónico del usuario
+            response_body = user.serialize()
+            # Puedes sacar esto con serialize ej: <p>{user.description}</p>
+            # "user_name": self.user_name,
+            # "email": self.email,
+            # "profile_picture": self.profile_picture,
+            # "description": self.description,
+            # "admin": self.admin
+
+            # Devolver el mensaje de saludo como JSON con un código de estado 200 (OK)
+            return jsonify(response_body), 200
+        else:
+            # Manejar el caso en el que el usuario no existe
+            print("error else")
+            return jsonify({"error": "User not found"}), 404
+
+    except Exception as e:
+        # Manejar cualquier otro error que pueda ocurrir
+        return jsonify({"error": str(e)}), 500
+    
