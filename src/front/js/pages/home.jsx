@@ -1,10 +1,10 @@
-import React, { useContext, createElement } from "react";
+import React, { useContext, createElement, useEffect } from "react";
 import { Context } from "../store/appContext";
 
 import AsideTrending from "../components/trending.jsx";
 import AsideFourGeeks from "../components/4geeks.jsx";
 import { TextEditor } from "../components/TextEditor/text-editor.jsx";
-
+import SuccessModal from "../components/Modal/ModalRegisterSuccessFull.jsx";
 // IMPORT ICONS
 import Icon from "../components/icons/icon.jsx";
 
@@ -15,8 +15,28 @@ import { Link } from "react-router-dom";
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);
-
+	//Modal para cuando el registro es correcto
+	//const [showSuccessModal, setShowSuccessModal] = useState(false);
 	const categories = store.categories;
+	const showSuccessModal = store.modalRegistersuccess;
+
+     // useEffect para manejar el cierre del modal cuando modalRegistersuccess cambia
+	 useEffect(() => {
+        const handleCloseSuccessModal = () => {
+            actions.setModalRegistersuccess(true);
+        };
+
+        // Si modalRegistersuccess cambia a true, mostrar el modal de éxito
+        if (showSuccessModal) {
+            handleCloseSuccessModal();
+        }
+    }, [showSuccessModal]); // Ejecutar el efecto cada vez que showSuccessModal cambie
+
+    // Función para cerrar el modal de éxito
+    const handleClose = () => {
+        actions.setModalRegistersuccess(false);
+    };
+
 
 	return (
 		<div className="container">
@@ -40,6 +60,7 @@ export const Home = () => {
 					<AsideFourGeeks />
 				</div>
 			</div>
+			<SuccessModal show={showSuccessModal} onClose={handleClose} />
 		</div>
 	);
 };

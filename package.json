@@ -74,6 +74,7 @@
 		"react-quill": "^2.0.0",
 		"react-router-dom": "^6.3.0",
 		"sass": "^1.71.1",
+		"socket.io-client": "^4.7.4",
 		"tailwind": "^4.0.0",
 		"ws": "^8.16.0"
 	}

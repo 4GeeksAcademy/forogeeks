@@ -5,6 +5,8 @@ html {
 .main-container {
   width: 65vw;
   margin: 0 auto;
+  width: 65vw;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
