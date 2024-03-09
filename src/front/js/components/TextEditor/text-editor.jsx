@@ -1,8 +1,17 @@
 import React from "react";
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
+import { useContext } from "react";
+import { Context } from "../../store/appContext";
+
+
 
 export const TextEditor = () => {
+	const { store, actions } = useContext(Context);
+
+	const textEditorStore = store.textEditorStore;
+
+
 	const modules = {
 		toolbar: [
 			[{ header: "1" }, { header: "2" }, { font: [] }],
@@ -36,9 +45,10 @@ export const TextEditor = () => {
 		"video",
 	];
 
-	const handleProcedureContentChange = (content, delta, source, editor) => {
-		console.log("content: ", content);
-		console.log(editor.getContents());
+	const handleProcedureContentChange = (newContent) => {
+		console.log("content: ", newContent);
+		// console.log(editor.getContents());
+		actions.setTextEditorStore(newContent);
 	};
 
 	return (
@@ -54,8 +64,6 @@ export const TextEditor = () => {
 					style={{
 					}}></ReactQuill>
 			</div>
-
 		</div>
-
 	);
 };
