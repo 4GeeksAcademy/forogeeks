@@ -2,22 +2,28 @@ import React, { useState, useContext } from "react";
 import { ModalRegister } from "./modalRegister.jsx";
 import { Context } from "../../store/appContext";
 import { IconBrandFacebook, IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
-
 import { Modal, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom"; // Importar useNavigate de React Router
 
 export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
-    const { actions } = useContext(Context); // Obtener el contexto y las acciones
+    const { actions } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    //ModalRegister
     const [showRegister, setShowRegister] = useState(false);
     const handleCloseRegister = () => setShowRegister(false);
     const handleShowRegister = () => setShowRegister(true);
+    const navigate = useNavigate(); // Obtener la función de navegación
 
-    // Función para manejar el inicio de sesión
     const handleLogin = (e) => {
-        e.preventDefault(); // Prevenir el envío por defecto del formulario
-        actions.login(email, password); // Llamar a la acción login con los datos del formulario
+        e.preventDefault();
+        actions.login(email, password)
+            .then(() => {
+                // Si el inicio de sesión es exitoso, navegar a la página de perfil
+                navigate("/profile");
+            })
+            .catch(error => {
+                console.log("Error during login:", error);
+            });
     };
 
     return (
@@ -30,7 +36,6 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
                             <h3>Sign Up</h3>
                         </div>
                         <div className="DivForm m-auto col-sm col-md">
-                            {/* Formulario de inicio de sesión */}
                             <form onSubmit={handleLogin} className="Form m-auto">
                                 <div className="group mt-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-mail" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">

@@ -2,9 +2,8 @@ from flask import Flask, jsonify, Blueprint
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from werkzeug.security import check_password_hash
 
-from .models import db, User, Category, Threads, FavoriteThreads, ThreadLikes, ThreadComments
+from .models import db, User
 # Crear un blueprint llamado 'api'
 api = Blueprint('api', __name__)
 
@@ -61,21 +60,27 @@ def register():
     return jsonify(response_body), 201
 
 
+# Endpoint para manejar la solicitud POST en '/login'
 @api.route('/login', methods=['POST'])
 def login():
     # Obtener los datos JSON de la solicitud
     data = request.get_json()
     # Buscar al usuario en la base de datos por su dirección de correo electrónico
-    user = User.query.filter_by(email=data["email"]).first()
-    # Verificar si el usuario no existe o la contraseña es incorrecta
-    if not user or not check_password_hash(user.password, data["password"]):
-        # Devolver un mensaje de error con un código de estado 401 (Unauthorized)
-        return jsonify({"message": "Invalid email or password"}), 401
-
+    user = User.query.filter(User.email == data["email"]).first()
+    # Verificar si el usuario no existe
+    if user is None:
+        # Devolver un mensaje de error con un código de estado 403 (Forbidden)
+        return jsonify({"message": "Invalid user"}), 403
+    
+    # Verificar la contraseña proporcionada
+    if user.password != data["password"]: 
+        # Devolver un mensaje de error con un código de estado 403 (Forbidden)
+        return jsonify({"message": "Invalid password"}), 403
+        
     # Crear un token de acceso para el usuario autenticado
-    access_token = create_access_token(identity=user.id)
-    # Devolver el token de acceso como JSON
-    return jsonify({ "token": access_token }), 200
+    access_token = create_access_token(identity=user.id, additional_claims={"email": user.email})
+    # Devolver el token de acceso y el ID del usuario como JSON
+    return jsonify({ "token": access_token, "user_id": user.id })
 
 # Endpoint para manejar la solicitud GET en '/userinfo'
 @api.route('/userinfo', methods=['GET'])
