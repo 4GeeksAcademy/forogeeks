@@ -14,16 +14,17 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
     const handleShowRegister = () => setShowRegister(true);
     const navigate = useNavigate(); // Obtener la función de navegación
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        actions.login(email, password)
-            .then(() => {
-                // Si el inicio de sesión es exitoso, navegar a la página de perfil
-                navigate("/profile");
-            })
-            .catch(error => {
-                console.log("Error during login:", error);
-            });
+        try {
+            const data = await actions.login(email, password);
+            // Si el inicio de sesión es exitoso, navegar a la página de perfil
+            navigate("/profile");
+            // Cerrar el modal después de la redirección
+            handleCloseLogin();
+        } catch (error) {
+            console.error("Error during login:", error);
+        }
     };
 
     return (

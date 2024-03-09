@@ -62,6 +62,8 @@ signup: (username, email, password) => {
     })
     .then(data => {
         // Si la operación es exitosa, procede con el inicio de sesión
+        localStorage.setItem("token", data.token);
+        setStore({ token: data.token, logError: null });
         getActions().login(username, email, password);
     })
     .catch(error => {
@@ -72,29 +74,26 @@ signup: (username, email, password) => {
 
 
 			// Función para iniciar sesión de usuario
-login: (email, password) => {
-    fetch(process.env.BACKEND_URL + "/api/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
-    })
-    .then(resp => {
-        if (!resp.ok) {
-            throw new Error("authentication-error");
-        }
-        return resp.json();
-    })
-    .then(data => {
-        // Si la operación de inicio de sesión es exitosa, almacenar el token en el estado
-        setStore({ token: data.token, logError: null });
-    })
-    .catch(error => {
-        // Si hay un error, manejarlo y establecer el estado adecuado
-        setStore({ token: null, logError: error.message });
-    });
-},
+            login: async (email, password) => {
+                try {
+                    const response = await fetch(process.env.BACKEND_URL + "/api/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+        
+                    if (!response.ok) {
+                        throw new Error("authentication-error");
+                    }
+        
+                    const data = await response.json();
+                    return data; // Devolver los datos de la respuesta, incluido el token
+                } catch (error) {
+                    throw new Error(error.message);
+                }
+            },
 
 			// Función para cerrar sesión
 			logout: () => setStore({ token: null })
