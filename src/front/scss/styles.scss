@@ -1,0 +1,11 @@
+// General
+.main-container {
+	width: 65vw;
+	margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+	.main-container {
+		width: 90vw;
+	}
+}

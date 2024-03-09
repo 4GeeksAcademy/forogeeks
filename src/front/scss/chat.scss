@@ -1,0 +1,211 @@
+/* Estilos para la versión de escritorio */
+@media (min-width: 768px) {
+  .chat-container {
+    height: 800px; /* Ajusta según sea necesario */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+  }
+
+  .chat-textbar-container,
+  .chat-icons {
+    position: absolute;
+    bottom: 10px; /* Ajusta según sea necesario */
+    left: 0;
+    width: 97.5%;
+    z-index: 1; /* Añadido para superponer sobre los mensajes */
+  }
+
+  .chat-icons {
+    margin-bottom: 110px;
+    margin-left: 7px;
+  }
+
+  .chat-textbar {
+    width: calc(100% - 20px);
+    margin: 10px;
+    border-radius: 10px;
+    text-align: left;
+  }
+
+  .chat-container-card {
+    height: 800px; /* Ajusta según sea necesario */
+    display: flex;
+    flex-direction: column;
+    justify-content: start; /* Cambiado de start a flex-end */
+    align-items: left;
+    width: 100%;
+    overflow-y: auto;
+    padding-bottom: 50px; /* Añadido para dejar espacio para las barras de texto */
+    overflow-y: scroll;
+  }
+
+  .chat-container-messages {
+    height: calc(100% - 200px); /* Ajusta según sea necesario */
+    display: flex;
+    flex-direction: column;
+    justify-content: start; /* Cambiado de start a flex-end */
+    align-items: left;
+    width: 100%;
+    overflow-y: auto;
+    padding-bottom: 50px; /* Añadido para dejar espacio para las barras de texto */
+    overflow-y: scroll;
+    scrollbar-width: none;
+  }
+
+  .chat-container-card::-webkit-scrollbar {
+    width: 0px; /* Ancho de la barra de desplazamiento */
+    background: transparent; /* Color de fondo de la barra de desplazamiento */
+  }
+
+  .chat {
+    margin-top: 20px;
+    background-color: #f9e9fc;
+  }
+
+  .chat-img {
+    max-width: 20%; /* Hace que la imagen sea responsive */
+    height: auto; /* Ajusta la altura automáticamente */
+    border-radius: 50%;
+  }
+
+  .message-sended {
+    background-color: #9be3fd;
+    padding: 10px;
+    margin: 10px;
+    margin-left: auto;
+    border-radius: 10px;
+    text-align: start;
+    font-weight: bold;
+    display: inline-block;
+    word-wrap: break-word;
+  }
+
+  .message-received {
+    background-color: #f9e9fc;
+    padding: 10px;
+    margin: 10px;
+    margin-left: auto;
+    border-radius: 10px;
+    text-align: start;
+    font-weight: bold;
+    display: inline-block;
+    word-wrap: break-word;
+  }
+
+  .chat-small-date {
+    font-size: 12px;
+  }
+
+  .chat-icon:hover {
+    color: rgb(9, 0, 173);
+    cursor: pointer;
+  }
+  .chat-card-pc {
+    height: 150px;
+    font-size: 20px;
+    background-color: #f9e9fc;
+  }
+
+  .chat-img-pc {
+    width: 30%;
+    border-radius: 50%;
+  }
+}
+
+/* Estilos para la versión móvil */
+.chat-mobile-container {
+  position: relative;
+  height: 800px;
+  font-size: 20px;
+}
+
+.chat-img-mobile {
+  width: 30%;
+  border-radius: 50%;
+}
+
+.chat-card-mobile {
+  background-color: #f9e9fc;
+  height: 80%;
+}
+
+.chat-container-card-mobile {
+  display: flex;
+  flex-direction: column;
+  justify-content: start; /* Cambiado de start a flex-end */
+  align-items: left;
+  width: 100%;
+  overflow-y: auto;
+  padding-bottom: 50px; /* Añadido para dejar espacio para las barras de texto */
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.chat-container-card-mobile::-webkit-scrollbar {
+  width: 0px; /* Ancho de la barra de desplazamiento */
+  background: transparent; /* Color de fondo de la barra de desplazamiento */
+}
+
+.chat-container-messages-mobile {
+  height: calc(100% - 10px); /* Ajusta según sea necesario */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinea los elementos hacia la derecha */
+  width: 100%;
+  overflow-y: auto;
+  padding-bottom: 50px; /* Añadido para dejar espacio para las barras de texto */
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.message-sended-mobile {
+  background-color: #9be3fd;
+  padding: 10px;
+  margin: 10px;
+  margin-left: auto;
+  border-radius: 10px;
+  text-align: start;
+  font-weight: bold;
+  display: inline-block;
+  word-wrap: break-word;
+}
+
+.message-received-mobile {
+  background-color: #f9e9fc;
+  padding: 10px;
+  margin: 10px;
+  margin-left: auto;
+  border-radius: 10px;
+  text-align: start;
+  font-weight: bold;
+  display: inline-block;
+  word-wrap: break-word;
+}
+
+.chat-textbar-container-mobile {
+  position: relative;
+  display: flex;
+  top: 50px;
+  align-items: center; /* Alinea verticalmente los elementos */
+  margin: 0 auto; /* Centra horizontalmente */
+  width: 95%; /* Utiliza el 90% del ancho del contenedor */
+  z-index: 1;
+}
+
+.chat-textbar-mobile {
+  flex: 1; /* Utiliza todo el espacio disponible */
+  border-radius: 10px;
+  text-align: left;
+}
+
+.chat-icon-mobile {
+  margin-right: 10px;
+}
+
+/* Estilos para los enlaces */
+.chat-container-card-mobile a {
+  text-decoration: none;
+  color: inherit;
+}

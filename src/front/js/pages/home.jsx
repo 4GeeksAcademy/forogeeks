@@ -20,7 +20,7 @@ export const Home = () => {
 	const categories = store.categories;
 
 	return (
-		<div className="container mt-3">
+		<div className="container">
 			<div className="row">
 				{/* <div className="mb-8">
 					<TextEditor />

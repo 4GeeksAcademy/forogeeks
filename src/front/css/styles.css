@@ -1,1 +1,6 @@
 
+@media (max-width: 768px) {
+  .main-container {
+    width: 90vw;
+  }
+}
