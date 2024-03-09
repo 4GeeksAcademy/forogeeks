@@ -26,6 +26,23 @@ def handle_hello():
 
 from flask import request
 
+@api.route("/token", methods=["POST"])
+def create_token():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+
+    # Query your database for username and password
+    user = User.query.filter_by(email=email, password=password).first()
+
+    # if user is None:
+    if user is None:
+        # The user was not found on the database
+        return jsonify({"msg": "Bad email or password"}), 401
+    
+    # Create a new token with the user id inside
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token)
+
 # Endpoint para manejar la solicitud POST en '/register'
 @api.route('/register', methods=['POST'])
 def register():
@@ -52,9 +69,14 @@ def register():
     # Confirmar los cambios en la base de datos
     db.session.commit()
 
+    # Crear un token de acceso para el nuevo usuario
+    access_token = create_access_token(identity=new_user.id)
+
     # Crear el cuerpo de la respuesta
     response_body = {
-        "message": "User Created"
+        "message": "User Created",
+        "token": access_token,
+        "user_id": new_user.id
     }
     # Devolver una respuesta con un código de estado 201 (Created)
     return jsonify(response_body), 201
@@ -78,7 +100,7 @@ def login():
         return jsonify({"message": "Invalid password"}), 403
         
     # Crear un token de acceso para el usuario autenticado
-    access_token = create_access_token(identity=user.id, additional_claims={"email": user.email})
+    access_token = create_access_token(identity=user.email)
     # Devolver el token de acceso y el ID del usuario como JSON
     return jsonify({ "token": access_token, "user_id": user.id })
 
