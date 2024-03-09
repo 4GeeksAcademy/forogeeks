@@ -1,12 +1,10 @@
 from flask import Flask, jsonify, Blueprint
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
-
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+# Crear un blueprint llamado 'api'
 api = Blueprint('api', __name__)
-
-# Allow CORS requests to this API
-CORS(api, resources={r"/*": {"origins": "http://localhost:3000"}})
-
+CORS(api)
 # Inicializar la aplicación Flask
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -23,13 +21,70 @@ def handle_hello():
     }
     return jsonify(response_body), 200
 
-# Función para manejar los mensajes WebSocket
-@socketio.on('message')
-def handle_message(message):
-    print('Received message:', message)
-    # Aquí deberías enviar el mensaje recibido a todos los clientes conectados, excepto al que lo envió
-    emit('message', message, broadcast=True, include_self=False)
+from flask import request
 
-if __name__ == '__main__':
-    # Ejecutar la aplicación Flask con SocketIO
-    socketio.run(app, port=3001, debug=True)
+# Endpoint para manejar la solicitud POST en '/register'
+@api.route('/register', methods=['POST'])
+def register():
+    # Obtener los datos JSON de la solicitud
+    data = request.get_json()
+    # Verificar si se proporcionaron todos los campos necesarios
+    if "email" not in data or "password" not in data or "username" not in data:
+        return jsonify({"message": "Missing required fields"}), 400
+
+    # Verificar si el usuario ya existe en la base de datos
+    existing_user = User.query.filter_by(email=data["email"]).first()
+    if existing_user:
+        return jsonify({"message": "User already exists"}), 409
+
+    # Crear un nuevo usuario con los datos proporcionados
+    new_user = User(
+        email=data["email"],
+        password=data["password"],
+        user_name=data["username"]
+    )
+
+    # Agregar el usuario a la base de datos
+    db.session.add(new_user)
+    # Confirmar los cambios en la base de datos
+    db.session.commit()
+
+    # Crear el cuerpo de la respuesta
+    response_body = {
+        "message": "User Created"
+    }
+    # Devolver una respuesta con un código de estado 201 (Created)
+    return jsonify(response_body), 201
+
+
+@api.route('/login', methods=['POST'])
+def login():
+    # Obtener los datos JSON de la solicitud
+    data = request.get_json()
+    # Buscar al usuario en la base de datos por su dirección de correo electrónico
+    user = User.query.filter_by(email=data["email"]).first()
+    # Verificar si el usuario no existe o la contraseña es incorrecta
+    if not user or not check_password_hash(user.password, data["password"]):
+        # Devolver un mensaje de error con un código de estado 401 (Unauthorized)
+        return jsonify({"message": "Invalid email or password"}), 401
+
+    # Crear un token de acceso para el usuario autenticado
+    access_token = create_access_token(identity=user.id)
+    # Devolver el token de acceso como JSON
+    return jsonify({ "token": access_token }), 200
+
+# Endpoint para manejar la solicitud GET en '/userinfo'
+@api.route('/userinfo', methods=['GET'])
+# Proteger el endpoint con JWT (el usuario debe estar autenticado para acceder)
+@jwt_required()
+def userinfo():
+    # Obtener el ID del usuario autenticado del token JWT
+    userId = get_jwt_identity()
+    # Buscar al usuario en la base de datos por su ID
+    user = User.query.filter(User.id == userId).first()
+    # Crear el cuerpo de la respuesta con un mensaje de saludo que incluye el correo electrónico del usuario
+    response_body = {
+        "message": f"Hello {user.email}"
+    }
+    # Devolver el mensaje de saludo como JSON con un código de estado 200 (OK)
+    return jsonify(response_body), 200
