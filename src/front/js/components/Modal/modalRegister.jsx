@@ -48,7 +48,7 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
                             <input required="" placeholder="" type="password" name="password" className="input" onChange={ev => setPassword(ev.target.value)} />
                             <span>Password</span>
                         </label>
-                        <button className="submit" onClick={handleSignup}>Submit</button>
+                        <button type="button" className="submit" onClick={handleSignup}>Submit</button>
                         <p className="signin">Already have an account? <a href="#">Sign in</a> </p>
                     </form>
                 </div>

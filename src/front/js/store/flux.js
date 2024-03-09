@@ -28,7 +28,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 },
             ],
             logError: null,
-            token: null
+            token: localStorage.getItem("token")
         },
         actions: {
             // Función para obtener un mensaje desde el backend

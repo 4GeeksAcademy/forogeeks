@@ -6,7 +6,7 @@ import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom"; // Importar useNavigate de React Router
 
 export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
-    const { actions } = useContext(Context);
+    const { actions, store } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showRegister, setShowRegister] = useState(false);
@@ -25,6 +25,13 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
         } catch (error) {
             console.error("Error during login:", error);
         }
+    };
+
+    const handleLogout = () => {
+        // Llamar a la función de logout desde las acciones
+        actions.logout();
+        // Cerrar el modal de inicio de sesión
+        handleCloseLogin();
     };
 
     return (
@@ -81,9 +88,15 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
                         </div>
                     </div>
                 </Modal.Body>
+                <Modal.Footer>
+                    {/* Botón para cerrar sesión */}
+
+                    <Button variant="outline-secondary" onClick={handleLogout}>Logout</Button>
+
+                </Modal.Footer>
             </Modal>
             {/* Modal de registro */}
-            <ModalRegister showRegister={showRegister} handleCloseRegister={handleCloseRegister} />
+            < ModalRegister showRegister={showRegister} handleCloseRegister={handleCloseRegister} />
         </>
     );
 };
