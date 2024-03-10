@@ -1,13 +1,14 @@
 import React, { useState, useContext } from "react";
 import { ModalRegister } from "./modalRegister.jsx";
 import { Context } from "../../store/appContext";
-import { IconBrandFacebook, IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom"; // Importar useNavigate de React 
 
 // ICONS
+import { IconBrandFacebook, IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { IconMail } from '@tabler/icons-react';
 import { IconLock } from '@tabler/icons-react';
+import { IconUser } from '@tabler/icons-react';
 
 export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
     const { actions, store } = useContext(Context);
