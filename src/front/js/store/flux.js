@@ -1,8 +1,6 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			backendUrl:
-				"https://automatic-bassoon-v469wrv5xxvf6w7q-3001.app.github.dev",
 			categories: [
 				{
 					name: "General",
@@ -39,44 +37,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			//Acción para mostrar modal succesfull
 			setModalRegistersuccess: (value) => {
 				setStore({ modalRegistersuccess: value });
-			},
-			// Función para obtener un mensaje desde el backend
-			getMessage: () => {
-				// Hacer una solicitud para obtener un mensaje desde el backend
-				fetch(process.env.BACKEND_URL + "/hello")
-					.then((resp) => {
-						if (!resp.ok) {
-							throw new Error(
-								"Error loading message from backend"
-							);
-						}
-						return resp.json();
-					})
-					.then((data) => setStore({ message: data.message }))
-					.catch((error) => console.log(error));
-			},
-			// Dentro del objeto actions en getState.js
-			verifyIdentity: () => {
-				const token = localStorage.getItem("token");
-				if (token) {
-					// Realizar la verificación utilizando el token
-					fetch(process.env.BACKEND_URL + "/api/verify_token", {
-						method: "GET",
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: "Bearer " + token,
-						},
-					})
-						.then((resp) => resp.json())
-						.then((data) => {
-							if (data && data.user) {
-								setStore({ user: data.user, token: token });
-							}
-						})
-						.catch((e) => {
-							console.error(e);
-						});
-				}
 			},
 			// Dentro del objeto actions en getState.js
 			syncTokenFromSessionStore: () => {

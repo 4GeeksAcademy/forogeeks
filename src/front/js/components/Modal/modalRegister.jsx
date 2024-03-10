@@ -53,7 +53,7 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
 
                             <div className="group p-0">
 
-                                <form className="form" onSubmit={handleSignup}>
+                                <form className="form" >
                                     <h3 className="titleR d-flex align-items-center mt-3">Crea tu cuenta</h3>
 
                                     <div className="d-flex justifycontent-center flex-column">
@@ -83,7 +83,7 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
                                         </div>
 
                                         {/* BUTTON REGISTER */}
-                                        <button type="submit" className="buttonModal w-100 m-auto mt-4">
+                                        <button type="button" onClick={() => { handleSignup();handleCloseRegister() }} className="buttonModal w-100 m-auto mt-4" >
                                             <span className="m-auto">Registrarse</span>
                                             <div className="arrow-wrapper">
                                                 <div className="arrow"></div>
