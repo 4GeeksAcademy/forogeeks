@@ -1,4 +1,7 @@
-// General
+html {
+	scroll-behavior: smooth;
+}
+
 .main-container {
 	width: 65vw;
 	margin: 0 auto;
@@ -6,6 +9,11 @@
 
 @media (max-width: 768px) {
 	.main-container {
-		width: 90vw;
+		width: 100vw;
 	}
+}
+
+.button-class, /* Reemplaza button-class con la clase de tu botón */
+.anchor-class { /* Reemplaza anchor-class con la clase de tu enlace */
+    cursor: pointer;
 }

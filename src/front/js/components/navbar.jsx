@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ModalLogin } from "./Modal/modalLogin.jsx";
 import { ModalRegister } from "./Modal/modalRegister.jsx";
+import { useContext } from "react";
+import { Context } from "../store/appContext";
 
 // ICONS
 
@@ -18,19 +20,33 @@ import { IconMessageCircle2Filled } from "@tabler/icons-react";
 import Icon from "./icons/icon.jsx";
 
 export const Navbar = () => {
+	const { store, actions } = useContext(Context);
+	const token = localStorage.getItem("token");
+	const isUserLogged = store.isUserLogged
+	const userInfo = store.userInfo
+
 	//Login
-	const [showLogin, setShowLogin] = useState(false); const handleCloseLogin = () => setShowLogin(false); const handleShowLogin = () => setShowLogin(true);
+	const [showLogin, setShowLogin] = useState(false); 
+	const handleCloseLogin = () => setShowLogin(false); 
+	const handleShowLogin = () => setShowLogin(true);
 
 	//Register
 	const [showRegister, setShowRegister] = useState(false); const handleCloseRegister = () => setShowRegister(false); const handleShowRegister = () => setShowRegister(true);
 
-	// Temporal para el modal
-	const isUserLogged = false;
-
 	//Raul
-	let [isMovileSize, setIsMobileSize] = useState(false);
+	const [isMovileSize, setIsMobileSize] = useState(false);
+
+	const handleLogout = (e) => {
+		e.preventDefault()
+		actions.logout()
+		window.location.reload();
+	}
 
 	useEffect(() => {
+		if(token){
+			actions.getUserInfo();
+		}
+
 		const handleResize = () => {
 			setIsMobileSize(window.innerWidth < 768);
 		};
@@ -47,10 +63,10 @@ export const Navbar = () => {
 				style={{ lineHeight: "1" }}>
 				<div className="container-fluid w-100 m-0 d-flex justify-content-between">
 					<Link to="/" style={{ textDecoration: "none" }}>
-						<a className="navbar-brand p-0 d-flex align-items-center">
+						<div className="navbar-brand p-0 d-flex align-items-center">
 							<Icon name="LOGO" size="40" />
 							<span className=" align-items-center">ForoGeeks</span>
-						</a>
+						</div>
 					</Link>
 
 					<button
@@ -98,6 +114,7 @@ export const Navbar = () => {
 								{isMovileSize && (
 									<div className="d-flex justify-content-center m-3 mt-3">
 										<button
+										type="button"
 											onClick={handleShowLogin}
 											className="btn btn-secondary rounded-5 p-1 px-3 m-0">
 											Iniciar sesión
@@ -108,6 +125,7 @@ export const Navbar = () => {
 								{!isMovileSize && (
 									<div className="d-flex justify-content-center ">
 										<button
+										type="button"
 											onClick={handleShowLogin}
 											className="btn btn-secondary rounded-5 px-3 m-0" style={{ padding: "3px" }}>
 											Iniciar sesión
@@ -184,18 +202,21 @@ export const Navbar = () => {
 											stroke={1}
 											color="white"
 										/>
-										<span className="ms-2 text-white">Hey! @usuario</span>
+										<span className="ms-2 text-white">Hey! {userInfo.email}</span>
 									</a>
 
 									<div
 										className="dropdown-menu dropdown-menu-end rounded-3 shadow-sm border-0 rounded-4 mb-3"
 										aria-labelledby="dropdownId">
-										<a className="dropdown-item" href="#">
+										<Link to="/profile" style={{textDecoration:"none", color:"currentColor"}}>
+										<div className="dropdown-item">
 											<div className="d-flex gap-2 align-items-center mt-1">
 												<IconSettings2 stroke={1} />
 												Configuración
 											</div>
-										</a>
+										</div>
+										</Link>
+										
 										<a className="dropdown-item" href="#">
 											<div className="d-flex gap-2 align-items-center mt-1">
 												<IconMail stroke={1} />
@@ -227,7 +248,7 @@ export const Navbar = () => {
 										<hr
 											className="hr m-auto mt-2 mb-2"
 											style={{ width: "87%" }}></hr>
-										<a className="dropdown-item" href="#">
+										<a onClick={handleLogout} className="dropdown-item" href="#">
 											<div className="d-flex gap-2 align-items-center">
 												<IconLogout stroke={1} />
 												Salir
