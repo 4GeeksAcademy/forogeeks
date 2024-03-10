@@ -12,3 +12,7 @@ html {
     width: 100vw;
   }
 }
+.button-class,
+.anchor-class { /* Reemplaza anchor-class con la clase de tu enlace */
+  cursor: pointer;
+}

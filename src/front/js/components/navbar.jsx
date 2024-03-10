@@ -112,6 +112,7 @@ export const Navbar = () => {
 								{isMovileSize && (
 									<div className="d-flex justify-content-center m-3 mt-3">
 										<button
+										type="button"
 											onClick={handleShowLogin}
 											className="btn btn-secondary rounded-5 p-1 px-3 m-0">
 											Iniciar sesión
@@ -122,6 +123,7 @@ export const Navbar = () => {
 								{!isMovileSize && (
 									<div className="d-flex justify-content-center ">
 										<button
+										type="button"
 											onClick={handleShowLogin}
 											className="btn btn-secondary rounded-5 px-3 m-0" style={{ padding: "3px" }}>
 											Iniciar sesión
