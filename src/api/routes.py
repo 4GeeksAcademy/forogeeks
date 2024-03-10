@@ -112,10 +112,10 @@ def login():
 @jwt_required()
 def userinfo():
     try:
-        # Obtener el ID del usuario autenticado del token JWT
-        userId = get_jwt_identity()
+
+        current_user = get_jwt_identity()
         # Buscar al usuario en la base de datos por su ID
-        user = User.query.filter(User.email == userId).first()
+        user = User.query.filter(User.email == current_user).first()
         print(user)
         if user:
             # Crear el cuerpo de la respuesta con un mensaje de saludo que incluye el correo electrónico del usuario
@@ -147,6 +147,7 @@ def create_thread():
 
     thread_data = request.get_json()
     print(thread_data)
+    user_id = thread_data.get("user_id")
     title = thread_data.get("title")
     content = thread_data.get("content")
     category = thread_data.get("category")
@@ -156,10 +157,12 @@ def create_thread():
         return jsonify({"[create_thread/routes.py] message": "Missing required fields"}), 400
     if category is None:
         return jsonify({"[create_thread/routes.py] message": "Missing required fields"}), 400
+    if content is len(content) < 10:
+        return jsonify({"[create_thread/routes.py] message": "Content must be at least 10 characters"}), 400
     
     # Create a new thread
     new_thread = Threads(
-        user_id=current_user,
+        user_id=user_id,
         title=title,
         content=content,
         category_id=category,
@@ -173,7 +176,6 @@ def create_thread():
         "title": new_thread.title,
         "content": new_thread.content,
         "user_id": new_thread.user_id,
-        "date": new_thread.date
     }
 
     return jsonify(serialized_thread), 201

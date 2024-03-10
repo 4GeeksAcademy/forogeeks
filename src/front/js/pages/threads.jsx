@@ -37,6 +37,7 @@ const example = [
 export const Threads = ({ math }) => {
 	const { store, actions } = useContext(Context);
 
+	
 
 	return (
 		<div className="container mt-3">

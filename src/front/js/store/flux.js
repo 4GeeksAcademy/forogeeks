@@ -143,6 +143,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			createNewThread: async (title, content, category) => {
 				const store = getStore();
 				const token = localStorage.getItem("token");
+				const user_id = store.userInfo.id;
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/create-thread", {
 						method: "POST",
@@ -150,12 +151,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json",
 							Authorization: `Bearer ${token}`,
 						},
-						body: JSON.stringify({ title, content, category }),
+						body: JSON.stringify({ user_id ,title, content, category }),
 					});
 					if (response.ok) {
 						// Si la operación es exitosa, redirigir a la página principal
 						// history.push("/");
-						console.log("[flux.createNewThread] Thread created successfully");
+						console.log("[flux.createNewThread] Thread created successfully\n", response);
 					} else {
 						throw new Error("[flux.createNewThread] Failed to create new thread");
 					}
