@@ -35,7 +35,7 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
 
     return (
         <>
-            <Modal className="Modal" show={showLogin} onHide={handleCloseLogin}>
+            <Modal className="background-modal" show={showLogin} onHide={handleCloseLogin}>
                 <Modal.Header closeButton className="ModalHeader">  </Modal.Header>
                 <Modal.Body className="ModalBody p-0">
 

@@ -3,7 +3,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Context } from "../../store/appContext";
 import { useNavigate } from 'react-router-dom';
-import { ModalLogin } from "./modalLogin.jsx";
+
+// Modal Login para boton de iniciar sesion
+// import { ModalLogin } from "./modalLogin.jsx";
 
 
 // Icons
@@ -14,18 +16,23 @@ import { IconUser } from '@tabler/icons-react';
 
 export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
     const { store, actions } = useContext(Context);
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [username, setUsername] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const navigate = useNavigate();
 
     //Login para Ya tienes cuenta?
-	const [showLogin, setShowLogin] = useState(false); 
-	const handleCloseLogin = () => setShowLogin(false); 
-	const handleShowLogin = () => setShowLogin(true);
+	// const [showLogin, setShowLogin] = useState(false); 
+	// const handleCloseLogin = () => setShowLogin(false); 
+	// const handleShowLogin = () => setShowLogin(true);
 
     const handleSignup = async () => {
         try {
+            if (password !== confirmPassword) { // Verifica si las contraseñas coinciden
+                console.error('Passwords do not match');
+                return;
+            }
             await actions.signup(username, email, password);
             actions.setModalRegistersuccess(true); // Cambiar el estado a true para mostrar el modal de éxito
             navigate('/'); // Navegar a la página de inicio después de actualizar el estado
@@ -35,7 +42,7 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
     };
     return (
         <>
-            <Modal show={showRegister} onHide={handleCloseRegister}>
+            <Modal className="background-modal" show={showRegister} onHide={handleCloseRegister}>
                 <Modal.Header closeButton className="ModalHeader" />
                 <Modal.Body className="ModalBody p-0">
 
@@ -121,7 +128,7 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
                 </Modal.Body>
             </Modal>
 
-            <ModalLogin showLogin={showLogin} handleCloseLogin={handleCloseLogin}></ModalLogin>
+            {/* <ModalLogin showLogin={showLogin} handleCloseLogin={handleCloseLogin}></ModalLogin> */}
 
 
         </>
