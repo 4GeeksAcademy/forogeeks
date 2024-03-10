@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Context } from "../store/appContext";
 
 import IndividualThreadExternalView from "../components/Thread/threadOverView.jsx";
 
@@ -30,11 +32,11 @@ const example = [
 		coments: 3,
 	},
 ];
-
 // Falta hacer el aside con el trending y los 4geeks
 
 export const Threads = ({ math }) => {
-	// const { category } = math.params;
+	const { store, actions } = useContext(Context);
+
 
 	return (
 		<div className="container mt-3">
