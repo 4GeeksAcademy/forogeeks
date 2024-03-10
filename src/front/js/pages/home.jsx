@@ -50,12 +50,12 @@ export const Home = () => {
 						<div className="">
 							<h4 className="mb-4">Categorías</h4>
 						</div>
-						{!category && <LoaderCategory />}
-						{category.map((category, index) => {
-							return (
+						{!category ? <LoaderCategory /> : (
+							category.map((category, index) => (
 								<Categories key={index} title={category.title} icon={category.icon} />
-							)
-						})}
+							))
+						)}
+
 					</div>
 				</div>
 				<div className="col-md-4">
