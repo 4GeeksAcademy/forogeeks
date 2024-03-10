@@ -21,7 +21,7 @@ const IndividualThreadExternalView = ({ title, likes, coments, autor }) => {
 									{/* Icono */}
 									<IconMessage size={20} stroke={1.5} color="#007bff" />
 									{/* Separador */}
-									<vr className="vr mx-3"></vr>
+									<hr className="vr mx-3"></hr>
 									<div className="d-flex flex-column">
 										{/* TITULO DEL HILO */}
 										<p className="m-0 p-0">{title}</p>
@@ -34,7 +34,7 @@ const IndividualThreadExternalView = ({ title, likes, coments, autor }) => {
 								</div>
 								{/* NUMERO DE LIKES Y COMENTS */}
 								<div className="col-sm-6 d-flex justify-content-end gap-3 text-muted small">
-									<vr className="vr mx-3"></vr>
+									<hr className="vr mx-3"></hr>
 
 									<div className="d-flex align-items-center">
 										<IconHeartFilled size={20} stroke={1} />

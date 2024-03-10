@@ -32,6 +32,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logError: null,
 			token: "",
 			modalRegistersuccess: false,
+            isUserLogged: false,
+            userInfo: ""
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -78,11 +80,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			// Dentro del objeto actions en getState.js
 			syncTokenFromSessionStore: () => {
-				const token = sessionStorage.getItem("token");
-				if (token && token !== "") {
-					setStore({ token: token });
-				}
-			},
+                const store = getStore()
+                const token = localStorage.getItem("token");
+                console.log("[flux.syncTokenFromSessionStore]Token en LocalStorage\n\n"+ token + "\n")
+                if (token && token !== "") {
+                    const updatedStore = { token: token };
+                    setStore(updatedStore);
+                    console.log("[flux.syncTokenFromSessionStore]Token en store\n\n"+ store.token + "\n")
+                }
+            },
 
 			// Función para registrar un usuario
 			signup: (username, email, password) => {
@@ -137,32 +143,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			// Función para cerrar sesión
-			logout: () => setStore({ token: null }),
+			logout: () => {
+				localStorage.removeItem("token");
+				console.log("[flux.logout] Logout, token removed");
+				setStore({ token: null });
+			},
+            getUserInfo: async () => {
+                const store = getStore()
+                const token = localStorage.getItem("token")
+                try {
+                    const response = await fetch(
+                        process.env.BACKEND_URL + "/api/userinfo",
+                        {
+                            method: "GET",
+                            headers: {
+                                Authorization: `Bearer ${token}`, // Reemplazar 'token' con el token JWT del usuario
+                            },
+                        }
+                    );
+    
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log("getUserInfo")
+                        console.log("[flux.getUserInfo] respuesta de routes.py userinfo]\n", data);
+                        setStore({userInfo:data})
+                        setStore({isUserLogged:true})
+                        // setIsUserLogged(true);
+                    } else {
+                        throw new Error("Failed to fetch user info");
+                    }
+                } catch (error) {
+                    console.error("[flux.getUserInfo] Error fetching user info:", error);
+                }
 		},
-		getUserInfo: async () => {
-			try {
-				const response = await fetch(
-					process.env.BACKEND_URL + "/api/login",
-					{
-						method: "GET",
-						headers: {
-							Authorization: `Bearer ${token}`, // Reemplazar 'token' con el token JWT del usuario
-						},
-					}
-				);
-
-				if (response.ok) {
-					const data = await response.json();
-					setUserInfo(data); // Almacenar la información del usuario en el estado
-					console.log(data);
-					setIsUserLogged(true);
-				} else {
-					throw new Error("Failed to fetch user info");
-				}
-			} catch (error) {
-				console.error("Error fetching user info:", error);
-				console.log(token);
-			}
+		
 		},
 	};
 };

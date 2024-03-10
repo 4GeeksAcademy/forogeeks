@@ -19,9 +19,10 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
         try {
             const data = await actions.login(email, password);
             // Si el inicio de sesión es exitoso, navegar a la página de perfil
-            navigate("/profile");
+            navigate("/");
             // Cerrar el modal después de la redirección
             handleCloseLogin();
+            window.location.reload();
         } catch (error) {
             console.error("Error during login:", error);
         }
