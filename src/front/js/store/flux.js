@@ -193,6 +193,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("[flux.getThreadByCategory] Error fetching threads:", error);
 				}
+			},
+			getAllCategories: async () => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/categories", {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getAllCategories] data", data);
+						setStore({ categories: data });
+					} else {
+						throw new Error("[flux.getAllCategories] Failed to fetch categories");
+					}
+				} catch (error) {
+					console.error("[flux.getAllCategories] Error fetching categories:", error);
+				}
 			}
 		
 		

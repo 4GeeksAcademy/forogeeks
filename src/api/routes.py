@@ -4,7 +4,7 @@ from flask_socketio import SocketIO, emit
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from datetime import datetime
 
-from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, ThreadComments, Message
+from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, ThreadComments
 # Crear un blueprint llamado 'api'
 api = Blueprint('api', __name__)
 
@@ -27,23 +27,7 @@ def handle_hello():
 
 from flask import request
 
-@api.route("/token", methods=["POST"])
-def create_token():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
-
-    # Query your database for username and password
-    user = User.query.filter_by(email=email, password=password).first()
-
-    # if user is None:
-    if user is None:
-        # The user was not found on the database
-        return jsonify({"msg": "Bad email or password"}), 401
-    
-    # Create a new token with the user id inside
-    access_token = create_access_token(identity=email)
-    return jsonify(access_token=access_token)
-
+# 🟡 USER REGISTER 🟡
 # Endpoint para manejar la solicitud POST en '/register'
 @api.route('/register', methods=['POST'])
 def register():
@@ -100,7 +84,7 @@ def register():
     # Devolver una respuesta con un código de estado 201 (Created)
     return jsonify(response_body), 201
 
-
+# 🟢 USER LOGIN 🟢
 # Endpoint para manejar la solicitud POST en '/login'
 @api.route('/login', methods=['POST'])
 def login():
@@ -123,7 +107,7 @@ def login():
     # Devolver el token de acceso y el ID del usuario como JSON
     return jsonify({ "token": access_token, "user_id": user.id })
 
-
+# Endpoint para manejar la solicitud GET en '/userinfo'
 @api.route('/userinfo', methods=['GET'])
 @jwt_required()
 def userinfo():
@@ -154,6 +138,7 @@ def userinfo():
         # Manejar cualquier otro error que pueda ocurrir
         return jsonify({"error": str(e)}), 500
 
+# 🔵 THREADS ENDPOINTS 🔵
 # Endpoint para manejar la solicitud POST en '/create-thread'
 @api.route('/create-thread', methods=['POST'])
 @jwt_required()
@@ -208,3 +193,40 @@ def get_threads_by_category(category):
     threads = Threads.query.filter_by(category_id=category.id).all()
     serialized_threads = list(map(lambda thread: thread.serialize(), threads))
     return jsonify(serialized_threads), 200
+
+# 🔴 CATEGORIAS ENDPOINTS 🔴
+# Endpoint para manejar la solicitud GET de categorías en '/categories'
+@api.route('/categories', methods=['GET'])
+def get_categories():
+    categories = Category.query.all()
+    serialized_categories = list(map(lambda category: category.serialize(), categories))
+    return jsonify(serialized_categories), 200
+
+#Endpoints para manejar la solicitud POST en '/categories'
+@api.route('/create-category', methods=['POST'])
+def create_category():
+    data = request.get_json()
+    title = data.get("title")
+    icon = data.get("icon")
+
+    if title is None or icon is None:
+        return jsonify({"[routes.py/create_category] message": "Missing required fields"}), 400
+
+    new_category = Category(
+        title=title,
+        icon=icon
+    )
+
+    db.session.add(new_category)
+    db.session.commit()
+
+    serialized_category = {
+        "id": new_category.id,
+        "title": new_category.title,
+        "icon": new_category.icon
+    }
+
+    return jsonify(serialized_category), 201
+
+# 🟣 FAVORITE THREADS ENDPOINTS 🟣
+# Endpoint para manejar la solicitud POST en '/favorite-thread'
