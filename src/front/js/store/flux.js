@@ -101,12 +101,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw new Error(error.message);
 				}
 			},
-
 			// Función para cerrar sesión
 			logout: () => {
-				localStorage.removeItem("token");
+				localStorage.removeItem("token"); // Eliminar el token del localStorage
+				setStore({ token: "", isUserLogged: false, userInfo: null });
 				console.log("[flux.logout] Logout, token removed");
-				setStore({ token: null });
 			},
             getUserInfo: async () => {
                 const store = getStore()
@@ -135,7 +134,9 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.error("[flux.getUserInfo] Error fetching user info:", error);
                 }
-		},
+			
+			},
+		
 		
 		},
 	};

@@ -19,19 +19,46 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
     const handleShowRegister = () => setShowRegister(true);
     const navigate = useNavigate(); // Obtener la función de navegación
 
+    // Verificar parametros de inicio de sesión
+    const [emailError, setEmailError] = useState({ isError: false, message: "" });
+    const [passwordError, setPasswordError] = useState({ isError: false, message: "" });
+
     const handleLogin = async (e) => {
         e.preventDefault();
+    
         try {
-            const data = await actions.login(email, password);
-            // Si el inicio de sesión es exitoso, navegar a la página de perfil
-            navigate("/");
-            // Cerrar el modal después de la redirección
-            handleCloseLogin();
-            window.location.reload();
+            setEmailError({ isError: false, message: "" });
+            setPasswordError({ isError: false, message: "" });
+    
+            let hasError = false; // Flag para verificar si hay errores
+    
+            // Verificar si el correo electrónico es válido
+            if (email === "") {
+                setEmailError({ isError: true, message: "El correo electrónico es requerido" });
+                hasError = true; // Set the flag if there's an error
+            }
+            if (password === "") {
+                setPasswordError({ isError: true, message: "La contraseña es requerida" });
+                hasError = true; // Set the flag if there's an error
+            }
+    
+            if (!hasError) {
+                actions.login(email, password);
+			    actions.getUserInfo();
+                
+                // Si el inicio de sesión es exitoso, navegar a la página principal
+                navigate("/");
+                
+                // Cerrar el modal después de la redirección
+                handleCloseLogin();
+                // No es recomendable recargar la página aquí, ya que el redireccionamiento ya se encarga de cargar la nueva página.
+            }
         } catch (error) {
-            console.error("Error during login:", error);
+            console.error("Error durante el inicio de sesión:", error);
+            // Manejar errores durante el inicio de sesión, por ejemplo, mostrar un mensaje de error en la interfaz de usuario.
         }
     };
+    
 
     return (
         <>
@@ -55,13 +82,14 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
                                             <IconMail stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
                                             <input className="inputSignUpandRegister " type="email" placeholder="Correo electrónico" onChange={(e) => setEmail(e.target.value)} id="inputEmailLogin" aria-describedby="emailHelp" />
                                         </div>
+                                        {emailError.isError && <span className="small" style={{ color: "red" }}>{emailError.message}</span>}
 
                                         {/* INPUT PASSWORD */}
                                         <div className="group mt-3 w-100">
                                             <IconLock stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
-
                                             <input className="inputSignUpandRegister" type="password" placeholder="Contraseña" onChange={(e) => setPassword(e.target.value)} id="inputPasswordLogin" />
                                         </div>
+                                        {passwordError.isError && <span className="small" style={{ color: "red" }}>{passwordError.message}</span>}
 
                                         {/* FORGOT PASSWORD */}
                                         <div className="m-auto mt-2">
@@ -101,7 +129,7 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
                                         {/* REGISTER */}
                                         <div className="text-center mt-2 mb-4 px-2">
                                             <span>¿Aún no tienes una cuenta? </span>
-                                            <a className="" style={{textDecoration:"none"}} href="#" onClick={() => { handleShowRegister(); handleCloseLogin(); }} >
+                                            <a className="" style={{ textDecoration: "none" }} href="#" onClick={() => { handleShowRegister(); handleCloseLogin(); }} >
                                                 Regístrate gratis
                                             </a>
 

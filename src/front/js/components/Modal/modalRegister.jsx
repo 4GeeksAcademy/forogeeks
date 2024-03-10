@@ -33,6 +33,7 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
     // const [showLogin, setShowLogin] = useState(false); 
     // const handleCloseLogin = () => setShowLogin(false); 
     // const handleShowLogin = () => setShowLogin(true);
+
     const handleSignup = () => {
         try {
             // Reiniciar los errores antes de realizar las verificaciones
@@ -74,8 +75,6 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
                 navigate("/");
                 handleCloseRegister();
             }
-
-
         } catch (error) {
             console.error('[component.modalRegister] Error registering:\n\n', error);
         }
