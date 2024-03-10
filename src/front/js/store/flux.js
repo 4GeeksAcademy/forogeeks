@@ -34,6 +34,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             userInfo: "",
 			threads: [],
 			categories: [],
+			textEditorContent: "",
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -99,6 +100,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 					localStorage.setItem("token", data.token); // Almacenar el token en localStorage
 					setStore({ token: data.token, logError: null });
+					getActions().getUserInfo();
 				} catch (error) {
 					throw new Error(error.message);
 				}
@@ -212,6 +214,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("[flux.getAllCategories] Error fetching categories:", error);
 				}
 			},
+			setTextEditorStore: (content) => {
+				setStore({ textEditorContent: content });
+			}
 
 
 		

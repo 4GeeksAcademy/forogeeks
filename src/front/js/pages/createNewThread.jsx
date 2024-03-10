@@ -3,15 +3,22 @@ import { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 
 // COMPONENTS
-import { TextEditor } from "../components/TextEditor/text-editor.jsx";
+import {TextEditor} from "../components/TextEditor/text-editor.jsx"
 
 // ICONS
 
 export const CreateNewThread = () => {
     const { store, actions } = useContext(Context);
     const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
+    const content = store.textEditorContent;
     const [category, setCategory] = useState("");
+    const categories = store.categories;
+
+    const handleCreateThread = (e) => {
+        e.preventDefault();
+        console.log("[createNewThread] Create new thread", title, content, category);
+        actions.createNewThread(title, content, category);
+    }
 
     useEffect(() => {
         actions.getAllCategories()
@@ -24,12 +31,15 @@ export const CreateNewThread = () => {
                         <div className="shadow-sm rounded-3 mb-4 py-1 px-3">
                             <form>
                                 <div className="mb-3">
+                                    <button type="submit" className="btn btn-primary" onClick={handleCreateThread}>Create</button>
+                                    </div>
+                                <div className="mb-3">
                                     <label htmlFor="category" className="form-label">Category</label>
                                     <select className="form-select" id="category" onChange={(e) => setCategory(e.target.value)}>
-                                        <option value="1">General</option>
-                                        <option value="2">React</option>
-                                        <option value="3">Python</option>
-                                        <option value="4">JavaScript</option>
+                                        <option value="">Elige una categoría</option>
+                                        {categories && categories.map((category, index) => (
+                                            <option key={index} value={category.id}>{category.title}</option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="mb-3">

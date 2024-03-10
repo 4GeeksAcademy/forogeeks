@@ -154,6 +154,8 @@ def create_thread():
     # Check if title or content are missing
     if title is None or content is None:
         return jsonify({"[create_thread/routes.py] message": "Missing required fields"}), 400
+    if category is None:
+        return jsonify({"[create_thread/routes.py] message": "Missing required fields"}), 400
     
     # Create a new thread
     new_thread = Threads(
