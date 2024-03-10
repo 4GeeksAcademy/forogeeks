@@ -16,6 +16,7 @@ import { Edit } from "./components/Thread/TextEditor/Edit.jsx";
 // IMPORT COMPONENTS
 import { Navbar } from "./components/navbar.jsx";
 import { Footer } from "./components/footer.jsx";
+import { AdminReport } from "./pages/adminReport.jsx";
 
 //create your first component
 const Layout = () => {
@@ -32,6 +33,9 @@ const Layout = () => {
 			<div className="main-container" style={{ marginTop: "4rem" }}>
 				<Routes>
 					<Route element={<Home />} path="/" />
+					<Route element={<AdminReport/>} path="/admin-report" />
+				
+					
 					<Route element={<Profile />} path="/profile" />
 					<Route element={<Threads />} path="/threads/:category" />
 					<Route element={<Chat />} path="/chat" />
