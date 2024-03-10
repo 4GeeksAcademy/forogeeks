@@ -49,8 +49,26 @@ def register():
     # Obtener los datos JSON de la solicitud
     data = request.get_json()
     # Verificar si se proporcionaron todos los campos necesarios
-    if "email" not in data or "password" not in data or "username" not in data:
-        return jsonify({"message": "Missing required fields"}), 400
+    if "email" not in data or "password" not in data or "username" not in data or "confirm_password" not in data:
+        return jsonify({"[routes.py/register] message": "Missing required fields"}), 400
+    
+    if "username" in data and len(data["username"]) < 3:
+        return jsonify({"[routes.py/register] message": "Username must be at least 3 characters"}), 400
+    
+    if "email" in data and len(data["email"]) < 4:
+        return jsonify({"[routes.py/register] message": "Email must be at least 3 characters"}), 400
+    
+    if "email" in data and "@" not in data["email"]:
+        return jsonify({"[routes.py/register] message": "Invalid email"}), 400
+    
+    if "email" in data and "." not in data["email"]:
+        return jsonify({"[routes.py/register] message": "Invalid email"}), 400
+    
+    if "password" in data and len(data["password"]) < 6:
+        return jsonify({"[routes.py/register] message": "Password must be at least 6 characters"}), 400
+    
+    if "confirm_password" in data and data["password"] != data["confirm_password"]:
+        return jsonify({"[routes.py/register] message": "Passwords do not match"}), 400
 
     # Verificar si el usuario ya existe en la base de datos
     existing_user = User.query.filter_by(email=data["email"]).first()

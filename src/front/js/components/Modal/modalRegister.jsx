@@ -13,6 +13,7 @@ import { IconBrandFacebook, IconBrandGithub, IconBrandGoogle } from "@tabler/ico
 import { IconMail } from '@tabler/icons-react';
 import { IconLock } from '@tabler/icons-react';
 import { IconUser } from '@tabler/icons-react';
+import { has } from "immutable";
 
 export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
     const { store, actions } = useContext(Context);
@@ -20,26 +21,67 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    // Gestion de errores
+    const [usernameError, setUsernameError] = useState({ isError: false, message: '' });
+    const [emailError, setEmailError] = useState({ isError: false, message: '' });
+    const [passwordError, setPasswordError] = useState({ isError: false, message: '' });
+
     const navigate = useNavigate();
 
     //Login para Ya tienes cuenta?
-	// const [showLogin, setShowLogin] = useState(false); 
-	// const handleCloseLogin = () => setShowLogin(false); 
-	// const handleShowLogin = () => setShowLogin(true);
-
-    const handleSignup = async () => {
+    // const [showLogin, setShowLogin] = useState(false); 
+    // const handleCloseLogin = () => setShowLogin(false); 
+    // const handleShowLogin = () => setShowLogin(true);
+    const handleSignup = () => {
         try {
-            if (password !== confirmPassword) { // Verifica si las contraseñas coinciden
-                console.error('Passwords do not match');
-                return;
+            // Reiniciar los errores antes de realizar las verificaciones
+            setPasswordError({ isError: false, message: '' });
+            setUsernameError({ isError: false, message: '' });
+            setEmailError({ isError: false, message: '' });
+
+            let hasError = false; // Flag para verificar si hay errores
+
+            // Verificaciones de errores
+            if (password !== confirmPassword) {
+                setPasswordError({ isError: true, message: 'Las contraseñas no coinciden' });
+                hasError = true; // Set the flag if there's an error
+
             }
-            await actions.signup(username, email, password);
-            actions.setModalRegistersuccess(true); // Cambiar el estado a true para mostrar el modal de éxito
-            navigate('/'); // Navegar a la página de inicio después de actualizar el estado
+            if (password.length < 6) {
+                setPasswordError({ isError: true, message: 'La contraseña debe tener al menos 6 caracteres' });
+                hasError = true; // Set the flag if there's an error
+
+            }
+
+            if (username.length < 3) {
+                setUsernameError({ isError: true, message: 'El nombre de usuario debe tener al menos 3 caracteres' });
+                hasError = true; // Set the flag if there's an error
+
+            }
+            if (email.length < 4 || !email.includes("@") || !email.includes(".")) {
+                if (email.length < 4) setEmailError({ isError: true, message: 'El correo electrónico debe tener al menos 4 caracteres' });
+                if (!email.includes("@")) setEmailError({ isError: true, message: 'El correo electrónico debe tener un @' });
+                if (!email.includes(".")) setEmailError({ isError: true, message: 'El correo electrónico debe tener un .' });
+                hasError = true; // Set the flag if there's an error
+
+            }
+
+            // Verificar si hay errores antes de continuar
+            if (!hasError) {
+                actions.setModalRegistersuccess(true);
+                actions.signup(username, email, password, confirmPassword);
+                navigate("/");
+                handleCloseRegister();
+            }
+
+
         } catch (error) {
-            console.error('Error registering:', error);
+            console.error('[component.modalRegister] Error registering:\n\n', error);
         }
     };
+
+
     return (
         <>
             <Modal className="background-modal" show={showRegister} onHide={handleCloseRegister}>
@@ -62,28 +104,32 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
                                             <IconUser stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
                                             <input className="inputSignUpandRegister" type="text" placeholder="Nombre de usuario" onChange={(e) => setUsername(e.target.value)} />
                                         </div>
+                                        {usernameError.isError && <span className="small" style={{ color: "red" }}>{usernameError.message}</span>}
 
                                         {/* INPUT EMAIL */}
                                         <div className="group mt-3 ">
                                             <IconMail stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
                                             <input className="inputSignUpandRegister" type="email" placeholder="Correo electrónico" onChange={(e) => setEmail(e.target.value)} />
                                         </div>
+                                        {emailError.isError && <span className="small" style={{ color: "red" }}>{emailError.message}</span>}
 
                                         {/* INPUT PASSWORD */}
                                         <div className="group mt-3 w-100">
                                             <IconLock stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
-
                                             <input className="inputSignUpandRegister" type="password" placeholder="Contraseña" onChange={(e) => setPassword(e.target.value)} />
                                         </div>
+                                        {passwordError.isError && <span className="small" style={{ color: "red" }}>{passwordError.message}</span>}
+
 
                                         {/* CONFIRM PASSWORD */}
                                         <div className="group mt-3 w-100">
                                             <IconLock stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
                                             <input className="inputSignUpandRegister" type="password" placeholder="Confirmar contraseña" onChange={(e) => setConfirmPassword(e.target.value)} />
                                         </div>
+                                        {passwordError.isError && <span className="small" style={{ color: "red" }}>{passwordError.message}</span>}
 
                                         {/* BUTTON REGISTER */}
-                                        <button type="button" onClick={() => { handleSignup();handleCloseRegister() }} className="buttonModal w-100 m-auto mt-4" >
+                                        <button type="button" onClick={handleSignup} className="buttonModal w-100 m-auto mt-4" >
                                             <span className="m-auto">Registrarse</span>
                                             <div className="arrow-wrapper">
                                                 <div className="arrow"></div>

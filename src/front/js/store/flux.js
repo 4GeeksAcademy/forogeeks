@@ -51,17 +51,17 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
 
 			// Función para registrar un usuario
-			signup: (username, email, password) => {
+			signup: (username, email, password, confirm_password) => {
 				fetch(process.env.BACKEND_URL + "/api/register", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({ username, email, password }),
+					body: JSON.stringify({ username, email, password, confirm_password }),
 				})
 					.then((resp) => {
 						if (!resp.ok) {
-							throw new Error("register-error");
+							throw new Error("[flux.signup] register-error");
 						}
 						return resp.json(); // Parsea la respuesta JSON
 					})
