@@ -43,8 +43,7 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
             }
     
             if (!hasError) {
-                actions.login(email, password);
-			    actions.getUserInfo();
+                actions.login(email, password)
                 
                 // Si el inicio de sesión es exitoso, navegar a la página principal
                 navigate("/");

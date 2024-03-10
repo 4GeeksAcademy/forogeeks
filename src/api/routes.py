@@ -2,8 +2,9 @@ from flask import Flask, jsonify, Blueprint
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from datetime import datetime
 
-from .models import db, User
+from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, ThreadComments, Message
 # Crear un blueprint llamado 'api'
 api = Blueprint('api', __name__)
 
@@ -152,4 +153,58 @@ def userinfo():
     except Exception as e:
         # Manejar cualquier otro error que pueda ocurrir
         return jsonify({"error": str(e)}), 500
+
+# Endpoint para manejar la solicitud POST en '/create-thread'
+@api.route('/create-thread', methods=['POST'])
+@jwt_required()
+def create_thread():
+    current_user = get_jwt_identity()
+
+    thread_data = request.get_json()
+    print(thread_data)
+    title = thread_data.get("title")
+    content = thread_data.get("content")
+    category = thread_data.get("category")
+
+    # Check if title or content are missing
+    if title is None or content is None:
+        return jsonify({"[create_thread/routes.py] message": "Missing required fields"}), 400
     
+    # Create a new thread
+    new_thread = Threads(
+        user_id=current_user,
+        title=title,
+        content=content,
+        category_id=category,
+        )
+
+    db.session.add(new_thread)
+    db.session.commit()
+
+    serialized_thread = {
+        "id": new_thread.id,
+        "title": new_thread.title,
+        "content": new_thread.content,
+        "user_id": new_thread.user_id,
+        "date": new_thread.date
+    }
+
+    return jsonify(serialized_thread), 201
+
+# Endpoint para manejar la solicitud GET en '/threads'
+@api.route('/threads', methods=['GET'])
+def get_threads():
+    threads = Threads.query.all()
+    # Serialize the list of threads
+    serialized_threads = list(map(lambda thread: thread.serialize(), threads))
+    return jsonify(serialized_threads), 200
+
+# Endpoint para manejar la solicitud GET en '/categories'
+@api.route('/threads/<string:category>', methods=['GET'])
+def get_threads_by_category(category):
+    category = Category.query.filter_by(name=category).first()
+    if category is None:
+        return jsonify({"message": "Category not found"}), 404
+    threads = Threads.query.filter_by(category_id=category.id).all()
+    serialized_threads = list(map(lambda thread: thread.serialize(), threads))
+    return jsonify(serialized_threads), 200

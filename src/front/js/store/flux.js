@@ -31,7 +31,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			token: "",
 			modalRegistersuccess: false,
             isUserLogged: false,
-            userInfo: ""
+            userInfo: "",
+			threads: [],
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -136,6 +137,63 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
 			
 			},
+			createNewThread: async (title, content, category) => {
+				const store = getStore();
+				const token = localStorage.getItem("token");
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/create-thread", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ title, content, category }),
+					});
+					if (response.ok) {
+						// Si la operación es exitosa, redirigir a la página principal
+						// history.push("/");
+						console.log("[flux.createNewThread] Thread created successfully");
+					} else {
+						throw new Error("[flux.createNewThread] Failed to create new thread");
+					}
+				} catch (error) {
+					console.error("[flux.createNewThread] Error creating new thread:", error);
+				}
+			},
+			getAllThreads: async () => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/threads", {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getAllThreads] data", data);
+						setStore({ threads: data });
+					} else {
+						throw new Error("[flux.getAllThreads] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getAllThreads] Error fetching threads:", error);
+				}
+			},
+			getThreadByCategory: async (category) => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/threads/${category}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getThreadByCategory] data", data);
+						setStore({ threads: data });
+					} else {
+						throw new Error("[flux.getThreadByCategory] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getThreadByCategory] Error fetching threads:", error);
+				}
+			}
 		
 		
 		},
