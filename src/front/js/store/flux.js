@@ -224,6 +224,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("[flux.getThreadByCategory] Error fetching threads:", error);
 				}
 			},
+			// En el archivo getState.js
+			getTrendingThreads: async () => {
+    try {
+        const response = await fetch(process.env.BACKEND_URL + "/api/trending", {
+            method: "GET",
+        });
+        if (response.ok) {
+            const data = await response.json();
+            console.log("[flux.getAllThreads] data", data);
+            setStore({ threads: data });
+        } else {
+            throw new Error("[flux.getAllThreads] Failed to fetch threads");
+        }
+    } catch (error) {
+        console.error("[flux.getAllThreads] Error fetching threads:", error);
+    }
+},
+
 			clearThreads: () => {
 				setStore({ threads: [] });
 			},
