@@ -6,7 +6,6 @@ import { Context } from "../store/appContext";
 import { TextEditor } from "../components/TextEditor/text-editor.jsx"
 
 // ICONS
-import { IconSend } from '@tabler/icons-react';
 import { IconArrowNarrowRight } from '@tabler/icons-react';
 
 export const CreateNewThread = () => {
@@ -46,6 +45,7 @@ export const CreateNewThread = () => {
         if (!hasErrors) {
             console.log("[createNewThread] Create new thread", title, content, category);
             actions.createNewThread(title, content, category);
+            console.log("handleCreateThread" + title, content, category)
         }
     }
     

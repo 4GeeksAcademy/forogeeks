@@ -46,7 +46,7 @@ export const TextEditor = () => {
 	];
 
 	const handleProcedureContentChange = (newContent) => {
-		console.log("content: ", newContent);
+		console.log("[component.text-editor] content: ", newContent);
 		// console.log(editor.getContents());
 		actions.setTextEditorStore(newContent);
 	};

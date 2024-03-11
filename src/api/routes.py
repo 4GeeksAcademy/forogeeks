@@ -206,6 +206,15 @@ def get_threads_by_category(category):
     serialized_threads = list(map(lambda thread: thread.serialize(), threads))
     return jsonify(serialized_threads), 200
 
+# Endpoint para manejar la solicitud GET en '/threads/<int:thread_id>'
+@api.route('/thread/<int:thread_id>', methods=['GET'])
+def get_thread_by_id(thread_id):
+    thread = Threads.query.filter_by(id=thread_id).first()
+    if thread is None:
+        return jsonify({"message": "Thread not found"}), 404
+    serialized_thread = thread.serialize()
+    return jsonify(serialized_thread), 200
+
 # Endpoint para manejar la solicitud DELETE en '/threads/<int:thread_id>'
 
 # 🔴 CATEGORIAS ENDPOINTS 🔴
@@ -243,6 +252,47 @@ def create_category():
     return jsonify(serialized_category), 201
 
 # Endpoint para manejar la solicitud DELETE en '/categories/<int:category_id>'
+
+# 🔴 COMMENTS 🔴
+# Endpoint para manejar la solicitud POST en '/create-comment'
+@api.route('/create-comment', methods=['POST'])
+@jwt_required()
+def create_comment():
+    current_user = get_jwt_identity()
+    comment_data = request.get_json()
+    user_id = comment_data.get("user_id")
+    thread_id = comment_data.get("thread_id")
+    content = comment_data.get("content")
+
+    if content is None:
+        return jsonify({"[routes.py/create_comment] message": "Missing required fields"}), 400
+    if content is len(content) < 3:
+        return jsonify({"[routes.py/create_comment] message": "Content must be at least 3 characters"}), 400
+
+    new_comment = ThreadComments(
+        user_id=user_id,
+        thread_id=thread_id,
+        content=content
+    )
+
+    db.session.add(new_comment)
+    db.session.commit()
+
+    serialized_comment = {
+        "id": new_comment.id,
+        "user_id": new_comment.user_id,
+        "thread_id": new_comment.thread_id,
+        "content": new_comment.content
+    }
+
+    return jsonify(serialized_comment), 201
+
+# Endpoint para manejar la solicitud GET por thread id en '/comments'
+@api.route('/comments/<int:thread_id>', methods=['GET'])
+def get_comments_by_thread_id(thread_id):
+    comments = ThreadComments.query.filter_by(thread_id=thread_id).all()
+    serialized_comments = list(map(lambda comment: comment.serialize(), comments))
+    return jsonify(serialized_comments), 200
 
 # ⚪️ ADMIN REPORTS ⚪️
 # Endpoint para manejar la solicitud GET en '/admin-reports'
