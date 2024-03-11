@@ -10,6 +10,7 @@ import injectContext from "./store/appContext";
 import { Chat } from "./pages/chat.jsx";
 import Background from "./components/Background/background.jsx";
 import { InsideThread } from "./pages/inside-thread.jsx";
+import { CreateNewThread } from "./pages/createNewThread.jsx";
 
 // IMPORT COMPONENTS
 import { Navbar } from "./components/navbar.jsx";
@@ -17,26 +18,27 @@ import { Footer } from "./components/footer.jsx";
 
 //create your first component
 const Layout = () => {
-	//the basename is used when your project is published in a subdirectory and not in the root of the domain
-	// you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
-	const basename = process.env.BASENAME || "";
+  //the basename is used when your project is published in a subdirectory and not in the root of the domain
+  // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
+  const basename = process.env.BASENAME || "";
 
-	// if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "")
-	// 	return <BackendURL />;
+  // if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "")
+  // 	return <BackendURL />;
 
 	return (
 		<BrowserRouter basename={basename}>
 			<Navbar />
-			<div className="main-container" style={{ marginTop: "4rem" }}>
+			<div className="main-container" style={{ marginTop: "4rem"}}>
 				<Routes>
 					<Route element={<Home />} path="/" />
 					<Route element={<Profile />} path="/profile" />
-					<Route element={<Threads />} path="/threads/:category" />
+					<Route element={<CreateNewThread />} path="/nuevo-hilo" />
 					<Route element={<Chat />} path="/chat" />
 					<Route
 						element={<ChatViewMobile />}
 						path="/chat-view-mobile"
 					/>
+					<Route element={<Threads />} path="/threads/:category" />
 					<Route
 						element={<InsideThread />}
 						path="/threads/:category/:id"

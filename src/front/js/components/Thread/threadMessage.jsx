@@ -7,7 +7,7 @@ export const ThreadMessage = ({ content, autor, date, likes, profileImg }) => {
     return (
         <div className='container'>
             <div className="row">
-                <div className="col-md-12">
+                <div className="col-md-12 p-0">
                     {/* CONTENEDOR DEL HILO */}
                     <div className="shadow-sm rounded-3 mb-4 py-1 px-3">
                         <div className="row align-items-center p-2">

@@ -21,7 +21,21 @@ npm install
     ```
     npm run sass:watch
     ```
+---
 
+-   **🐛 Common BUGS: 🐛**
+    ```
+    - La BACKEND_URL= no tiene direccion asignada en .env
+        Solucion: Arrancar backend y actualizar la backend url
+    ```
+    ```
+    - Se han instalado dependencias en backend o frontend 
+        Solucion: Hacer npm install o pipenv install
+    ```
+    ```
+    - Los estilos no se aplican
+        Solucion: Compilar SASS, Importar archivo CSS el layout, Limpiar cache
+    ```
 ---
 
 -   **🐱 Git: 🐱**
@@ -80,6 +94,18 @@ npm install
 
         Esto creara un commit que va a desacer todos los cambios y volver al que
         has indicado
+
+        -   **🐱 Forzar el merge de main a tu rama por la fuerza:**
+
+        ```
+        git merge --strategy-option=theirs main
+        ```
+
+        -   **🐱 Abortar merge:**
+
+        ```
+        git merge --abort
+        ```
 
 ---
 
