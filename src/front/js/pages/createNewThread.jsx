@@ -48,7 +48,11 @@ export const CreateNewThread = () => {
         if (!hasErrors) {
             console.log("[createNewThread] Create new thread", title, content, category);
             actions.createNewThread(title, content, category);
+<<<<<<< HEAD
             navigate('/'); 
+=======
+            console.log("handleCreateThread" + title, content, category)
+>>>>>>> 2d2dce186af837f1b2f4b1beb204fe00b5d77a56
         }
     }
     
