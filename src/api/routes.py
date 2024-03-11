@@ -53,9 +53,14 @@ def register():
         return jsonify({"[routes.py/register] message": "Passwords do not match"}), 400
 
     # Verificar si el usuario ya existe en la base de datos
-    existing_user = User.query.filter_by(email=data["email"]).first()
-    if existing_user:
-        return jsonify({"message": "User already exists"}), 409
+    existing_username = User.query.filter_by(user_name=data["username"]).first()
+    existing_email = User.query.filter_by(email=data["email"]).first()
+    
+    if existing_username:
+        return jsonify({"message": "Username already exists"}), 409
+    
+    if existing_email:
+        return jsonify({"message": "Email already exists"}), 409
 
     # Crear un nuevo usuario con los datos proporcionados
     new_user = User(
@@ -80,6 +85,26 @@ def register():
     }
     # Devolver una respuesta con un código de estado 201 (Created)
     return jsonify(response_body), 201
+
+# Endpoint para manejar la solicitud POST en '/check-user-exists'
+@api.route('/check-user-exists', methods=['POST'])
+def check_user_exists():
+    # Obtener los datos JSON de la solicitud
+    data = request.get_json()
+    
+    # Verificar si se proporcionó un nombre de usuario o correo electrónico
+    if "username" not in data and "email" not in data:
+        return jsonify({"message": "Missing username or email"}), 400
+    
+    # Buscar si el usuario existe en la base de datos por su nombre de usuario o correo electrónico
+    user_by_username = User.query.filter_by(user_name=data.get("username")).first()
+    user_by_email = User.query.filter_by(email=data.get("email")).first()
+    
+    # Devolver un JSON con el resultado de la verificación
+    response = {
+        "exists": user_by_username is not None or user_by_email is not None
+    }
+    return jsonify(response), 200
 
 # 🟢 USER  🟢
 # Endpoint para manejar la solicitud POST en '/login'

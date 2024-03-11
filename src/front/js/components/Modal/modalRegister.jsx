@@ -34,7 +34,7 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
     // const handleCloseLogin = () => setShowLogin(false); 
     // const handleShowLogin = () => setShowLogin(true);
 
-    const handleSignup = () => {
+    const handleSignup = async () => {
         try {
             // Reiniciar los errores antes de realizar las verificaciones
             setPasswordError({ isError: false, message: '' });
@@ -47,33 +47,46 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
             if (password !== confirmPassword) {
                 setPasswordError({ isError: true, message: 'Las contraseñas no coinciden' });
                 hasError = true; // Set the flag if there's an error
-
             }
             if (password.length < 6) {
                 setPasswordError({ isError: true, message: 'La contraseña debe tener al menos 6 caracteres' });
                 hasError = true; // Set the flag if there's an error
-
             }
-
             if (username.length < 3) {
                 setUsernameError({ isError: true, message: 'El nombre de usuario debe tener al menos 3 caracteres' });
                 hasError = true; // Set the flag if there's an error
-
             }
             if (email.length < 4 || !email.includes("@") || !email.includes(".")) {
                 if (email.length < 4) setEmailError({ isError: true, message: 'El correo electrónico debe tener al menos 4 caracteres' });
                 if (!email.includes("@")) setEmailError({ isError: true, message: 'El correo electrónico debe tener un @' });
                 if (!email.includes(".")) setEmailError({ isError: true, message: 'El correo electrónico debe tener un .' });
                 hasError = true; // Set the flag if there's an error
+            }
 
+            // Verificación de errores...
+            const userExists = await actions.checkUserExists(username, email);
+            if (userExists) {
+                setUsernameError({ isError: true, message: 'El nombre de usuario o el correo electrónico ya están registrados' });
+                return;
             }
 
             // Verificar si hay errores antes de continuar
             if (!hasError) {
-                actions.setModalRegistersuccess(true);
-                actions.signup(username, email, password, confirmPassword);
-                navigate("/");
-                handleCloseRegister();
+                const response = await actions.signup(username, email, password, confirmPassword);
+
+                // Verificar si hay un error de registro en el servidor
+                if (response.error) {
+                    if (response.error === 'user-exists') {
+                        setUsernameError({ isError: true, message: 'El nombre de usuario ya está registrado' });
+                    } else {
+                        // Manejar otros errores de registro
+                    }
+                } else {
+                    // Registro exitoso
+                    actions.setModalRegistersuccess(true);
+                    navigate("/");
+                    handleCloseRegister();
+                }
             }
         } catch (error) {
             console.error('[component.modalRegister] Error registering:\n\n', error);
