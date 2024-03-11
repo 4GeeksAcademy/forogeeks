@@ -153,7 +153,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         const data = await response.json();
                         console.log("getUserInfo")
                         console.log("[flux.getUserInfo] respuesta de routes.py userinfo]\n", data);
-                        setStore({userInfo:data})
+                        setStore({userInfo:data, profilePicture: data.profile_picture})
                         setStore({isUserLogged:true})
                         // setIsUserLogged(true);
                     } else {
