@@ -224,6 +224,36 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setTextEditorStore: (content) => {
 				setStore({ textEditorContent: content });
 			},
+
+
+			//crear categoty
+			createCategory: async (data) => {
+				const store = getStore();
+				const token = localStorage.getItem('token');
+			
+				try {
+				  const response = await axios.post(
+					`${process.env.BACKEND_URL}/api/create-category`,
+					data,
+					{
+					  headers: {
+						Authorization: `Bearer ${token}`,
+					  },
+					}
+				  );
+			
+				  if (response.ok) {
+					const newCategory = response.data;
+					setStore({ categories: [...store.categories, newCategory] }); // Update categories list
+					console.log('[flux.createCategory] Category created successfully:', newCategory);
+				  } else {
+					throw new Error('[flux.createCategory] Failed to create category');
+				  }
+				} catch (error) {
+				  console.error('[flux.createCategory] Error creating category:', error);
+				  // Handle errors appropriately (e.g., display error messages to the user)
+				}
+			  },
 			
 
 

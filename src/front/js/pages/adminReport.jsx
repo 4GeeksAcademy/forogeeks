@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState,useContext,useEffect } from "react";
 import ThreadReport from "../components/admin/threadReport.jsx";
 import { IconTicket } from "@tabler/icons-react";
+import { Context } from "../store/appContext";
+import { Categories } from "../components/Thread/categories.jsx";
 
 // ... otros imports
 
@@ -39,16 +41,26 @@ const example = [
 ];
 
 const AdminReport = ({ math }) => {
+  const { store, actions } = useContext(Context);
+  //
+
   // ... other parts of the component
 
   // State to manage the list of threads
-  const [threads, setThreads] = useState(example);
-
+  const category = store.categories
+  const [loading,setLoading]= useState(false);
   // Function to handle thread deletion
   const handleDelete = (title) => {
     const updatedThreads = threads.filter((thread) => thread.title !== title);
     setThreads(updatedThreads);
   };
+
+
+  useEffect(() => {
+    actions.getAllCategories();
+  }, []);
+
+
 
   // Render the list of threads
 
@@ -68,15 +80,7 @@ const AdminReport = ({ math }) => {
                 </tr>
               </thead>
               <tbody>
-                {threads.map((thread) => (
-                  <ThreadReport
-                    key={thread.title}
-                    title={thread.title}
-
-                    autor={thread.autor} // Add author if needed
-                    onDelete={handleDelete}
-                  />
-                ))}
+                
               </tbody>
             </table>
           </div>
@@ -104,13 +108,17 @@ const AdminReport = ({ math }) => {
             <div className="">
               <h4 className="mb-4">Lista de Categorias</h4>
             </div>
-            <ul className="list-group list-group-flush">
-              <li className="list-group-item">An item</li>
-              <li className="list-group-item">A second item</li>
-              <li className="list-group-item">A third item</li>
-              <li className="list-group-item">A fourth item</li>
-              <li className="list-group-item">And a fifth one</li>
-            </ul>
+            <div>
+            {loading ? (
+                            <LoaderCategory />
+                        ) : category.length === 0 ? (
+                            <p>No hay categorías disponibles</p>
+                        ) : (
+                            category.map((categoryItem, index) => (
+                                <Categories key={index} title={categoryItem.title} icon={categoryItem.icon} id={categoryItem.id} />
+                            ))
+                        )}
+                        </div>
           </div>
 
         </div>
