@@ -300,6 +300,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("[flux.createNewCategory] Error creating new category:", error);
 				}
+			},
+			reportThread: async (thread_id, user_id, reason) => {
+				const store = getStore();
+				const token = localStorage.getItem("token");
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/report-thread", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ thread_id, user_id, reason }),
+					});
+					if (response.ok) {
+						console.log("[flux.reportThread] Thread reported successfully\n", response);
+					} else {
+						throw new Error("[flux.reportThread] Failed to report thread");
+					}
+				} catch (error) {
+					console.error("[flux.reportThread] Error reporting thread:", error);
+				}
 			}
 
 

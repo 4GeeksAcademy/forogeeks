@@ -4,7 +4,7 @@ from flask_socketio import SocketIO, emit
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from datetime import datetime
 
-from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, ThreadComments
+from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, ThreadComments, ReportThread
 # Crear un blueprint llamado 'api'
 api = Blueprint('api', __name__)
 
@@ -215,7 +215,36 @@ def get_thread_by_id(thread_id):
     serialized_thread = thread.serialize()
     return jsonify(serialized_thread), 200
 
-# Endpoint para manejar la solicitud DELETE en '/threads/<int:thread_id>'
+# Endpoint para manejar la solicitud POST de un threadId en ReportThread
+@api.route('/report-thread', methods=['POST'])
+@jwt_required()
+def report_thread():
+    current_user = get_jwt_identity()
+    report_data = request.get_json()
+    user_id = report_data.get("user_id")
+    thread_id = report_data.get("thread_id")
+    reason = report_data.get("reason")
+
+    if reason is None:
+        return jsonify({"[routes.py/report_thread] message": "Missing required fields"}), 400
+
+    new_report = ReportThread(
+        user_id=user_id,
+        thread_id=thread_id,
+        reason=reason
+    )
+
+    db.session.add(new_report)
+    db.session.commit()
+
+    serialized_report = {
+        "id": new_report.id,
+        "user_id": new_report.user_id,
+        "thread_id": new_report.thread_id,
+        "reason": new_report.reason
+    }
+
+    return jsonify(serialized_report), 201
 
 # 🔴 CATEGORIAS ENDPOINTS 🔴
 # Endpoint para manejar la solicitud GET de categorías en '/categories'
