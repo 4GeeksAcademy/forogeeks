@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { TextEditor } from "../components/TextEditor/text-editor.jsx"
 
 // ICONS
-import { IconSend } from '@tabler/icons-react';
 import { IconArrowNarrowRight } from '@tabler/icons-react';
 
 export const CreateNewThread = () => {

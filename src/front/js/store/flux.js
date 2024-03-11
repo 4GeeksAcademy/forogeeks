@@ -36,6 +36,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			categories: [],
 			textEditorContent: "",
 			user_name: "",
+			threadComments: [],
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -265,11 +266,63 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setTextEditorStore: (content) => {
 				setStore({ textEditorContent: content });
 			},
-			
+			getThreadById: async (id) => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/thread/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getThreadById] data", data);
+						setStore({ threads: data });
+					} else {
+						throw new Error("[flux.getThreadById] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getThreadById] Error fetching threads:", error);
+				}
+			},
+			getCommentsByThread: async (id) => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/thread-comments/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getCommentsByThread] data", data);
+						setStore({ threadComments: data });
+					} else {
+						throw new Error("[flux.getCommentsByThread] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getCommentsByThread] Error fetching threads:", error);
+				}
+			},
+			createNewComment: async (content, thread_id, user_id) => {
+				const store = getStore();
+				const token = localStorage.getItem("token");
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/create-comment", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ user_id, thread_id, content }),
+					});
+					if (response.ok) {
+						console.log("[flux.createNewComment] Comment created successfully\n", response);
+					} else {
+						throw new Error("[flux.createNewComment] Failed to create new comment");
+					}
+				} catch (error) {
+					console.error("[flux.createNewComment] Error creating new comment:", error);
+				}
+			}
 
 
-
-		
 		},
 	};
 };
