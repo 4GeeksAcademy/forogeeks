@@ -51,15 +51,15 @@ export const InsideThread = () => {
                             <div className="d-flex justify-content-end p-3 text-muted">
                                 {store.isUserLogged ? (
                                     <div className="d-flex gap-2">
-                                    <a onClick={handleReportThread} className="d-flex align-items-center text-muted" href="#comentar" style={{ textDecoration: "none", color: "currentColor" }} >
-                                        <IconFlag size={20} stroke={1.5} style={{ transition: "color 0.3s" }} />
-                                        <span>Reportar</span>
-                                    </a>
-                                    <a className="d-flex align-items-center text-muted" href="#comentar" style={{ textDecoration: "none", color: "currentColor" }}>
-                                        <IconSquareRoundedPlus size={20} stroke={1.5} />
-                                        <span>Comentar</span>
-                                    </a>
-                                </div>
+                                        <a onClick={handleReportThread} className="d-flex align-items-center text-muted" href="#comentar" style={{ textDecoration: "none", color: "currentColor" }} >
+                                            <IconFlag size={20} stroke={1.5} style={{ transition: "color 0.3s" }} />
+                                            <span>Reportar</span>
+                                        </a>
+                                        <a className="d-flex align-items-center text-muted" href="#comentar" style={{ textDecoration: "none", color: "currentColor" }}>
+                                            <IconSquareRoundedPlus size={20} stroke={1.5} />
+                                            <span>Comentar</span>
+                                        </a>
+                                    </div>
                                 ) : (
                                     <span>Tienes que iniciar sesión para poder comentar</span>
                                 )}

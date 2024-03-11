@@ -23,8 +23,8 @@ export const Home = () => {
 	useEffect(() => {
 		actions.clearThreads();
 		actions.getAllCategories().then(() => {
-            setLoading(false); // Establecer loading como false una vez que getAllCategories se complete
-        });
+			setLoading(false); // Establecer loading como false una vez que getAllCategories se complete
+		});
 
 		const handleCloseSuccessModal = () => {
 			actions.setModalRegistersuccess(true);
@@ -55,14 +55,14 @@ export const Home = () => {
 							<h4 className="mb-4">Categorías</h4>
 						</div>
 						{loading ? (
-                            <LoaderCategory />
-                        ) : category.length === 0 ? (
-                            <p>No hay categorías disponibles</p>
-                        ) : (
-                            category.map((categoryItem, index) => (
-                                <Categories key={index} title={categoryItem.title} icon={categoryItem.icon} id={categoryItem.id} />
-                            ))
-                        )}
+							<LoaderCategory />
+						) : category.length === 0 ? (
+							<p>No hay categorías disponibles</p>
+						) : (
+							category.map((categoryItem, index) => (
+								<Categories key={index} title={categoryItem.title} icon={categoryItem.icon} id={categoryItem.id} />
+							))
+						)}
 
 					</div>
 				</div>

@@ -48,14 +48,10 @@ export const CreateNewThread = () => {
         if (!hasErrors) {
             console.log("[createNewThread] Create new thread", title, content, category);
             actions.createNewThread(title, content, category);
-<<<<<<< HEAD
-            navigate('/'); 
-=======
-            console.log("handleCreateThread" + title, content, category)
->>>>>>> 2d2dce186af837f1b2f4b1beb204fe00b5d77a56
+            navigate('/');
         }
     }
-    
+
 
     useEffect(() => {
         actions.getAllCategories()
@@ -70,7 +66,7 @@ export const CreateNewThread = () => {
                                 <div className="d-flex justify-content-end mb-3 mt-3">
                                     <button type="submit" className="btn btn-primary rounded-5 text-white" onClick={handleCreateThread}>
                                         Crear hilo{" "}
-                                    <IconArrowNarrowRight stroke={2} size={18} color="white"/></button>
+                                        <IconArrowNarrowRight stroke={2} size={18} color="white" /></button>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="category" className="form-label">Category</label>
