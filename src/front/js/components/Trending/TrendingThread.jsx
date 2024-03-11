@@ -10,7 +10,7 @@ import { IconMessage } from "@tabler/icons-react";
 import { IconHeartFilled } from "@tabler/icons-react";
 import { IconMessages } from "@tabler/icons-react";
 
-const TrendingThreads = ({ title, likes, number_of_comments, autor, date, category, id }) => {
+const TrendingThreads = ({ title,  number_of_comments, date, category, id }) => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {

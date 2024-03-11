@@ -33,7 +33,7 @@ const AsideTrending = () => {
 								key={index}
 								title={thread.title}
 								likes={thread.likes}
-								number_of_comments={thread.number_of_comments}
+								number_of_comments={thread?.thread_comments?.length}
 								autor={thread.autor}
 								date={thread.date}
 								category={thread.category}
