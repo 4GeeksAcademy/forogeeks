@@ -41,19 +41,24 @@ export const Threads = ({ match }) => {
 					<div className="shadow-sm rounded-3 mb-4 p-3 bg-white">
 						<h3>{formattedCategory} </h3>
 						<hr className="hr"></hr>
+					
 						{threads.length === 0 && !loading ? <p>No hay hilos en esta categoría</p> : (
 							loading ? <LoaderCategory /> : (
 								threads.map((thread, index) => (
 									<IndividualThreadExternalView
 										key={index}
-										autor={thread.autor}
+										id={thread.id}
+										autor={thread?.user?.user_name}
 										title={thread.title}
 										content={thread.content}
 										date={thread.date}
+										category={category}
+										number_of_comments={thread?.thread_comments?.length}
 									/>
 								))
 							)
 						)}
+
 					</div>
 				</div>
 			</div>

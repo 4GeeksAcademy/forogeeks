@@ -224,23 +224,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setTextEditorStore: (content) => {
 				setStore({ textEditorContent: content });
 			},
-			getUserNameById: async (id) => {
-				const store = getStore();
-				try {
-					const response = await fetch(process.env.BACKEND_URL + `/api/user/${id}`, {
-						method: "GET",
-					});
-					if (response.ok) {
-						const data = await response.json();
-						console.log("[flux.getUserNameById] data", data);
-						return data;
-					} else {
-						throw new Error("[flux.getUserNameById] Failed to fetch user");
-					}
-				} catch (error) {
-					console.error("[flux.getUserNameById] Error fetching user:", error);
-				}
-			}
+			
 
 
 

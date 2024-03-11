@@ -72,6 +72,10 @@ class Threads(db.Model):
             "title": self.title,
             "user_id": self.user_id,
             "user": self.user.serialize(),
+            "category_id": self.category_id,
+            "content": self.content,
+            "thread_comments": [x.serialize() for x in self.thread_comments],
+            "date": self.date,
             # do not serialize the password, its a security breach
         }
 # 6. ThreadComments
