@@ -28,7 +28,7 @@ const Layout = () => {
 	return (
 		<BrowserRouter basename={basename}>
 			<Navbar />
-			<div className="main-container" style={{ marginTop: "4rem" }}>
+			<div className="main-container" style={{ marginTop: "4rem"}}>
 				<Routes>
 					<Route element={<Home />} path="/" />
 					<Route element={<Profile />} path="/profile" />

@@ -271,3 +271,11 @@ def create_category():
 
 # Endpoint para manejar la solicitud GET en '/messages'
 
+# 🟣 TRENDING 🟣
+# Endpoint GET para los thread con mas comentarios
+@api.route('/trending', methods=['GET'])
+def get_trending():
+    threads = Threads.query.all()
+    threads.sort(key=lambda thread: len(thread.thread_comments), reverse=True)
+    serialized_threads = list(map(lambda thread: thread.serialize(), threads))
+    return jsonify(serialized_threads), 200
