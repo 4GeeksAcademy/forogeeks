@@ -48,7 +48,7 @@ export const Navbar = () => {
 	}
 
 	useEffect(() => {
-		if (token) {
+		if (store.isUserLogged) {
 			actions.getUserInfo();
 		}
 

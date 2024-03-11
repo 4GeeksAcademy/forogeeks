@@ -84,7 +84,7 @@ def register():
     # Devolver una respuesta con un código de estado 201 (Created)
     return jsonify(response_body), 201
 
-# 🟢 USER LOGIN 🟢
+# 🟢 USER  🟢
 # Endpoint para manejar la solicitud POST en '/login'
 @api.route('/login', methods=['POST'])
 def login():
@@ -137,6 +137,14 @@ def userinfo():
     except Exception as e:
         # Manejar cualquier otro error que pueda ocurrir
         return jsonify({"error": str(e)}), 500
+
+# Endpoint para obtener el username a traves de user_id
+@api.route('/username/<int:user_id>', methods=['GET'])
+def get_username(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    if user is None:
+        return jsonify({"message": "User not found"}), 404
+    return jsonify({"username": user.user_name}), 200
 
 # 🔵 THREADS ENDPOINTS 🔵
 # Endpoint para manejar la solicitud POST en '/create-thread'
@@ -191,12 +199,14 @@ def get_threads():
 # Endpoint para manejar la solicitud GET en '/categories'
 @api.route('/threads/<string:category>', methods=['GET'])
 def get_threads_by_category(category):
-    category = Category.query.filter_by(name=category).first()
+    category = Category.query.filter_by(title=category).first()
     if category is None:
         return jsonify({"message": "Category not found"}), 404
     threads = Threads.query.filter_by(category_id=category.id).all()
     serialized_threads = list(map(lambda thread: thread.serialize(), threads))
     return jsonify(serialized_threads), 200
+
+# Endpoint para manejar la solicitud DELETE en '/threads/<int:thread_id>'
 
 # 🔴 CATEGORIAS ENDPOINTS 🔴
 # Endpoint para manejar la solicitud GET de categorías en '/categories'
@@ -232,5 +242,32 @@ def create_category():
 
     return jsonify(serialized_category), 201
 
+# Endpoint para manejar la solicitud DELETE en '/categories/<int:category_id>'
+
+# ⚪️ ADMIN REPORTS ⚪️
+# Endpoint para manejar la solicitud GET en '/admin-reports'
+
+# Endpoint para manejar la solicitud DELETE en '/admin-reports/<int:report_id>'
+
+# 🟠 THREAT LIKES ENDPOINTS 🟠
+# Endpoint para manejar la solicitud POST en '/like-thread'
+
 # 🟣 FAVORITE THREADS ENDPOINTS 🟣
 # Endpoint para manejar la solicitud POST en '/favorite-thread'
+
+# 🟤 THREAD COMMENTS ENDPOINTS 🟤
+# Endpoint para manejar la solicitud POST en '/create-comment'
+
+# Endpoint para manejar la solicitud GET en '/comments'
+
+# Endpoint para manejar la solicitud GET en '/comments/<int:thread_id>'
+
+# Endpoint para manejar la solicitud GET en '/comments/<int:comment_id>'
+
+# Endpoint para manejar la solicitud DELETE en '/comments/<int:comment_id>'
+
+# 🟢 MESSAGES ENDPOINTS 🟢
+# Endpoint para manejar la solicitud POST en '/send-message'
+
+# Endpoint para manejar la solicitud GET en '/messages'
+

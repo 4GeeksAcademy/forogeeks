@@ -33,15 +33,15 @@ export const CreateNewThread = () => {
 
         if (title.trim() === "") {
             hasErrors = true;
-            setTitleError({ error: true, message: "Title is required" });
+            setTitleError({ error: true, message: "El título es obligatorio" });
         }
         if (category === "") {
             hasErrors = true;
-            setCategoryError({ error: true, message: "Category is required" });
+            setCategoryError({ error: true, message: "La categoría es obligatoria" });
         }
         if (content.trim() === "") {
             hasErrors = true;
-            setContentError({ error: true, message: "Content is required" });
+            setContentError({ error: true, message: "El contenido es obligatorio" });
         }
         if (!hasErrors) {
             console.log("[createNewThread] Create new thread", title, content, category);
@@ -58,9 +58,9 @@ export const CreateNewThread = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
-                        <div className="shadow-sm rounded-3 mb-4 py-1 px-3">
+                        <div className="shadow-sm rounded-3 mb-4 py-1 px-3 bg-white">
                             <form>
-                                <div className="d-flex justify-content-end mb-3">
+                                <div className="d-flex justify-content-end mb-3 mt-3">
                                     <button type="submit" className="btn btn-primary rounded-5 text-white" onClick={handleCreateThread}>
                                         Crear hilo{" "}
                                     <IconArrowNarrowRight stroke={2} size={18} color="white"/></button>

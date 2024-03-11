@@ -35,6 +35,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			threads: [],
 			categories: [],
 			textEditorContent: "",
+			user_name: "",
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -181,22 +182,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("[flux.getAllThreads] Error fetching threads:", error);
 				}
 			},
-			getThreadByCategory: async (category) => {
+			getThreadsByCategory: async (category) => {
 				const store = getStore();
+				const actions = getActions();
 				try {
 					const response = await fetch(process.env.BACKEND_URL + `/api/threads/${category}`, {
 						method: "GET",
 					});
 					if (response.ok) {
 						const data = await response.json();
-						console.log("[flux.getThreadByCategory] data", data);
+						console.log("[flux.getThreadByCategory] Datos de cada thread: ", data);
 						setStore({ threads: data });
+						console.log("[flux.getThreadByCategory] user_name", user_name);
 					} else {
 						throw new Error("[flux.getThreadByCategory] Failed to fetch threads");
 					}
 				} catch (error) {
 					console.error("[flux.getThreadByCategory] Error fetching threads:", error);
 				}
+			},
+			clearThreads: () => {
+				setStore({ threads: [] });
 			},
 			getAllCategories: async () => {
 				const store = getStore();
@@ -217,7 +223,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			setTextEditorStore: (content) => {
 				setStore({ textEditorContent: content });
+			},
+			getUserNameById: async (id) => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/user/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getUserNameById] data", data);
+						return data;
+					} else {
+						throw new Error("[flux.getUserNameById] Failed to fetch user");
+					}
+				} catch (error) {
+					console.error("[flux.getUserNameById] Error fetching user:", error);
+				}
 			}
+
 
 
 		

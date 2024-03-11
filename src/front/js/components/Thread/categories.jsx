@@ -3,11 +3,11 @@ import { Context } from "../../store/appContext";
 import { Link } from "react-router-dom";
 import Icon from "../icons/icon.jsx"
 
-export const Categories = ({ title, icon }) => {
+export const Categories = ({ title, icon, id }) => {
     const { sotre, actions } = useContext(Context);
 
     useEffect(() => {
-        actions.getAllCategories();
+        // actions.getAllCategories();
     }, []);
 
     // Convertir el nombre del icono en componente de icono utilizando createElement

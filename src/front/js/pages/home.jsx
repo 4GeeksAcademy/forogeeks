@@ -1,9 +1,8 @@
-import React, { useContext, createElement, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 
 import AsideTrending from "../components/trending.jsx";
 import AsideFourGeeks from "../components/4geeks.jsx";
-import { TextEditor } from "../components/TextEditor/text-editor.jsx";
 import SuccessModal from "../components/Modal/ModalRegisterSuccessFull.jsx";
 import { Categories } from "../components/Thread/categories.jsx";
 import { Link } from "react-router-dom";
@@ -17,10 +16,15 @@ export const Home = () => {
 	const { store, actions } = useContext(Context);
 	const showSuccessModal = store.modalRegistersuccess;
 	const category = store.categories;
+	const [loading, setLoading] = useState(true);
+
 
 	// useEffect para manejar el cierre del modal cuando modalRegistersuccess cambia
 	useEffect(() => {
-		actions.getAllCategories();
+		actions.clearThreads();
+		actions.getAllCategories().then(() => {
+            setLoading(false); // Establecer loading como false una vez que getAllCategories se complete
+        });
 
 		const handleCloseSuccessModal = () => {
 			actions.setModalRegistersuccess(true);
@@ -46,15 +50,19 @@ export const Home = () => {
 				</div> */}
 				<div className="col-md-8 mb-3 mb-md-0">
 					{/* CATEGORIAS */}
-					<div className="shadow-sm rounded-3 mb-4 p-3">
+					<div className="shadow-sm rounded-3 mb-4 p-3 bg-white">
 						<div className="">
 							<h4 className="mb-4">Categorías</h4>
 						</div>
-						{!category ? <LoaderCategory /> : (
-							category.map((category, index) => (
-								<Categories key={index} title={category.title} icon={category.icon} />
-							))
-						)}
+						{loading ? (
+                            <LoaderCategory />
+                        ) : category.length === 0 ? (
+                            <p>No hay categorías disponibles</p>
+                        ) : (
+                            category.map((categoryItem, index) => (
+                                <Categories key={index} title={categoryItem.title} icon={categoryItem.icon} id={categoryItem.id} />
+                            ))
+                        )}
 
 					</div>
 				</div>

@@ -32,13 +32,13 @@ const Layout = () => {
 				<Routes>
 					<Route element={<Home />} path="/" />
 					<Route element={<Profile />} path="/profile" />
-					<Route element={<Threads />} path="/threads/:category" />
 					<Route element={<CreateNewThread />} path="/nuevo-hilo" />
 					<Route element={<Chat />} path="/chat" />
 					<Route
 						element={<ChatViewMobile />}
 						path="/chat-view-mobile"
 					/>
+					<Route element={<Threads />} path="/threads/:category" />
 					<Route
 						element={<InsideThread />}
 						path="/threads/:category/:id"
