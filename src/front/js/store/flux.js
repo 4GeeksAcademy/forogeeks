@@ -103,7 +103,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ token: data.token, logError: null });
 					getActions().getUserInfo();
 				} catch (error) {
-					throw new Error(error.message);
+					console.error("[flux.login] login-error:", error);
 				}
 			},
 			// Función para cerrar sesión
