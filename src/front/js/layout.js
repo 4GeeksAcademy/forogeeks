@@ -1,6 +1,7 @@
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React, { useEffect, useContext } from "react";
+import { Context } from "./store/appContext.js";
 
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 // IMPORT PAGES
 import { Home } from "./pages/home.jsx";
 import { Threads } from "./pages/threads.jsx";
@@ -24,6 +25,12 @@ const Layout = () => {
 
   // if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "")
   // 	return <BackendURL />;
+
+  const { store, actions } = useContext(Context);
+
+    useEffect(() => {
+        actions.syncTokenFromSessionStore();
+    }, []);
 
 	return (
 		<BrowserRouter basename={basename}>

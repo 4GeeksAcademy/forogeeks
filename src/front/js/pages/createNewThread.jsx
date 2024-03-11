@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useContext, useState } from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from 'react-router-dom';
 
 // COMPONENTS
 import { TextEditor } from "../components/TextEditor/text-editor.jsx"
@@ -20,6 +21,8 @@ export const CreateNewThread = () => {
     const [titleError, setTitleError] = useState({ error: false, message: "" });
     const [contentError, setContentError] = useState({ error: false, message: "" });
     const [categoryError, setCategoryError] = useState({ error: false, message: "" });
+
+    const navigate = useNavigate();
 
     const handleCreateThread = (e) => {
         e.preventDefault();
@@ -46,6 +49,7 @@ export const CreateNewThread = () => {
         if (!hasErrors) {
             console.log("[createNewThread] Create new thread", title, content, category);
             actions.createNewThread(title, content, category);
+            navigate('/'); 
         }
     }
     
