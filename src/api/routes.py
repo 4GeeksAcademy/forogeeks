@@ -66,7 +66,8 @@ def register():
     new_user = User(
         email=data["email"],
         password=data["password"],
-        user_name=data["username"]
+        user_name=data["username"],
+        profile_picture=data.get("profile_picture", "https://www.w3schools.com/howto/img_avatar.png")
     )
 
     # Agregar el usuario a la base de datos

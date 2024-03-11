@@ -58,14 +58,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			// Función para registrar un usuario
-			signup: async (username, email, password, confirm_password) => {
+			signup: async (username, email, password, confirm_password, profilePicture) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/register", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
 						},
-						body: JSON.stringify({ username, email, password, confirm_password }),
+						body: JSON.stringify({ username, email, password, confirm_password, profile_picture: profilePicture }),
 					});
 			
 					if (!response.ok) {
@@ -80,7 +80,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					return { error: error.message }; // Devuelve el error del servidor
 				}
-			},
+			},			
 			
 
 			// Función para iniciar sesión de usuario

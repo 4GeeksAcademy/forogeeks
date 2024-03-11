@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Context } from "../../store/appContext";
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +12,7 @@ import { IconBrandFacebook, IconBrandGithub, IconBrandGoogle } from "@tabler/ico
 import { IconMail } from '@tabler/icons-react';
 import { IconLock } from '@tabler/icons-react';
 import { IconUser } from '@tabler/icons-react';
-import { has } from "immutable";
+
 
 export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
     const { store, actions } = useContext(Context);
@@ -21,7 +20,7 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
+    
     // Gestion de errores
     const [usernameError, setUsernameError] = useState({ isError: false, message: '' });
     const [emailError, setEmailError] = useState({ isError: false, message: '' });
