@@ -74,16 +74,6 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0  # avoid cache memory
     return response
 
-
-@app.route('/messages', methods=['POST'])
-def handle_message():
-    # Handle the logic to save the received message
-    data = request.json
-    print("Received message:", data)
-    # Here you can save the message to the database or perform any other necessary action
-    return jsonify({"message": "Message received successfully"}), 200
-
-
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
