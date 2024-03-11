@@ -264,9 +264,11 @@ def create_comment():
     thread_id = comment_data.get("thread_id")
     content = comment_data.get("content")
 
+    print(comment_data)
     if content is None:
         return jsonify({"[routes.py/create_comment] message": "Missing required fields"}), 400
-    if content is len(content) < 3:
+        
+    if len(content) < 3:
         return jsonify({"[routes.py/create_comment] message": "Content must be at least 3 characters"}), 400
 
     new_comment = ThreadComments(
@@ -293,6 +295,14 @@ def get_comments_by_thread_id(thread_id):
     comments = ThreadComments.query.filter_by(thread_id=thread_id).all()
     serialized_comments = list(map(lambda comment: comment.serialize(), comments))
     return jsonify(serialized_comments), 200
+
+# Endpoint para manejar la solicitud GET en '/comments'
+@api.route('/comments', methods=['GET'])
+def get_comments():
+    comments = ThreadComments.query.all()
+    serialized_comments = list(map(lambda comment: comment.serialize(), comments))
+    return jsonify(serialized_comments), 200
+
 
 # ⚪️ ADMIN REPORTS ⚪️
 # Endpoint para manejar la solicitud GET en '/admin-reports'

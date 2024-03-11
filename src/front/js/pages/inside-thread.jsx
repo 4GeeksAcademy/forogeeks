@@ -15,15 +15,13 @@ export const InsideThread = () => {
     const {id} = useParams();
     const thread = store.threads
     const comments = store.threadComments
-    // const content = store.textEditorStore;
+    const content = store.textEditorContent;
     const userInfo = store.userInfo;
 
 
     const handleCreateComment = (e) => {
         e.preventDefault();
-        console.log("comentario enviado", store.textEditorStore);
-        actions.createNewComment(store.textEditorStore, userInfo.id , thread.id);
-        console.log("handleCreateComment" + comments ,userInfo.id , thread.id)
+        actions.createNewComment(content, thread.id,  userInfo.id );
     }
     
     useEffect(() => {
