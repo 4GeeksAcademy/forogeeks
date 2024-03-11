@@ -1,9 +1,14 @@
 import React, { useState, useContext } from "react";
 import { ModalRegister } from "./modalRegister.jsx";
 import { Context } from "../../store/appContext";
-import { IconBrandFacebook, IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { Modal, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom"; // Importar useNavigate de React Router
+import { useNavigate } from "react-router-dom"; // Importar useNavigate de React 
+
+// ICONS
+import { IconBrandFacebook, IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
+import { IconMail } from '@tabler/icons-react';
+import { IconLock } from '@tabler/icons-react';
+import { IconUser } from '@tabler/icons-react';
 
 export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
     const { actions, store } = useContext(Context);
@@ -14,86 +19,144 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
     const handleShowRegister = () => setShowRegister(true);
     const navigate = useNavigate(); // Obtener la función de navegación
 
+    // Verificar parametros de inicio de sesión
+    const [emailError, setEmailError] = useState({ isError: false, message: "" });
+    const [passwordError, setPasswordError] = useState({ isError: false, message: "" });
+
     const handleLogin = async (e) => {
         e.preventDefault();
+    
         try {
-            const data = await actions.login(email, password);
-            // Si el inicio de sesión es exitoso, navegar a la página de perfil
-            navigate("/profile");
-            // Cerrar el modal después de la redirección
-            handleCloseLogin();
+            setEmailError({ isError: false, message: "" });
+            setPasswordError({ isError: false, message: "" });
+    
+            let hasError = false; // Flag para verificar si hay errores
+    
+            // Verificar si el correo electrónico es válido
+            if (email === "") {
+                setEmailError({ isError: true, message: "El correo electrónico es requerido" });
+                hasError = true; // Set the flag if there's an error
+            }
+            if (password === "") {
+                setPasswordError({ isError: true, message: "La contraseña es requerida" });
+                hasError = true; // Set the flag if there's an error
+            }
+    
+            if (!hasError) {
+                actions.login(email, password)
+                
+                // Si el inicio de sesión es exitoso, navegar a la página principal
+                navigate("/");
+                
+                // Cerrar el modal después de la redirección
+                handleCloseLogin();
+                // No es recomendable recargar la página aquí, ya que el redireccionamiento ya se encarga de cargar la nueva página.
+            }
         } catch (error) {
-            console.error("Error during login:", error);
+            console.error("Error durante el inicio de sesión:", error);
+            // Manejar errores durante el inicio de sesión, por ejemplo, mostrar un mensaje de error en la interfaz de usuario.
         }
     };
-
-    const handleLogout = () => {
-        // Llamar a la función de logout desde las acciones
-        actions.logout();
-        // Cerrar el modal de inicio de sesión
-        handleCloseLogin();
-    };
+    
 
     return (
         <>
-            <Modal className="Modal col-sm" show={showLogin} onHide={handleCloseLogin}>
-                <Modal.Header closeButton className="ModalHeader"> </Modal.Header>
-                <Modal.Body className="ModalBody col-sm col-md">
-                    <div className="ContentBody m-auto p-5 col-sm col-md">
-                        <div className="ContentBody d-flex m-auto col-sm col-md">
-                            <h3>Sign Up</h3>
-                        </div>
-                        <div className="DivForm m-auto col-sm col-md">
-                            <form onSubmit={handleLogin} className="Form m-auto">
-                                <div className="group mt-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-mail" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
-                                        <path d="M3 7l9 6l9 -6" />
-                                    </svg>
-                                    <input className="inputSignUpandRegister form-control" type="email" placeholder="user123@gmail.com" onChange={(e) => setEmail(e.target.value)} id="inputEmailLogin" aria-describedby="emailHelp" />
-                                </div>
-                                <div className="group mt-4">
-                                    <svg stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="icon">
-                                        <path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" strokeLinejoin="round" strokeLinecap="round"></path>
-                                    </svg>
-                                    <input className="inputSignUpandRegister" type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} id="inputPasswordLogin" />
-                                </div>
-                                <div className="forget p-t-12 mt-5">
-                                    <span className="txt1 col-1"> Did you forget your &nbsp; <a className="txt2 col-4" href="#"> Username and Password?</a> </span>
-                                </div>
-                                <div className="text-center p-t-136 mt-2 d-flex flex-column justify-content-between">
-                                    <span>or continue with </span>
-                                    <a className="txt2" href="#">
-                                        <div className="IconsModalLogin d-flex justify-content-between p-3">
-                                            <span className="IconGoogle"><IconBrandGoogle className="Google m-auto" /></span>
-                                            <span className="IconGithub"><IconBrandGithub /></span>
-                                            <span className="IconFacebook"><IconBrandFacebook /></span>
+            <Modal className="background-modal" show={showLogin} onHide={handleCloseLogin}>
+                <Modal.Header closeButton className="ModalHeader">  </Modal.Header>
+                <Modal.Body className="ModalBody p-0">
+
+                    {/* TITULO MODAL LOGIN */}
+                    <div className="ContentBody container d-flex flex-column justifycontent-center">
+
+                        <div className="DivForm row">
+
+                            <div className="group p-0">
+
+                                <form className="" onSubmit={handleLogin} >
+                                    <h3 className="titleR d-flex align-items-center mt-3">Iniciar sesión</h3>
+
+                                    <div className="d-flex justifycontent-center flex-column">
+                                        {/* INPUT EMAIL */}
+                                        <div className="group mt-2 ">
+                                            <IconMail stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
+                                            <input className="inputSignUpandRegister " type="email" placeholder="Correo electrónico" onChange={(e) => setEmail(e.target.value)} id="inputEmailLogin" aria-describedby="emailHelp" />
                                         </div>
-                                    </a>
-                                </div>
-                                <div className="text-center p-t-136 mt-2.3">
-                                    <span>Don`t have an account yet? </span>
-                                    <a className="txt2" href="#" onClick={() => { handleShowRegister(); handleCloseLogin(); }} >
-                                        Register for free
-                                    </a>
-                                </div>
-                                <button type="submit" className="ButtonModal m-auto mt-5">
-                                    <span className="m-auto">Sign up</span>
-                                    <div className="arrow-wrapper">
-                                        <div className="arrow"></div>
+                                        {emailError.isError && <span className="small" style={{ color: "red" }}>{emailError.message}</span>}
+
+                                        {/* INPUT PASSWORD */}
+                                        <div className="group mt-3 w-100">
+                                            <IconLock stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
+                                            <input className="inputSignUpandRegister" type="password" placeholder="Contraseña" onChange={(e) => setPassword(e.target.value)} id="inputPasswordLogin" />
+                                        </div>
+                                        {passwordError.isError && <span className="small" style={{ color: "red" }}>{passwordError.message}</span>}
+
+                                        {/* FORGOT PASSWORD */}
+                                        <div className="m-auto mt-2">
+                                            <span className="text-muted small">¿Olvidaste tu{" "}<a className="txt2 col-4" href="#" style={{ textDecoration: "none" }}>contraseña</a>?</span>
+
+                                        </div>
+
+                                        {/* BUTTON LOGIN */}
+                                        <button type="submit" className="buttonModal w-100 m-auto mt-4 ">
+                                            <span className="m-auto">Iniciar sesión</span>
+                                            <div className="arrow-wrapper">
+                                                <div className="arrow"></div>
+                                            </div>
+                                        </button>
+
+                                        {/* FORMAS DE SIGN IN */}
+                                        <div className="text-center mt-3 d-flex flex-column justify-content-between">
+                                            <div className="text-center mt-2 d-flex align-items-center justify-content-between">
+                                                <div className="border-top flex-grow-1 mx-2"></div>
+                                                <span className="mx-2 text-muted">o</span>
+                                                <div className="border-top flex-grow-1 mx-2"></div>
+                                            </div>
+
+
+                                            {/* INICIA CON GITHUB */}
+
+                                            <button type="submit" className=" w-100 m-auto mt-4 mb-3 btn btn-dark rounded-4">
+                                                <span className="IconGithub me-2"><IconBrandGithub /></span>
+                                                Inicia con GitHub
+                                                <div className="arrow-wrapper">
+                                                    <div className="arrow"></div>
+                                                </div>
+                                            </button>
+
+                                        </div>
+
+                                        {/* REGISTER */}
+                                        <div className="text-center mt-2 mb-4 px-2">
+                                            <span>¿Aún no tienes una cuenta? </span>
+                                            <a className="" style={{ textDecoration: "none" }} href="#" onClick={() => { handleShowRegister(); handleCloseLogin(); }} >
+                                                Regístrate gratis
+                                            </a>
+
+                                        </div>
+
+
+
                                     </div>
-                                </button>
-                            </form>
+
+
+
+                                </form>
+
+
+                            </div>
+
                         </div>
+
                     </div>
+
+
+
+
+
+
+
                 </Modal.Body>
-                <Modal.Footer>
-                    {/* Botón para cerrar sesión */}
 
-                    <Button variant="outline-secondary" onClick={handleLogout}>Logout</Button>
-
-                </Modal.Footer>
             </Modal>
             {/* Modal de registro */}
             < ModalRegister showRegister={showRegister} handleCloseRegister={handleCloseRegister} />

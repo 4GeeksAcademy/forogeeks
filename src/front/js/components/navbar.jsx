@@ -14,60 +14,44 @@ import { IconSettings2 } from "@tabler/icons-react";
 import { IconLogout } from "@tabler/icons-react";
 import { IconBookmark } from "@tabler/icons-react";
 import { IconSearch } from "@tabler/icons-react";
-import { IconBellFilled } from "@tabler/icons-react";
+import { IconBell } from "@tabler/icons-react";
 import { IconCircleDotted } from "@tabler/icons-react";
 import { IconMessageCircle2Filled } from "@tabler/icons-react";
+import { IconPencilPlus } from '@tabler/icons-react';
 import Icon from "./icons/icon.jsx";
 
+
+const reportedThreadsExample = [{
+	name
+}]
+
 export const Navbar = () => {
-    const { store, actions } = useContext(Context);
+	const { store, actions } = useContext(Context);
 	const token = localStorage.getItem("token");
-	const backendUrl = store.backendUrl
+	const userInfo = store.userInfo
 
 	//Login
-	const [showLogin, setShowLogin] = useState(false); const handleCloseLogin = () => setShowLogin(false); const handleShowLogin = () => setShowLogin(true);
+	const [showLogin, setShowLogin] = useState(false);
+	const handleCloseLogin = () => setShowLogin(false);
+	const handleShowLogin = () => setShowLogin(true);
 
 	//Register
 	const [showRegister, setShowRegister] = useState(false); const handleCloseRegister = () => setShowRegister(false); const handleShowRegister = () => setShowRegister(true);
 
-	// Temporal para el modal
-	//const isUserLogged = true;
-
-	// Definir el estado para almacenar la información del usuario
-	const [userInfo, setUserInfo] = useState(null);
-
-	// Definir el estado para controlar si el usuario está autenticado o no
-	const [isUserLogged, setIsUserLogged] = useState(false);
-
-	// Función para obtener la información del usuario
-	const getUserInfo = async () => {
-		try {
-			const response = await fetch(`${backendUrl}/api/userinfo`, {
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${token}` // Reemplazar 'token' con el token JWT del usuario
-				}
-			});
-
-			if (response.ok) {
-				const data = await response.json();
-				setUserInfo(data); // Almacenar la información del usuario en el estado
-				console.log(data)
-				setIsUserLogged(true)
-			} else {
-				throw new Error("Failed to fetch user info");
-			}
-		} catch (error) {
-			console.error("Error fetching user info:", error);
-			console.log(token)
-		}
-	};
-
 	//Raul
-	let [isMovileSize, setIsMobileSize] = useState(false);
+	const [isMovileSize, setIsMobileSize] = useState(false);
+
+	const handleLogout = (e) => {
+		e.preventDefault()
+		actions.logout()
+		window.location.reload();
+	}
 
 	useEffect(() => {
-		getUserInfo();
+		if (store.isUserLogged) {
+			actions.getUserInfo();
+		}
+
 		const handleResize = () => {
 			setIsMobileSize(window.innerWidth < 768);
 		};
@@ -84,10 +68,10 @@ export const Navbar = () => {
 				style={{ lineHeight: "1" }}>
 				<div className="container-fluid w-100 m-0 d-flex justify-content-between">
 					<Link to="/" style={{ textDecoration: "none" }}>
-						<a className="navbar-brand p-0 d-flex align-items-center">
+						<div className="navbar-brand p-0 d-flex align-items-center">
 							<Icon name="LOGO" size="40" />
 							<span className=" align-items-center">ForoGeeks</span>
-						</a>
+						</div>
 					</Link>
 
 					<button
@@ -130,11 +114,12 @@ export const Navbar = () => {
 
 						{/* NButton Modal */}
 
-						{!isUserLogged && (
+						{!store.isUserLogged && (
 							<>
 								{isMovileSize && (
 									<div className="d-flex justify-content-center m-3 mt-3">
 										<button
+											type="button"
 											onClick={handleShowLogin}
 											className="btn btn-secondary rounded-5 p-1 px-3 m-0">
 											Iniciar sesión
@@ -145,6 +130,7 @@ export const Navbar = () => {
 								{!isMovileSize && (
 									<div className="d-flex justify-content-center ">
 										<button
+											type="button"
 											onClick={handleShowLogin}
 											className="btn btn-secondary rounded-5 px-3 m-0" style={{ padding: "3px" }}>
 											Iniciar sesión
@@ -156,20 +142,29 @@ export const Navbar = () => {
 
 
 						{/* BLOQUE NOTIFICACIONES Y USER CONFIG */}
-						{isUserLogged && (
+						{store.isUserLogged && (
 							<ul className="navbar-nav ">
+								{/* NEW THREAD */}
+								<li className="nav-item">
+									<Link to="/nuevo-hilo" style={{ textDecoration: "none", color: "currentColor" }}>
+										<div className="nav-link d-flex align-items-center" href="#">
+											<IconPencilPlus size={27} stroke={1.2} color="white" />
+											{isMovileSize && (
+												<span className="ms-2 text-white">Nuevo hilo</span>)
+												}
+										</div>
+									</Link>
+								</li>
 								{/* NOTIFICACIONES */}
 								<li className="nav-item dropdown text-white ">
-									<a
-										className="nav-link d-flex align-items-center"
-										href="#"
-										data-bs-toggle="dropdown">
-										<IconBellFilled size={30} stroke={1} />
-
+									<div className="nav-link d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+										<div className="d-flex align-items-center">
+											<IconBell size={27} stroke={1.2} color="white"/>
+										</div>
 										{isMovileSize && (
-											<span className="ms-2">Notificaciones</span>
+											<span className="ms-2 text-white">Notificaciones</span>
 										)}
-									</a>
+									</div>
 
 									<div
 										className="dropdown-menu dropdown-menu-start rounded-3 shadow-sm border-0 rounded-4 mb-3"
@@ -227,12 +222,15 @@ export const Navbar = () => {
 									<div
 										className="dropdown-menu dropdown-menu-end rounded-3 shadow-sm border-0 rounded-4 mb-3"
 										aria-labelledby="dropdownId">
-										<a className="dropdown-item" href="#">
-											<div className="d-flex gap-2 align-items-center mt-1">
-												<IconSettings2 stroke={1} />
-												Configuración
+										<Link to="/profile" style={{ textDecoration: "none", color: "currentColor" }}>
+											<div className="dropdown-item">
+												<div className="d-flex gap-2 align-items-center mt-1">
+													<IconSettings2 stroke={1} />
+													Configuración
+												</div>
 											</div>
-										</a>
+										</Link>
+
 										<a className="dropdown-item" href="#">
 											<div className="d-flex gap-2 align-items-center mt-1">
 												<IconMail stroke={1} />
@@ -264,7 +262,7 @@ export const Navbar = () => {
 										<hr
 											className="hr m-auto mt-2 mb-2"
 											style={{ width: "87%" }}></hr>
-										<a className="dropdown-item" href="#">
+										<a onClick={handleLogout} className="dropdown-item" href="#">
 											<div className="d-flex gap-2 align-items-center">
 												<IconLogout stroke={1} />
 												Salir

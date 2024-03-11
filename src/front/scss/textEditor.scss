@@ -8,3 +8,30 @@
 		border-bottom: 1px solid red;
 	}
 }
+
+// .ql-editor:focus {
+// 	border: 1px solid #80bdff !important;
+// 	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+// }
+
+.ql-editor {
+	min-height: 100px;
+	max-height: 100px;
+	width: 100%;
+	overflow-y: auto;
+	padding: 10px;
+
+	background-color: #fff;
+	color: #495057;
+	font-size: 1rem;
+	line-height: 1.5;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.ql-toolbar.ql-snow {
+	border: none;
+}
+
+.ql-container.ql-snow {
+	border: none;
+}

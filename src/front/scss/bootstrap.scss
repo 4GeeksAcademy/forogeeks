@@ -2,10 +2,15 @@
 // FONT
 //$font-family-sans-serif: 'Open Sans', sans-serif;
 
+// Define la variable de color de fondo del cuerpo
+// :root {
+// 	--bs-body-bg: #7f94aa; // Ejemplo: Gris claro
+//   }
+
 // COLORS
-$primary: #007bff;
+$primary: #007bff; // Primary en rgb (0, 123, 255)
 $secondary: #0044ff;
-$dark: #001d99;
+$dark: #404040;
 $light: #b8daff;
 $success: #138496;
 $info: #0056b3;
@@ -14,10 +19,10 @@ $danger: #ff3d00;
 $white: #ffffff;
 $black: #000000;
 $gray: #808080;
-$gray-dark: #404040;
-$gray-light: #d9d9d9;
-$gray-lighter: #f2f2f2;
-$gray-lightest: #f9f9f9;
+$graydark: #404040;
+$graylight: #d9d9d9;
+$graylighter: #f2f2f2;
+$graylightest: #f9f9f9;
 
 // SPACERS
 $spacer: 1rem !default;
