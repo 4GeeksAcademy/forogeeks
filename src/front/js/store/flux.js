@@ -1,37 +1,41 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			categories: [
-				{
-					name: "General",
-					icon: "IconMessages",
-				},
-				{
-					name: "Tecnología",
-					icon: "IconDeviceLaptop",
-				},
-				{
-					name: "Snippets de código",
-					icon: "IconCode",
-				},
-				{
-					name: "Empleo y prácticas",
-					icon: "IconNotes",
-				},
-				{
-					name: "Videojuegos",
-					icon: "IconDeviceGamepad2",
-				},
-				{
-					name: "Info / Ayuda",
-					icon: "IconHelp",
-				},
-			],
+			// categories: [
+			// 	{
+			// 		name: "General",
+			// 		icon: "IconMessages",
+			// 	},
+			// 	{
+			// 		name: "Tecnología",
+			// 		icon: "IconDeviceLaptop",
+			// 	},
+			// 	{
+			// 		name: "Snippets de código",
+			// 		icon: "IconCode",
+			// 	},
+			// 	{
+			// 		name: "Empleo y prácticas",
+			// 		icon: "IconNotes",
+			// 	},
+			// 	{
+			// 		name: "Videojuegos",
+			// 		icon: "IconDeviceGamepad2",
+			// 	},
+			// 	{
+			// 		name: "Info / Ayuda",
+			// 		icon: "IconHelp",
+			// 	},
+			// ],
 			logError: null,
 			token: "",
 			modalRegistersuccess: false,
             isUserLogged: false,
-            userInfo: ""
+            userInfo: "",
+			threads: [],
+			categories: [],
+			textEditorContent: "",
+			user_name: "",
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -97,6 +101,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 					localStorage.setItem("token", data.token); // Almacenar el token en localStorage
 					setStore({ token: data.token, logError: null });
+					getActions().getUserInfo();
 				} catch (error) {
 					throw new Error(error.message);
 				}
@@ -136,7 +141,93 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
 			
 			},
-		
+			createNewThread: async (title, content, category) => {
+				const store = getStore();
+				const token = localStorage.getItem("token");
+				const user_id = store.userInfo.id;
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/create-thread", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ user_id ,title, content, category }),
+					});
+					if (response.ok) {
+						// Si la operación es exitosa, redirigir a la página principal
+						// history.push("/");
+						console.log("[flux.createNewThread] Thread created successfully\n", response);
+					} else {
+						throw new Error("[flux.createNewThread] Failed to create new thread");
+					}
+				} catch (error) {
+					console.error("[flux.createNewThread] Error creating new thread:", error);
+				}
+			},
+			getAllThreads: async () => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/threads", {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getAllThreads] data", data);
+						setStore({ threads: data });
+					} else {
+						throw new Error("[flux.getAllThreads] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getAllThreads] Error fetching threads:", error);
+				}
+			},
+			getThreadsByCategory: async (category) => {
+				const store = getStore();
+				const actions = getActions();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/threads/${category}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getThreadByCategory] Datos de cada thread: ", data);
+						setStore({ threads: data });
+						console.log("[flux.getThreadByCategory] user_name", user_name);
+					} else {
+						throw new Error("[flux.getThreadByCategory] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getThreadByCategory] Error fetching threads:", error);
+				}
+			},
+			clearThreads: () => {
+				setStore({ threads: [] });
+			},
+			getAllCategories: async () => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/categories", {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getAllCategories] data", data);
+						setStore({ categories: data });
+					} else {
+						throw new Error("[flux.getAllCategories] Failed to fetch categories");
+					}
+				} catch (error) {
+					console.error("[flux.getAllCategories] Error fetching categories:", error);
+				}
+			},
+			setTextEditorStore: (content) => {
+				setStore({ textEditorContent: content });
+			},
+			
+
+
+
 		
 		},
 	};

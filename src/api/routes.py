@@ -2,8 +2,9 @@ from flask import Flask, jsonify, Blueprint
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from datetime import datetime
 
-from .models import db, User
+from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, ThreadComments
 # Crear un blueprint llamado 'api'
 api = Blueprint('api', __name__)
 
@@ -26,23 +27,7 @@ def handle_hello():
 
 from flask import request
 
-@api.route("/token", methods=["POST"])
-def create_token():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
-
-    # Query your database for username and password
-    user = User.query.filter_by(email=email, password=password).first()
-
-    # if user is None:
-    if user is None:
-        # The user was not found on the database
-        return jsonify({"msg": "Bad email or password"}), 401
-    
-    # Create a new token with the user id inside
-    access_token = create_access_token(identity=email)
-    return jsonify(access_token=access_token)
-
+# 🟡 USER REGISTER 🟡
 # Endpoint para manejar la solicitud POST en '/register'
 @api.route('/register', methods=['POST'])
 def register():
@@ -99,7 +84,7 @@ def register():
     # Devolver una respuesta con un código de estado 201 (Created)
     return jsonify(response_body), 201
 
-
+# 🟢 USER  🟢
 # Endpoint para manejar la solicitud POST en '/login'
 @api.route('/login', methods=['POST'])
 def login():
@@ -122,15 +107,15 @@ def login():
     # Devolver el token de acceso y el ID del usuario como JSON
     return jsonify({ "token": access_token, "user_id": user.id })
 
-
+# Endpoint para manejar la solicitud GET en '/userinfo'
 @api.route('/userinfo', methods=['GET'])
 @jwt_required()
 def userinfo():
     try:
-        # Obtener el ID del usuario autenticado del token JWT
-        userId = get_jwt_identity()
+
+        current_user = get_jwt_identity()
         # Buscar al usuario en la base de datos por su ID
-        user = User.query.filter(User.email == userId).first()
+        user = User.query.filter(User.email == current_user).first()
         print(user)
         if user:
             # Crear el cuerpo de la respuesta con un mensaje de saludo que incluye el correo electrónico del usuario
@@ -152,4 +137,145 @@ def userinfo():
     except Exception as e:
         # Manejar cualquier otro error que pueda ocurrir
         return jsonify({"error": str(e)}), 500
+
+# Endpoint para obtener el username a traves de user_id
+@api.route('/username/<int:user_id>', methods=['GET'])
+def get_username(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    if user is None:
+        return jsonify({"message": "User not found"}), 404
+    return jsonify({"username": user.user_name}), 200
+
+# 🔵 THREADS ENDPOINTS 🔵
+# Endpoint para manejar la solicitud POST en '/create-thread'
+@api.route('/create-thread', methods=['POST'])
+@jwt_required()
+def create_thread():
+    current_user = get_jwt_identity()
+
+    thread_data = request.get_json()
+    print(thread_data)
+    user_id = thread_data.get("user_id")
+    title = thread_data.get("title")
+    content = thread_data.get("content")
+    category = thread_data.get("category")
+
+    # Check if title or content are missing
+    if title is None or content is None:
+        return jsonify({"[create_thread/routes.py] message": "Missing required fields"}), 400
+    if category is None:
+        return jsonify({"[create_thread/routes.py] message": "Missing required fields"}), 400
+    if content is len(content) < 10:
+        return jsonify({"[create_thread/routes.py] message": "Content must be at least 10 characters"}), 400
     
+    # Create a new thread
+    new_thread = Threads(
+        user_id=user_id,
+        title=title,
+        content=content,
+        category_id=category,
+        )
+
+    db.session.add(new_thread)
+    db.session.commit()
+
+    serialized_thread = {
+        "id": new_thread.id,
+        "title": new_thread.title,
+        "content": new_thread.content,
+        "user_id": new_thread.user_id,
+    }
+
+    return jsonify(serialized_thread), 201
+
+# Endpoint para manejar la solicitud GET en '/threads'
+@api.route('/threads', methods=['GET'])
+def get_threads():
+    threads = Threads.query.all()
+    # Serialize the list of threads
+    serialized_threads = list(map(lambda thread: thread.serialize(), threads))
+    return jsonify(serialized_threads), 200
+
+# Endpoint para manejar la solicitud GET en '/categories'
+@api.route('/threads/<string:category>', methods=['GET'])
+def get_threads_by_category(category):
+    category = Category.query.filter_by(title=category).first()
+    if category is None:
+        return jsonify({"message": "Category not found"}), 404
+    threads = Threads.query.filter_by(category_id=category.id).all()
+    serialized_threads = list(map(lambda thread: thread.serialize(), threads))
+    return jsonify(serialized_threads), 200
+
+# Endpoint para manejar la solicitud DELETE en '/threads/<int:thread_id>'
+
+# 🔴 CATEGORIAS ENDPOINTS 🔴
+# Endpoint para manejar la solicitud GET de categorías en '/categories'
+@api.route('/categories', methods=['GET'])
+def get_categories():
+    categories = Category.query.all()
+    serialized_categories = list(map(lambda category: category.serialize(), categories))
+    return jsonify(serialized_categories), 200
+
+#Endpoints para manejar la solicitud POST en '/categories'
+@api.route('/create-category', methods=['POST'])
+def create_category():
+    data = request.get_json()
+    title = data.get("title")
+    icon = data.get("icon")
+
+    if title is None or icon is None:
+        return jsonify({"[routes.py/create_category] message": "Missing required fields"}), 400
+
+    new_category = Category(
+        title=title,
+        icon=icon
+    )
+
+    db.session.add(new_category)
+    db.session.commit()
+
+    serialized_category = {
+        "id": new_category.id,
+        "title": new_category.title,
+        "icon": new_category.icon
+    }
+
+    return jsonify(serialized_category), 201
+
+# Endpoint para manejar la solicitud DELETE en '/categories/<int:category_id>'
+
+# ⚪️ ADMIN REPORTS ⚪️
+# Endpoint para manejar la solicitud GET en '/admin-reports'
+
+# Endpoint para manejar la solicitud DELETE en '/admin-reports/<int:report_id>'
+
+# 🟠 THREAT LIKES ENDPOINTS 🟠
+# Endpoint para manejar la solicitud POST en '/like-thread'
+
+# 🟣 FAVORITE THREADS ENDPOINTS 🟣
+# Endpoint para manejar la solicitud POST en '/favorite-thread'
+
+# 🟤 THREAD COMMENTS ENDPOINTS 🟤
+# Endpoint para manejar la solicitud POST en '/create-comment'
+
+# Endpoint para manejar la solicitud GET en '/comments'
+
+# Endpoint para manejar la solicitud GET en '/comments/<int:thread_id>'
+
+# Endpoint para manejar la solicitud GET en '/comments/<int:comment_id>'
+
+# Endpoint para manejar la solicitud DELETE en '/comments/<int:comment_id>'
+
+# 🟢 MESSAGES ENDPOINTS 🟢
+# Endpoint para manejar la solicitud POST en '/send-message'
+
+# Endpoint para manejar la solicitud GET en '/messages'
+
+# 🟣 TRENDING 🟣
+# Endpoint GET para los thread con mas comentarios
+@api.route('/trending', methods=['GET'])
+def get_trending():
+    threads = Threads.query.all()
+    threads.sort(key=lambda thread: len(thread.thread_comments), reverse=True)
+    serialized_threads = list(map(lambda thread: thread.serialize(), threads))
+    return jsonify(serialized_threads), 200

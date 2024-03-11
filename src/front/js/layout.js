@@ -10,8 +10,7 @@ import injectContext from "./store/appContext";
 import { Chat } from "./pages/chat.jsx";
 import Background from "./components/Background/background.jsx";
 import { InsideThread } from "./pages/inside-thread.jsx";
-import { Add } from "./components/Thread/TextEditor/Add.jsx";
-import { Edit } from "./components/Thread/TextEditor/Edit.jsx";
+import { CreateNewThread } from "./pages/createNewThread.jsx";
 
 // IMPORT COMPONENTS
 import { Navbar } from "./components/navbar.jsx";
@@ -30,25 +29,24 @@ const Layout = () => {
 	return (
 		<BrowserRouter basename={basename}>
 			<Navbar />
-			<div className="main-container" style={{ marginTop: "4rem" }}>
+			<div className="main-container" style={{ marginTop: "4rem"}}>
 				<Routes>
 					<Route element={<Home />} path="/" />
 					<Route element={<AdminReport/>} path="/admin-report" />
 				
 					
 					<Route element={<Profile />} path="/profile" />
-					<Route element={<Threads />} path="/threads/:category" />
+					<Route element={<CreateNewThread />} path="/nuevo-hilo" />
 					<Route element={<Chat />} path="/chat" />
 					<Route
 						element={<ChatViewMobile />}
 						path="/chat-view-mobile"
 					/>
+					<Route element={<Threads />} path="/threads/:category" />
 					<Route
 						element={<InsideThread />}
 						path="/threads/:category/:id"
 					/>
-					<Route path="/Add" component={Add} />
-					<Route path="/Edit/:postID" component={Edit} />
 				</Routes>
 				<Footer />
 			</div>

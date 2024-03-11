@@ -29,7 +29,7 @@ export const InsideThread = () => {
             <div className="row">
                 <div className="col-md-12">
                     {/* CONTENEDOR DEL HILO */}
-                    <div className="shadow-sm rounded-3 mb-4 py-1 px-3">
+                    <div className="shadow-sm rounded-3 mb-4 py-1 px-3 bg-white">
                         {/* ADD COMENTARIO */}
                         <div className="col-md-12">
                             <div className="d-flex justify-content-end p-3 text-muted">

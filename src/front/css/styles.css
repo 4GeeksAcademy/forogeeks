@@ -1,5 +1,13 @@
+:root {
+  --web-bg-color: #f7fbfe;
+}
+
 html {
   scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--web-bg-color) !important;
 }
 
 .main-container {
