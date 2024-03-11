@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ThreadReport from "../components/admin/threadReport.jsx";
+import { IconTicket } from "@tabler/icons-react";
 
 // ... otros imports
 
@@ -81,20 +82,37 @@ const AdminReport = ({ math }) => {
           </div>
         </div>
         <div className="col-md-4">
-        <div className="">
-							<h4 className="mb-4">Agregar Categorias</h4>
-						</div>
-
-          <form>
-            <div>
-              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="titulo" />
+          {/* Agregar Categoria */}
+          <div>
+            <div className="">
+              <h4 className="mb-4">Agregar Categorias</h4>
             </div>
-            <div>
-              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="categoria" />
+            <form>
+              <div className="group mt-2 ">
+                <IconTicket stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
+                <input className="inputSignUpandRegister " type="text" placeholder="Title categoria" id="TitleCategoria" />
+              </div>
+              <div className="group mt-2 ">
+                <IconTicket stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
+                <input className="inputSignUpandRegister " type="text" placeholder="Categoria" id="Categoria" />
+              </div>
+              <button type="submit" className=" mt-2 btn btn-primary">Submit</button>
+            </form>
+          </div>
+          {/* Lista de Categorias */}
+          <div className="mt-2">
+            <div className="">
+              <h4 className="mb-4">Lista de Categorias</h4>
             </div>
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item">An item</li>
+              <li className="list-group-item">A second item</li>
+              <li className="list-group-item">A third item</li>
+              <li className="list-group-item">A fourth item</li>
+              <li className="list-group-item">And a fifth one</li>
+            </ul>
+          </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
         </div>
       </div>
     </div>
