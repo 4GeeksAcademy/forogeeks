@@ -3,9 +3,8 @@ import { Context } from "../../store/appContext";
 import { Link } from "react-router-dom";
 import Icon from "../icons/icon.jsx"
 
-export const Categories = ({ title, icon, id }) => {
+export const Categories = ({ title, icon, id, iconDefault = "LOGO" }) => {
     const { sotre, actions } = useContext(Context);
-
     useEffect(() => {
         // actions.getAllCategories();
     }, []);
@@ -23,7 +22,7 @@ export const Categories = ({ title, icon, id }) => {
                         color: "currentColor",
                     }}>
                     <div className="d-flex flex-row align-items-center gap-2 p-0">
-                        <Icon name={icon} size="24" stroke="1" color="currentColor" />
+                        <Icon  name={icon ? icon : iconDefault}  size="24" stroke="1" color="currentColor" />
                         <p className="p-0 m-0">{title}</p>
                     </div>
                 </Link>
