@@ -65,7 +65,14 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
                 <Modal.Header closeButton className="ModalHeader">  </Modal.Header>
                 <Modal.Body className="ModalBody p-0">
 
-                    {/* TITULO MODAL LOGIN */}
+                    {/* TITULO MODAL LOGIN 
+                    name: "Snippets de código",
+			// 		icon: "IconCode",
+                    
+                    
+                    
+                    
+                    */}
                     <div className="ContentBody container d-flex flex-column justifycontent-center">
 
                         <div className="DivForm row">

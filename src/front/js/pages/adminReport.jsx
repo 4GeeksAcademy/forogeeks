@@ -4,58 +4,51 @@ import { IconTicket } from "@tabler/icons-react";
 import { Context } from "../store/appContext";
 import { Categories } from "../components/Thread/categories.jsx";
 
+
 // ... otros imports
 
-const example = [
-  {
-    title: "Icidencia test",
-    likes: 20,
-    coments: 10,
-    autor: "Usuario 1", // Add author if needed
-  },
-  {
-    title: "Icidencia test2",
-    likes: 10,
-    coments: 5,
-    autor: "Usuario 2", // Add author if needed
-  },
-  {
-    title: "Icidencia test 3",
-    likes: 10,
-    coments: 5,
-    autor: "Usuario 2", // Add author if needed
-  },
-  {
-    title: "Icidencia test 4",
-    likes: 10,
-    coments: 5,
-    autor: "Usuario 2", // Add author if needed
-  },
-  {
-    title: "Icidencia test 5",
-    likes: 10,
-    coments: 5,
-    autor: "Usuario 2", // Add author if needed
-  },
-  // ... add more thread objects
-];
-
-const AdminReport = ({ math }) => {
+const AdminReport = () => {
   const { store, actions } = useContext(Context);
-  //
-
-  // ... other parts of the component
+  const content = store.CreateCategory;
 
   // State to manage the list of threads
   const category = store.categories
   const [loading,setLoading]= useState(false);
-  // Function to handle thread deletion
+  // ESYO AHI QUE QUITARLO NO FUNCIONA
   const handleDelete = (title) => {
     const updatedThreads = threads.filter((thread) => thread.title !== title);
     setThreads(updatedThreads);
   };
+  //AGREGAR CATEGORIA
+  const [title, setTitle] = useState('');
+  const [icon, setIcon] = useState('');
+  const [titleError, setTitleError] = useState({ isError: false, message: "" });
+  const [iconError, setIconError] = useState({ isError: false, message: "" });
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    try {
+    
+      setTitleError({ isError: false, message: "" });
+      setIconError({ isError: false, message: "" });
+     // Flag para verificar si hay errores
+      console.log('Category created successfully!');
+
+    } catch (error) {
+      setError(error.message);
+      console.error('[CreateCategoryForm] Error creating category:', error);
+    }
+  };
+
+  const handleTest =  (e) => {
+    e.preventDefault();
+    actions.createCategory(title,icon).then( () =>{ actions.getAllCategories()})
+    
+    console.log(title,icon)
+     }
+
+//MUESTRA CATEGORIAS
   useEffect(() => {
     actions.getAllCategories();
   }, []);
@@ -94,13 +87,13 @@ const AdminReport = ({ math }) => {
             <form>
               <div className="group mt-2 ">
                 <IconTicket stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
-                <input className="inputSignUpandRegister " type="text" placeholder="Title categoria" id="TitleCategoria" />
+                <input     value={title} onChange={(e) => setTitle(e.target.value)}  type="text" placeholder="Titlecategoria" id="TitleCategoria" className=" inputSignUpandRegister "/>
               </div>
               <div className="group mt-2 ">
                 <IconTicket stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
-                <input className="inputSignUpandRegister " type="text" placeholder="Categoria" id="Categoria" />
+                <input value={icon}  onChange={  (e) => {setIcon(e.target.value);console.log(e.target.value) }}   type="text" placeholder="Icon" id="Icon"className="inputSignUpandRegister " />
               </div>
-              <button type="submit" className=" mt-2 btn btn-primary">Submit</button>
+              <button onClick={handleTest} type="submit" className=" mt-2 btn btn-primary">Submit</button>
             </form>
           </div>
           {/* Lista de Categorias */}

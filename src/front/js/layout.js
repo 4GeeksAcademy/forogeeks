@@ -12,6 +12,7 @@ import Background from "./components/Background/background.jsx";
 import { InsideThread } from "./pages/inside-thread.jsx";
 import { CreateNewThread } from "./pages/createNewThread.jsx";
 
+
 // IMPORT COMPONENTS
 import { Navbar } from "./components/navbar.jsx";
 import { Footer } from "./components/footer.jsx";
@@ -33,6 +34,7 @@ const Layout = () => {
 				<Routes>
 					<Route element={<Home />} path="/" />
 					<Route element={<AdminReport/>} path="/admin-report" />
+					
 				
 					
 					<Route element={<Profile />} path="/profile" />
