@@ -320,7 +320,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("[flux.createNewComment] Error creating new comment:", error);
 				}
+			},
+			createNewCategory: async (name, icon) => {
+				const store = getStore();
+				const token = localStorage.getItem("token");
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/create-category", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ name, icon }),
+					});
+					if (response.ok) {
+						console.log("[flux.createNewCategory] Category created successfully\n", response);
+					} else {
+						throw new Error("[flux.createNewCategory] Failed to create new category");
+					}
+				} catch (error) {
+					console.error("[flux.createNewCategory] Error creating new category:", error);
+				}
 			}
+
 
 
 		},
