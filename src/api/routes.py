@@ -467,3 +467,20 @@ def getThreadsByTitle(query):
         return jsonify({"message": "No threads found for the given query"}), 404
     serialized_threads = [thread.serialize() for thread in threads]
     return jsonify(serialized_threads), 200
+
+# 🟢 USER PROFILE 🟢
+# Endpoint para cambiar la contraseña
+@api.route("/changepassword", methods=["POST"])
+@jwt_required()
+def change_password():
+    email = get_jwt_identity()
+    password = request.json.get("password", None)
+
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        return jsonify({"msg": "User with this email doesn't exist"}), 401
+
+    user.password = password
+    db.session.commit()
+
+    return jsonify({"msg": "success"}), 200

@@ -434,35 +434,42 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error al restablecer la contraseña. Por favor, inténtalo de nuevo." };
 				}
 			},
-			changePassword: async (currentPassword, newPassword) => {
+
+			changePassword: async (token, newPassword) => {
 				try {
-					console.log("[flux.changePassword] Iniciando solicitud para cambiar contraseña");
-
-					const token = localStorage.getItem("token");
-					console.log("[flux.changePassword] Token recuperado del almacenamiento local:", token);
-
-					const requestBody = { current_password: currentPassword, new_password: newPassword };
-					console.log("[flux.changePassword] Cuerpo de la solicitud:", requestBody);
-
-					const response = await fetch(`${process.env.BACKEND_URL}/api/changePassword`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/changepassword`, {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
-							Authorization: `Bearer ${token}`,
+							Authorization: `Bearer ${token}`, // Asegúrate de incluir el token en el encabezado
 						},
-						body: JSON.stringify(requestBody),
+						body: JSON.stringify({ password: newPassword }),
 					});
+					const data = await response.json();
 
-					console.log("[flux.changePassword] Respuesta recibida:", response);
+					// Log de la respuesta JSON para depuración
+					console.log('Response data:', data);
 
 					if (response.ok) {
-						const data = await response.json();
-						console.log("[flux.changePassword] Respuesta JSON recibida:", data);
-						return { success: true, message: data.message };
+						return { success: true };
 					} else {
-						const errorData = await response.json();
-						console.error("[flux.changePassword] Error en la respuesta:", errorData);
-						throw new Error(errorData.message || "Failed to change password");
+						return { success: false, error: data.msg || "Error al cambiar la contraseña." };
+					}
+				} catch (error) {
+					console.error("Error al cambiar la contraseña:", error);
+					return { success: false, error: "Error al cambiar la contraseña. Por favor, inténtalo de nuevo." };
+				}
+			},
+			getThreadsByTitle: async (query) => {
+				try {
+					console.log('Searching for:', query); // Verifica que se esté llamando correctamente
+					const response = await fetch(`${process.env.BACKEND_URL}/api/threads/search/${query}`);
+					if (response.ok) {
+						const data = await response.json();
+						console.log('Search results:', data); // Verifica los resultados de la búsqueda
+						setStore({ threads: data });
+					} else {
+						throw new Error('Failed to fetch search results');
 					}
 				} catch (error) {
 					console.error("[flux.changePassword] Error durante la solicitud para cambiar contraseña:", error);
