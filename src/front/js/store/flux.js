@@ -459,6 +459,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error al restablecer la contraseña. Por favor, inténtalo de nuevo." };
 				}
 			},
+			
 			changePassword: async (currentPassword, newPassword) => {
 				try {
 					console.log("[flux.changePassword] Iniciando solicitud para cambiar contraseña");
