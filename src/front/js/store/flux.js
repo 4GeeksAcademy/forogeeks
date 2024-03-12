@@ -27,11 +27,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// 		icon: "IconHelp",
 			// 	},
 			// ],
+
 			logError: null,
 			token: "",
 			modalRegistersuccess: false,
-            isUserLogged: false,
-            userInfo: "",
+			isUserLogged: false,
+			userInfo: "",
 			threads: [],
 			categories: [],
 			textEditorContent: "",
@@ -44,15 +45,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			// Dentro del objeto actions en getState.js
 			syncTokenFromSessionStore: () => {
-                const store = getStore()
-                const token = localStorage.getItem("token");
-                console.log("[flux.syncTokenFromSessionStore]Token en LocalStorage\n\n"+ token + "\n")
-                if (token && token !== "") {
-                    const updatedStore = { token: token };
-                    setStore(updatedStore);
-                    console.log("[flux.syncTokenFromSessionStore]Token en store\n\n"+ store.token + "\n")
-                }
-            },
+				const store = getStore()
+				const token = localStorage.getItem("token");
+				console.log("[flux.syncTokenFromSessionStore]Token en LocalStorage\n\n" + token + "\n")
+				if (token && token !== "") {
+					const updatedStore = { token: token };
+					setStore(updatedStore);
+					console.log("[flux.syncTokenFromSessionStore]Token en store\n\n" + store.token + "\n")
+				}
+			},
 
 			// Función para registrar un usuario
 			signup: (username, email, password, confirm_password) => {
@@ -112,34 +113,34 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ token: "", isUserLogged: false, userInfo: null });
 				console.log("[flux.logout] Logout, token removed");
 			},
-            getUserInfo: async () => {
-                const store = getStore()
-                const token = localStorage.getItem("token")
-                try {
-                    const response = await fetch(
-                        process.env.BACKEND_URL + "/api/userinfo",
-                        {
-                            method: "GET",
-                            headers: {
-                                Authorization: `Bearer ${token}`, // Reemplazar 'token' con el token JWT del usuario
-                            },
-                        }
-                    );
-    
-                    if (response.ok) {
-                        const data = await response.json();
-                        console.log("getUserInfo")
-                        console.log("[flux.getUserInfo] respuesta de routes.py userinfo]\n", data);
-                        setStore({userInfo:data})
-                        setStore({isUserLogged:true})
-                        // setIsUserLogged(true);
-                    } else {
-                        throw new Error("Failed to fetch user info");
-                    }
-                } catch (error) {
-                    console.error("[flux.getUserInfo] Error fetching user info:", error);
-                }
-			
+			getUserInfo: async () => {
+				const store = getStore()
+				const token = localStorage.getItem("token")
+				try {
+					const response = await fetch(
+						process.env.BACKEND_URL + "/api/userinfo",
+						{
+							method: "GET",
+							headers: {
+								Authorization: `Bearer ${token}`, // Reemplazar 'token' con el token JWT del usuario
+							},
+						}
+					);
+
+					if (response.ok) {
+						const data = await response.json();
+						console.log("getUserInfo")
+						console.log("[flux.getUserInfo] respuesta de routes.py userinfo]\n", data);
+						setStore({ userInfo: data })
+						setStore({ isUserLogged: true })
+						// setIsUserLogged(true);
+					} else {
+						throw new Error("Failed to fetch user info");
+					}
+				} catch (error) {
+					console.error("[flux.getUserInfo] Error fetching user info:", error);
+				}
+
 			},
 			createNewThread: async (title, content, category) => {
 				const store = getStore();
@@ -152,7 +153,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json",
 							Authorization: `Bearer ${token}`,
 						},
-						body: JSON.stringify({ user_id ,title, content, category }),
+						body: JSON.stringify({ user_id, title, content, category }),
 					});
 					if (response.ok) {
 						// Si la operación es exitosa, redirigir a la página principal
@@ -224,13 +225,39 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setTextEditorStore: (content) => {
 				setStore({ textEditorContent: content });
 			},
-			
 
 
+			//crear categoty
+			createCategory: async (title, icon) => {
+				const store = getStore();
+				const token = localStorage.getItem("token");
 
-		
-		},
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/create-category`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ title, icon }),
+						
+					});
+
+					if (response.ok) {
+						const newCategory = await response.json();
+
+						console.log('[flux.createCategory] Category created successfully:', newCategory);
+					} else {
+						const errorData = await response.json(); // Parse error message
+						throw new Error(`[flux.createCategory] Failed to create category: ${errorData.message}`);
+					}
+				}catch (error) {
+					console.error('[flux.createCategory] Error creating category:', error);
+
+				}  },
+
+			},
+		};
 	};
-};
 
-export default getState;
+	export default getState;

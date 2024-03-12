@@ -242,11 +242,14 @@ def create_category():
 
     return jsonify(serialized_category), 201
 
+
+
+
 # Endpoint para manejar la solicitud DELETE en '/categories/<int:category_id>'
 
 # ⚪️ ADMIN REPORTS ⚪️
+# Endpoint para manejar la solicitud Delete category  en '/admin-reports'
 # Endpoint para manejar la solicitud GET en '/admin-reports'
-
 # Endpoint para manejar la solicitud DELETE en '/admin-reports/<int:report_id>'
 
 # 🟠 THREAT LIKES ENDPOINTS 🟠
@@ -279,3 +282,5 @@ def get_trending():
     threads.sort(key=lambda thread: len(thread.thread_comments), reverse=True)
     serialized_threads = list(map(lambda thread: thread.serialize(), threads))
     return jsonify(serialized_threads), 200
+
+

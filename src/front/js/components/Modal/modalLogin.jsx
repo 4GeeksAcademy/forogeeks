@@ -72,8 +72,20 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
                                 <Modal.Header closeButton className="ModalHeader">  </Modal.Header>
                                 <Modal.Body className="ModalBody p-0">
 
+<<<<<<< HEAD
                                     {/* TITULO MODAL LOGIN */}
                                     <div className="ContentBody container d-flex flex-column justifycontent-center">
+=======
+                    {/* TITULO MODAL LOGIN 
+                    name: "Snippets de código",
+			// 		icon: "IconCode",
+                    
+                    
+                    
+                    
+                    */}
+                    <div className="ContentBody container d-flex flex-column justifycontent-center">
+>>>>>>> origin/Nain
 
                                         <div className="DivForm row">
 
@@ -161,6 +173,7 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
 
 
 
+<<<<<<< HEAD
 
                                 </Modal.Body>
 
@@ -170,6 +183,9 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
                             <li></li>
                             <li></li>
                         </ul>
+=======
+                        </div>
+>>>>>>> origin/Nain
                     </div>
 
                 </React.Fragment >

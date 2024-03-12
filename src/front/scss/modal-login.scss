@@ -1,3 +1,14 @@
+.Modal {
+	background: rgba(0, 123, 255, 0.1);
+}
+
+
+.ModalBody {
+	margin: auto;
+}
+
+
+
 :root {
 	--color-bg-input: #F4F4F4;
 }
@@ -171,6 +182,7 @@ button:hover .arrow:before {
         max-width: 100%;
     }
 }
+<<<<<<< HEAD
 
 
 
@@ -282,10 +294,42 @@ button:hover .arrow:before {
     height: 150px;
     animation-delay: 0s;
     animation-duration: 11s;
+=======
+.titleR {
+	font-size: 28px;
+	color: royalblue;
+	font-weight: 600;
+	letter-spacing: -1px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	padding-left: 30px;
+}
+.titleR::before,
+.titleR::after {
+	position: absolute;
+	content: "";
+	height: 16px;
+	width: 16px;
+	border-radius: 50%;
+	left: 0px;
+	background-color: royalblue;
+}
+.titleR::before {
+	width: 18px;
+	height: 18px;
+	background-color: royalblue;
+}
+.titleR::after {
+	width: 18px;
+	height: 18px;
+	animation: pulse 1s linear infinite;
+>>>>>>> origin/Nain
 }
 
 
 
+<<<<<<< HEAD
 @keyframes animate {
 
     0%{
@@ -301,3 +345,7 @@ button:hover .arrow:before {
     }
 
 }
+=======
+
+
+>>>>>>> origin/Nain
