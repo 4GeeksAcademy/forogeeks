@@ -23,8 +23,12 @@ export const InsideThread = () => {
 
     const handleCreateComment = (e) => {
         e.preventDefault();
-        actions.createNewComment(content, thread.id, userInfo.id);
+        actions.createNewComment(content, thread.id, userInfo.id).then(() => {
+            actions.getCommentsByThread(id);
+
+        })
     }
+
 
     const handleReportThread = (e) => {
         e.preventDefault();
@@ -34,8 +38,8 @@ export const InsideThread = () => {
 
     useEffect(() => {
         if (store.isUserLogged) {
-			actions.getUserInfo(); // Sirve para dar luego info al crear un comentario
-		}
+            actions.getUserInfo(); // Sirve para dar luego info al crear un comentario
+        }
         actions.getThreadById(id); // Se agrega a store.thread el hilo con el id que se pasa por parametro
         actions.getCommentsByThread(id);
         // console.log("id del hilo: ", id);
@@ -46,12 +50,12 @@ export const InsideThread = () => {
             <div className="row">
                 <div className="col-md-12">
                     {/* CONTENEDOR DEL HILO */}
-                    <div className="shadow-sm rounded-3 mb-4 py-1 px-3 bg-white">
+                    <div className=" rounded-3 mb-4 py-1 px-2">
                         {/* ADD COMENTARIO */}
                         <div className="col-md-12">
-                            <div className="d-flex justify-content-end p-3 text-muted">
+                            <div className="d-flex justify-content-end text-muted pt-2">
                                 {store.isUserLogged ? (
-                                    <div className="d-flex gap-2">
+                                    <div className="d-flex gap-3">
                                         <a onClick={handleReportThread} className="d-flex align-items-center text-muted" href="#comentar" style={{ textDecoration: "none", color: "currentColor" }} >
                                             <IconFlag size={20} stroke={1.5} style={{ transition: "color 0.3s" }} />
                                             <span>Reportar</span>
@@ -62,28 +66,43 @@ export const InsideThread = () => {
                                         </a>
                                     </div>
                                 ) : (
-                                    <span className="text-muted small">Tienes que iniciar sesión para poder comentar</span>
+                                    <span className="text-muted small">Inicia sesión para poder comentar</span>
                                 )}
                             </div>
                         </div>
-                        {/* HILO */}
-                        <ThreadParentMessage autor={thread?.user?.user_name} title={thread.title} content={thread.content} date={thread.date} description={thread.description} user_profile_picture={thread?.user?.profile_picture}/>
+                        {/* TITULO DEL HILO */}
+                        <div className="d-flex align-items-center py-3">
+                            <h3 className="d-flex align-items-center text-align-center">{thread.title}</h3>
+                        </div>
 
-                        {/* COMENTARIOS */}
-                        { comments.map((comment, index) => {
-                            return (
-                                // Falta agregar likes en DB
-                                <ThreadMessage key={index} id={comment.id} autor_id={comment.user_id} content={comment.content} date={comment.date} profileImg={comment.profile_picture}  />
-                            )
-                        }
-                        )}
+                        {/* HILO */}
+
+                        <div className="d-flex flex-column gap-1">
+                            <ThreadParentMessage autor={thread?.user?.user_name} content={thread.content} date={thread.date} description={thread.description} user_profile_picture={thread?.user?.profile_picture} />
+
+                            {/* COMENTARIOS */}
+                            {comments.map((comment, index) => {
+                                return (
+                                    // Falta agregar likes en DB
+                                    <ThreadMessage key={index} id={comment.id} autor_id={comment.user_id} content={comment.content} date={comment.date} profileImg={comment.profile_picture} />
+                                )
+                            }
+                            )}
+                        </div>
+
 
                         {store.isUserLogged &&
                             <div className="col-md-12">
-                                <form id="comentar">
-                                    <TextEditor />
-                                    <button onClick={handleCreateComment} type="submit" className="btn btn-primary">Comment</button>
-                                </form>
+                                <div className="bg-white">
+
+                                    <form id="comentar" className="">
+                                        <TextEditor />
+                                        <div className="d-flex justify-content-end">
+                                            <button onClick={handleCreateComment} type="submit" className="btn btn-primary text-white rounded-5">Comentar</button>
+                                        </div>
+                                    </form>
+                                </div>
+
                             </div>
                         }
                     </div>

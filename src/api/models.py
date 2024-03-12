@@ -59,7 +59,7 @@ class Threads(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     title = db.Column(db.String(120), unique=False, nullable=False)
-    content = db.Column(db.String(120), unique=False, nullable=False)
+    content = db.Column(db.Text, nullable=False)
     thread_comments = db.relationship('ThreadComments', backref='thread', lazy=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -108,6 +108,7 @@ class CommentLikes(db.Model):
     __tablename__ = 'comment_likes'
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     comment_id = db.Column(db.Integer, db.ForeignKey('thread_comments.id'), primary_key=True)
+    
 
     def __repr__(self):
         return f'<CommentLikes {self.user_id} {self.comment_id}>'

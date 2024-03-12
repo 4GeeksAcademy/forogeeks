@@ -31,7 +31,7 @@ export const ThreadMessage = ({ content, autor_id, date }) => {
             <div className="row">
                 <div className="col-md-12 p-0">
                     {/* CONTENEDOR DEL HILO */}
-                    <div className="shadow-sm rounded-3 mb-4 py-1 px-3">
+                    <div className="shadow-sm rounded-3 py-1 px-3 bg-white">
                         <div className="row align-items-center p-2">
 
                             <div className='d-flex justify-content-between mb-3'>

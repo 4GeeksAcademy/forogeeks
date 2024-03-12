@@ -14,17 +14,22 @@ const AsideTrending = () => {
 
 	useEffect(() => {
 		actions.getTrendingThreads()
-			setLoading(false);
-			// setThreads({arr: store.trendingThreads, loading: false})
-	
+		setLoading(false);
+		// setThreads({arr: store.trendingThreads, loading: false})
+
 
 	}, []);
 
 	return (
 		<div className="shadow-sm rounded-3 mb-2 bg-white">
-			<div className="d-flex ps-3 pt-3 pb-0">
-				<IconFlame size={26} stroke={1.5} />
-				<h4 className="">Trending</h4>
+			<div className="d-flex flex-column ps-3 pt-3 pb-0">
+				<div className="d-flex flex-row p-0">
+					<IconFlame size={26} stroke={1.5} />
+					<h4 className="p-0">Trending</h4>
+				</div>
+				<div>
+					<span className="text-muted small">Los hilos del momento</span>
+				</div>
 			</div>
 			<div>
 				<div className="d-flex flex-column align-items-center">

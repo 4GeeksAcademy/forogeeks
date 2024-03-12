@@ -9,22 +9,20 @@ import { Context } from "../../store/appContext";
 export const TextEditor = () => {
 	const { store, actions } = useContext(Context);
 
-	const textEditorStore = store.textEditorStore;
-
-
 	const modules = {
 		toolbar: [
-			[{ header: "1" }, { header: "2" }, { font: [] }],
-			[{ size: [] }],
-			["bold", "italic", "underline", "strike", "blockquote"],
-			[
-				{ list: "ordered" },
-				{ list: "bullet" },
-				{ indent: "-1" },
-				{ indent: "+1" },
-			],
-			["link", "image", "video"],
-			["clean"],
+			// [{ header: "1" }, { header: "2" }, { font: [] }],
+			// [{ size: [] }],
+			["bold", "italic", "underline", "strike"],
+			// [
+			// 	{ list: "ordered" },
+			// 	{ list: "bullet" },
+			// 	{ indent: "-1" },
+			// 	{ indent: "+1" },
+			// ],
+			// ["link", "image", "video"],
+			["link", "image"],
+			// ["clean"],
 		],
 	};
 
