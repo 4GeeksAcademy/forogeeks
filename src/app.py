@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.models import db, User
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
@@ -156,23 +156,32 @@ html_content = """
 def send_email():
     try:
         email = request.json.get("email", None)
+        
+        # Verificar si el correo electrónico está asociado con algún usuario en la base de datos
+        user = User.query.filter_by(email=email).first()
 
+        if not user:
+            # Si el correo electrónico no coincide con ningún usuario en la base de datos
+            response_data = { "msg": "error", "error": "Esta cuenta no existe" }
+            return jsonify(response_data), 404
+
+        # Si el correo se envía correctamente, devuelve una respuesta con 'msg' como 'success'
         message = Message(
             subject="Recuperar contraseña",
             sender=app.config.get("MAIL_USERNAME"),
             recipients=[email],
             html=html_content
         )
-
         mail.send(message)
-
-         # Si el correo se envía correctamente, devuelve una respuesta con 'msg' como 'success'
+        
         response_data = { "msg": "success" }
         return jsonify(response_data), 200
+
     except Exception as e:
         # Si hay un error, devuelve una respuesta con 'msg' como 'error' y un mensaje de error
         response_data = { "msg": "error", "error": str(e) }
         return jsonify(response_data), 500
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

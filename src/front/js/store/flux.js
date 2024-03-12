@@ -415,15 +415,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({ email: email })
 					};
-			
+					
 					const response = await fetch(process.env.BACKEND_URL + '/api/sendemail', options);
 					const data = await response.json();
-			
+					
 					console.log("Respuesta del servidor:", data);
-			
-					if (data && data.msg === "success") {
+					
+					if (response.status === 200 && data.msg === "success") {
 						setAlertMessage("Comprueba tu email para restablecer la contraseña.");
 						setAlertType("success");
+					} else if (response.status === 404) {
+						setAlertMessage("No existen cuentas con el email enviado. Prueba de nuevo");
+						setAlertType("warning");
 					} else {
 						setAlertMessage("Error inesperado. Por favor, inténtalo de nuevo.");
 						setAlertType("warning");
@@ -434,6 +437,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setAlertType("danger");
 				}
 			},
+			
 			
 			
 			
