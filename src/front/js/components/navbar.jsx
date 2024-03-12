@@ -4,7 +4,7 @@ import { ModalLogin } from "./Modal/modalLogin.jsx";
 import { ModalRegister } from "./Modal/modalRegister.jsx";
 import { useContext } from "react";
 import { Context } from "../store/appContext";
-
+import { Threads } from "../pages/threads.jsx";
 // ICONS
 
 import { IconUserCircle } from "@tabler/icons-react";
@@ -25,10 +25,45 @@ const reportedThreadsExample = [{
 	name
 }]
 
+
+const getFilteredItems = (query, items) => {
+    if (!query) {
+        return [];
+    }
+    const filteredItems = items.filter(thread => thread.title.toLowerCase().includes(query.toLowerCase()));
+    return filteredItems;
+};
+
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	const token = localStorage.getItem("token");
 	const userInfo = store.userInfo
+
+	//
+	const [query, setQuery] = useState('');
+	const [filteredThreads, setFilteredThreads] = useState([]);
+
+	useEffect(() => {
+		if (query.trim() !== '') {
+			const filtered = store.threads.filter(thread => thread.title.toLowerCase().includes(query.toLowerCase()));
+			setFilteredThreads(filtered);
+		} else {
+			setFilteredThreads([]);
+		}
+	}, [query, store.threads]);
+
+	const handleSearch = () => {
+		actions.chandleSearch(query);
+	};
+
+	const handleKeyPress = (event) => {
+		if (event.key === 'Enter') {
+			handleSearch();
+		}
+	};
+
+
+	//
 
 	//Login
 	const [showLogin, setShowLogin] = useState(false);
@@ -107,8 +142,19 @@ export const Navbar = () => {
 										type="text"
 										placeholder="Search"
 										style={{ width: "100%", lineHeight: "1.2" }}
+										value={query}
+										onChange={(e) => setQuery(e.target.value)}
+										onKeyDown={handleKeyPress}
 									/>
 								</li>
+									{/* Mostrar resultados aquí */}
+									{filteredThreads.length > 0 && (
+										<div className=" row search-results">
+											{filteredThreads.map((thread, index) => (
+												<div key={index} className="search-result-item">{thread.title}</div>
+											))}
+										</div>
+									)}
 							</div>
 						</ul>
 
@@ -151,7 +197,7 @@ export const Navbar = () => {
 											<IconPencilPlus size={27} stroke={1.2} color="white" />
 											{isMovileSize && (
 												<span className="ms-2 text-white">Nuevo hilo</span>)
-												}
+											}
 										</div>
 									</Link>
 								</li>
@@ -159,7 +205,7 @@ export const Navbar = () => {
 								<li className="nav-item dropdown text-white ">
 									<div className="nav-link d-flex align-items-center" href="#" data-bs-toggle="dropdown">
 										<div className="d-flex align-items-center">
-											<IconBell size={27} stroke={1.2} color="white"/>
+											<IconBell size={27} stroke={1.2} color="white" />
 										</div>
 										{isMovileSize && (
 											<span className="ms-2 text-white">Notificaciones</span>

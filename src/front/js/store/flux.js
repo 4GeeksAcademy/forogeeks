@@ -1,7 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-		
+
 			logError: null,
 			token: "",
 			modalRegistersuccess: false,
@@ -183,7 +183,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("[flux.getAllThreads] Error fetching threads:", error);
 				}
 			},
-			getThreadsByCategory: async (category) => {
+			getThreadsByCategory: async (category, user_name) => {
 				const store = getStore();
 				const actions = getActions();
 				try {
@@ -380,10 +380,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("[flux.getThreadById] Error fetching threads:", error);
 				}
-			}
+			},
+			//prueba seacxrh nain
+			chandleSearch: async (query) => {
+				try {
+					console.log('Searching for:', query); // Verifica que se esté llamando correctamente
+					const response = await fetch(`${process.env.BACKEND_URL}/api/threads/search/${query}`);
+					if (response.ok) {
+						const data = await response.json();
+						console.log('Search results:', data); // Verifica los resultados de la búsqueda
+						setStore({ threads: data });
+					} else {
+						throw new Error('Failed to fetch search results');
+					}
+				} catch (error) {
+					console.error('Error searching threads:', error);
+				}
+ }  }
 
-		},
-	};
-};
+			};
+		};
 
-export default getState;
+		export default getState;

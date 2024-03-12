@@ -412,3 +412,12 @@ def get_trending():
     return jsonify(serialized_threads), 200
 
 
+#nain prueba searchbar
+@api.route('/threads/search/<string:query>', methods=['GET'])
+def search_threads(query):
+    print('Received search query:', query) # Verifica que se reciba la consulta de búsqueda
+    threads = Threads.query.filter(Threads.title.ilike(f"%{query}%")).all()
+    if not threads:
+        return jsonify({"message": "No threads found for the given query"}), 404
+    serialized_threads = [thread.serialize() for thread in threads]
+    return jsonify(serialized_threads), 200
