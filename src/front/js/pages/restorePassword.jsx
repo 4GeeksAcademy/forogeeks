@@ -23,7 +23,7 @@ export const RestorePassword = () => {
 
     // Enviar la solicitud para restablecer la contraseña utilizando la nueva acción en el flujo de datos
     const { success, error } = await actions.resetPassword(token, newPassword);
-    
+
     if (success) {
       // Mostrar alerta de éxito
       setAlertMessage("Tu contraseña se ha actualizado.");

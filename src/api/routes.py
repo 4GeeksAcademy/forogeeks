@@ -442,3 +442,17 @@ def reset_password():
 
     return jsonify({ "msg": "success" }), 200
 
+@api.route("/changepassword", methods=["POST"])
+@jwt_required()
+def change_password():
+    email = get_jwt_identity()
+    password = request.json.get("password", None)
+
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        return jsonify({"msg": "User with this email doesn't exist"}), 401
+
+    user.password = password
+    db.session.commit()
+
+    return jsonify({"msg": "success"}), 200
