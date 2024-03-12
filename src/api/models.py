@@ -78,6 +78,7 @@ class Threads(db.Model):
             "date": self.date,
             # do not serialize the password, its a security breach
         }
+
 # 6. ThreadComments
 class ThreadComments(db.Model):
     __tablename__ = 'thread_comments'
@@ -87,6 +88,8 @@ class ThreadComments(db.Model):
     content = db.Column(db.String(120), unique=False, nullable=False)
     reply_to = db.Column(db.Integer, db.ForeignKey('thread_comments.id'), nullable=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
+    likes = db.relationship('CommentLikes', backref='comment', lazy=True)
+
 
     def __repr__(self):
         return f'<ThreadComments {self.content}>'
@@ -101,6 +104,21 @@ class ThreadComments(db.Model):
             "date": self.date,
             # do not serialize the password, its a security breach
         }
+class CommentLikes(db.Model):
+    __tablename__ = 'comment_likes'
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    comment_id = db.Column(db.Integer, db.ForeignKey('thread_comments.id'), primary_key=True)
+
+    def __repr__(self):
+        return f'<CommentLikes {self.user_id} {self.comment_id}>'
+    
+    def serialize(self):
+        return {
+            "user_id": self.user_id,
+            "comment_id": self.comment_id,
+            # do not serialize the password, its a security breach
+        }    
+
 # 5. ThreadLikes
 class ThreadLikes(db.Model):
     __tablename__ = 'thread_likes'

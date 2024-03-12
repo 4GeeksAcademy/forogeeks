@@ -35,7 +35,7 @@
   --bs-info: #0056b3;
   --bs-warning: #ffbf00;
   --bs-danger: #ff3d00;
-  --bs-light: #b8daff;
+  --bs-light: rgba(246, 247, 253, 0.6823529412);
   --bs-dark: #404040;
   --bs-primary-rgb: 0, 123, 255;
   --bs-secondary-rgb: 0, 68, 255;
@@ -43,7 +43,7 @@
   --bs-info-rgb: 0, 86, 179;
   --bs-warning-rgb: 255, 191, 0;
   --bs-danger-rgb: 255, 61, 0;
-  --bs-light-rgb: 184, 218, 255;
+  --bs-light-rgb: 246, 247, 253;
   --bs-dark-rgb: 64, 64, 64;
   --bs-primary-text-emphasis: #003166;
   --bs-secondary-text-emphasis: #001b66;
@@ -2214,13 +2214,13 @@ progress {
 
 .table-light {
   --bs-table-color: #000000;
-  --bs-table-bg: #b8daff;
-  --bs-table-border-color: #93aecc;
-  --bs-table-striped-bg: #afcff2;
+  --bs-table-bg: rgba(246, 247, 253, 0.6823529412);
+  --bs-table-border-color: rgba(166, 167, 171, 0.7458823529);
+  --bs-table-striped-bg: rgba(223, 224, 230, 0.6982352941);
   --bs-table-striped-color: #000000;
-  --bs-table-active-bg: #a6c4e6;
+  --bs-table-active-bg: rgba(203, 203, 208, 0.7141176471);
   --bs-table-active-color: #000000;
-  --bs-table-hover-bg: #aacaec;
+  --bs-table-hover-bg: rgba(213, 214, 219, 0.7061764706);
   --bs-table-hover-color: #000000;
   color: var(--bs-table-color);
   border-color: var(--bs-table-border-color);
@@ -3270,19 +3270,19 @@ textarea.form-control-lg {
 
 .btn-light {
   --bs-btn-color: #000000;
-  --bs-btn-bg: #b8daff;
-  --bs-btn-border-color: #b8daff;
+  --bs-btn-bg: rgba(246, 247, 253, 0.6823529412);
+  --bs-btn-border-color: rgba(246, 247, 253, 0.6823529412);
   --bs-btn-hover-color: #000000;
-  --bs-btn-hover-bg: #9cb9d9;
-  --bs-btn-hover-border-color: #93aecc;
-  --bs-btn-focus-shadow-rgb: 156, 185, 217;
+  --bs-btn-hover-bg: rgba(183, 184, 189, 0.73);
+  --bs-btn-hover-border-color: rgba(166, 167, 171, 0.7458823529);
+  --bs-btn-focus-shadow-rgb: 183, 184, 189;
   --bs-btn-active-color: #000000;
-  --bs-btn-active-bg: #93aecc;
-  --bs-btn-active-border-color: #8aa4bf;
+  --bs-btn-active-bg: rgba(166, 167, 171, 0.7458823529);
+  --bs-btn-active-border-color: rgba(150, 150, 154, 0.7617647059);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000000;
-  --bs-btn-disabled-bg: #b8daff;
-  --bs-btn-disabled-border-color: #b8daff;
+  --bs-btn-disabled-bg: rgba(246, 247, 253, 0.6823529412);
+  --bs-btn-disabled-border-color: rgba(246, 247, 253, 0.6823529412);
 }
 
 .btn-dark {
@@ -3405,19 +3405,19 @@ textarea.form-control-lg {
 }
 
 .btn-outline-light {
-  --bs-btn-color: #b8daff;
-  --bs-btn-border-color: #b8daff;
+  --bs-btn-color: rgba(246, 247, 253, 0.6823529412);
+  --bs-btn-border-color: rgba(246, 247, 253, 0.6823529412);
   --bs-btn-hover-color: #000000;
-  --bs-btn-hover-bg: #b8daff;
-  --bs-btn-hover-border-color: #b8daff;
-  --bs-btn-focus-shadow-rgb: 184, 218, 255;
+  --bs-btn-hover-bg: rgba(246, 247, 253, 0.6823529412);
+  --bs-btn-hover-border-color: rgba(246, 247, 253, 0.6823529412);
+  --bs-btn-focus-shadow-rgb: 246, 247, 253;
   --bs-btn-active-color: #000000;
-  --bs-btn-active-bg: #b8daff;
-  --bs-btn-active-border-color: #b8daff;
+  --bs-btn-active-bg: rgba(246, 247, 253, 0.6823529412);
+  --bs-btn-active-border-color: rgba(246, 247, 253, 0.6823529412);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #b8daff;
+  --bs-btn-disabled-color: rgba(246, 247, 253, 0.6823529412);
   --bs-btn-disabled-bg: transparent;
-  --bs-btn-disabled-border-color: #b8daff;
+  --bs-btn-disabled-border-color: rgba(246, 247, 253, 0.6823529412);
   --bs-gradient: none;
 }
 
@@ -7045,8 +7045,8 @@ textarea.form-control-lg {
   text-decoration-color: RGBA(var(--bs-light-rgb), var(--bs-link-underline-opacity, 1)) !important;
 }
 .link-light:hover, .link-light:focus {
-  color: RGBA(198, 225, 255, var(--bs-link-opacity, 1)) !important;
-  text-decoration-color: RGBA(198, 225, 255, var(--bs-link-underline-opacity, 1)) !important;
+  color: RGBA(249, 250, 254, var(--bs-link-opacity, 1)) !important;
+  text-decoration-color: RGBA(249, 250, 254, var(--bs-link-underline-opacity, 1)) !important;
 }
 
 .link-dark {

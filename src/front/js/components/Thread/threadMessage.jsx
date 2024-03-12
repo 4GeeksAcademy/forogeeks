@@ -1,9 +1,32 @@
 import React from 'react';
+import { useEffect, useState, useContext } from "react";
+import {Context} from "../../store/appContext";
+import moment from "moment"
+
+// ICONS
 import { IconHeart } from '@tabler/icons-react';
 import { IconArrowForward } from '@tabler/icons-react';
 
 
 export const ThreadMessage = ({ content, autor, date, likes, profileImg }) => {
+    const {store, actions} = useContext(Context);
+    const user_name = store.user_name;
+    const user_profile_image = store.user_profile_image;
+
+    useEffect(() => {
+        // autor es el id del usuario que escribio el mensaje
+        actions.getUserNameById(autor).then((res)=>{
+            console.log("Nombre de usuario: ", res);
+
+        })
+        actions.getUserProfileImageById(autor).then((res) => {
+            console.log("IMAGEN DE USUARIO: ", user_profile_image);
+            console.log("IMAGEN DE USUARIO: ", res);
+        })
+        console.log("Id de usuario: ", autor)
+        console.log("Username: ", user_name)
+        console.log("IMAGEN DE USUARIO: ", user_profile_image)
+    }, []);
     return (
         <div className='container'>
             <div className="row">
@@ -16,16 +39,16 @@ export const ThreadMessage = ({ content, autor, date, likes, profileImg }) => {
                                 {/* USERNAME */}
                                 <div className="col-md-6">
                                     <div className="d-flex flex-row gap-3">
-                                        <img src={profileImg} alt="profile" className="rounded-circle" style={{ width: "40px", height: "40px" }} />
+                                        <img src={user_profile_image} alt="profile" className="rounded-circle" style={{ width: "40px", height: "40px" }} />
                                         <div className="d-flex flex-column mb-2">
-                                            <span className="m-0 p-0">{autor}</span>
+                                            <span className="m-0 p-0">@{user_name}</span>
                                         </div>
                                     </div>
                                 </div>
                                 {/* DATE */}
                                 <div className='col-md-6'>
                                     <div className='d-flex justify-content-end'>
-                                        <span className="text-muted small p-0 m-0">{date}</span>
+                                        <span className="text-muted small p-0 m-0">{moment(date).fromNow()}</span>
                                     </div>
                                 </div>
 
@@ -34,12 +57,12 @@ export const ThreadMessage = ({ content, autor, date, likes, profileImg }) => {
                             {/* CONTENT */}
                             <div className="col-md-12">
                                 <div className="">
-                                    <p>{content}</p>
+                                <div dangerouslySetInnerHTML={{ __html: content }} />
                                 </div>
                             </div>
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
                                 <div className="d-flex align-items-center gap-2 border p-1 border-1 rounded-3">
-                                    <span className="text-muted small">{likes}</span>
+                                    <span className="text-muted small">12</span>
                                     <IconHeart size={20} stroke={1} />
                                 </div>
                                 <div className="d-flex align-items-center gap-3">

@@ -40,6 +40,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			threadComments: [],
 			trending: [],
 			reportedThreads: [],
+			user_name: "",
+			user_profile_image: "",
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -288,12 +290,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getCommentsByThread: async (id) => {
 				const store = getStore();
 				try {
-					const response = await fetch(process.env.BACKEND_URL + `/api/thread-comments/${id}`, {
+					const response = await fetch(process.env.BACKEND_URL + `/api/comments/${id}`, {
 						method: "GET",
 					});
 					if (response.ok) {
 						const data = await response.json();
-						console.log("[flux.getCommentsByThread] data", data);
+						console.log("[flux.getCommentsByThread] threadComments", data);
 						setStore({ threadComments: data });
 					} else {
 						throw new Error("[flux.getCommentsByThread] Failed to fetch threads");
@@ -405,8 +407,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("[flux.getThreadById] Error fetching threads:", error);
 				}
+			},
+			getUserNameById: async (id) => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/user/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getUserNameById] data", data);
+						setStore({ ...store, user_name: String(data["username"]) });
+					} else {
+						throw new Error("[flux.getUserById] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getUserById] Error fetching threads:", error);
+				}
+			},
+			getUserProfileImageById: async (id) => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/user/profile-picture/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getUserProfileImageById] data", data);
+						setStore({ ...store, user_profile_image: String(data["profile_picture"]) });
+					} else {
+						throw new Error("[flux.getUserById] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getUserById] Error fetching threads:", error);
+				}
 			}
-
 		},
 	};
 };

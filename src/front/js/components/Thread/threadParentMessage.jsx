@@ -19,7 +19,7 @@ export const ThreadParentMessage = ({ autor, content, date, profile_picture, des
             <div className="row">
                 <div className="col-md-12">
                     {/* CONTENEDOR DEL HILO */}
-                    <div className="shadow-sm rounded-3 mb-4 py-1 px-3">
+                    <div className="shadow-sm rounded-3 mb-4 py-1 px-3 border border-1">
                         <div className="row align-items-center p-2">
                             {/* IMAGEN, AUTOR, DESCRIPCION, DATE */}
                             <div className="col-md-6">
@@ -27,7 +27,7 @@ export const ThreadParentMessage = ({ autor, content, date, profile_picture, des
 
                                     <img src={profile_picture} alt="profile" className="rounded-circle" style={{ width: "40px", height: "40px" }} />
                                     <div className="d-flex flex-column mb-2">
-                                        <span className="m-0 p-0">@{autor}</span>
+                                        <span className="m-0 p-0">{"@"+autor}</span>
                                         <span className="text-muted small p-0 m-0">{description}</span>
                                     </div>
                                 </div>

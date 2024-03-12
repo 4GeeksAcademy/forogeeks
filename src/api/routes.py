@@ -131,6 +131,7 @@ def login():
     return jsonify({ "token": access_token, "user_id": user.id })
 
 # Endpoint para manejar la solicitud GET en '/userinfo'
+# Para usuario loggeado
 @api.route('/userinfo', methods=['GET'])
 @jwt_required()
 def userinfo():
@@ -162,12 +163,24 @@ def userinfo():
         return jsonify({"error": str(e)}), 500
 
 # Endpoint para obtener el username a traves de user_id
-@api.route('/username/<int:user_id>', methods=['GET'])
+@api.route('/user/<int:user_id>', methods=['GET'])
 def get_username(user_id):
     user = User.query.filter_by(id=user_id).first()
     if user is None:
         return jsonify({"message": "User not found"}), 404
     return jsonify({"username": user.user_name}), 200
+
+# Endpoint para obtener la profile_picture a traves de user_id
+@api.route('/user/profile-picture/<int:user_id>', methods=['GET'])
+def get_profile_picture(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    print("hola")
+    if user is None:
+        return jsonify({"message": "User not found"}), 404
+    print(user)
+    return jsonify({"profile_picture": user.profile_picture}), 200
+
+
 
 # 🔵 THREADS ENDPOINTS 🔵
 # Endpoint para manejar la solicitud POST en '/create-thread'
@@ -344,7 +357,7 @@ def create_comment():
 
     return jsonify(serialized_comment), 201
 
-# Endpoint para manejar la solicitud GET por thread id en '/comments'
+# Endpoint para manejar la solicitud GET por thread id en '/comments' (obtener todos los comentarios de un thread)
 @api.route('/comments/<int:thread_id>', methods=['GET'])
 def get_comments_by_thread_id(thread_id):
     comments = ThreadComments.query.filter_by(thread_id=thread_id).all()

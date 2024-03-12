@@ -14,10 +14,12 @@ import { IconFlag } from '@tabler/icons-react';
 export const InsideThread = () => {
     const { store, actions } = useContext(Context);
     const { id } = useParams();
-    const thread = store.threads
-    const comments = store.threadComments
+    const thread = store.threads;
+    const comments = store.threadComments;
     const content = store.textEditorContent;
     const userInfo = store.userInfo;
+
+
 
     const reason = "Hilo reportado";
 
@@ -70,9 +72,14 @@ export const InsideThread = () => {
                         {/* HILO */}
                         <ThreadParentMessage autor={thread?.user?.user_name} title={thread.title} content={thread.content} date={thread.date} profile_picture={thread.profile_picture} description={thread.description} />
 
-                        <ThreadMessage id={id} autor="@username09" date="Fecha del hilo" likes="5" profileImg="https://www.w3schools.com/howto/img_avatar" />
-                        <ThreadMessage autor="@username09" date="Fecha del hilo" likes="5" profileImg="https://www.w3schools.com/howto/img_avatar" />
-                        <ThreadMessage autor="@username09" date="Fecha del hilo" likes="5" profileImg="https://www.w3schools.com/howto/img_avatar" />
+                        {/* COMENTARIOS */}
+                        { comments.map((comment, index) => {
+                            return (
+                                // Falta agregar likes en DB
+                                <ThreadMessage key={index} id={comment.id} autor={comment.user_id} content={comment.content} date={comment.date} profileImg={comment.profile_picture}  />
+                            )
+                        }
+                        )}
 
                         {store.isUserLogged &&
                             <div className="col-md-12">
