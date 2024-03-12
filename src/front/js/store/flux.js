@@ -415,12 +415,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({ email: email })
 					};
-					
+
 					const response = await fetch(process.env.BACKEND_URL + '/api/sendemail', options);
 					const data = await response.json();
-					
+
 					console.log("Respuesta del servidor:", data);
-					
+
 					if (response.status === 200 && data.msg === "success") {
 						setAlertMessage("Comprueba tu email para restablecer la contraseña.");
 						setAlertType("success");
@@ -437,10 +437,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setAlertType("danger");
 				}
 			},
-			
-			
-			
-			
+			resetPassword: async (token, newPassword) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/resetpassword`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ password: newPassword }),
+					});
+					const data = await response.json();
+
+					if (response.ok) {
+						return { success: true };
+					} else {
+						return { success: false, error: data.msg || "Error al restablecer la contraseña." };
+					}
+				} catch (error) {
+					console.error("Error al restablecer la contraseña:", error);
+					return { success: false, error: "Error al restablecer la contraseña. Por favor, inténtalo de nuevo." };
+				}
+			},
+
+
+
+
 
 		},
 	};

@@ -11,9 +11,9 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_mail import Mail, Message
-
+import urllib.parse
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -91,67 +91,6 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0  # avoid cache memory
     return response
 
-html_content = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Recuperación de contraseña</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
-    .container {
-        max-width: 600px;
-        margin: auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-    }
-    h2 {
-        color: #333;
-    }
-    p {
-        color: #666;
-    }
-    .btn {
-        display: block;
-        width: fit-content;
-        margin: 20px auto;
-        background-color: #007bff; 
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 3px;
-        text-align: center;
-    }
-    .btn svg {
-        vertical-align: middle;
-        margin-right: 10px;
-    }
-</style>
-</head>
-<body>
-<div class="container">
-    <h2>Recuperación de contraseña</h2>
-    <p>Has solicitado recuperar tu contraseña. Haz clic en el siguiente botón para restablecerla.</p>
-    <a href="#" class="btn" style="color: #ffffff;">
-        Restablecer contraseña
-    </a>
-    <p>Si no has solicitado esta acción, por favor ignora este mensaje.</p>
-    <img src="https://media.licdn.com/dms/image/D560BAQFmDm4C6hymwQ/company-logo_200_200/0/1693577833799/4geeksacademy_logo?e=2147483647&v=beta&t=DQS8WRITL9lws6l7tiUTKxx7W2gKqGNdV7Z_LE5LE1c" alt="forocode" width="50" height="50" />
-</div>
-</body>
-</html>
-"""
-
 @app.route("/api/sendemail", methods=["POST"])
 def send_email():
     try:
@@ -165,7 +104,75 @@ def send_email():
             response_data = { "msg": "error", "error": "Esta cuenta no existe" }
             return jsonify(response_data), 404
 
-        # Si el correo se envía correctamente, devuelve una respuesta con 'msg' como 'success'
+        # Generar el token único asociado con el correo electrónico
+        token = create_access_token(identity=email, expires_delta=False)
+
+        # Construir el enlace para restablecer la contraseña con el token como parámetro de consulta
+        restore_password_link = f"https://ominous-guide-665q7xv5pjhr94g-3000.app.github.dev/restore-password?token={token}"
+
+        # HTML del correo electrónico
+        html_content = f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Recuperación de contraseña</title>
+        <style>
+            body {{
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+            }}
+            .container {{
+                max-width: 600px;
+                margin: auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+            }}
+            h2 {{
+                color: #333;
+            }}
+            p {{
+                color: #666;
+            }}
+            .btn {{
+                display: block;
+                width: fit-content;
+                margin: 20px auto;
+                background-color: #007bff; 
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 3px;
+                text-align: center;
+            }}
+            .btn svg {{
+                vertical-align: middle;
+                margin-right: 10px;
+            }}
+        </style>
+        </head>
+        <body>
+        <div class="container">
+            <h2>Recuperación de contraseña</h2>
+            <p>Has solicitado recuperar tu contraseña. Haz clic en el siguiente botón para restablecerla.</p>
+            <a href="{restore_password_link}" class="btn" style="color: #ffffff;">
+                Restablecer contraseña
+            </a>
+            <p>Si no has solicitado esta acción, por favor ignora este mensaje.</p>
+            <img src="https://media.licdn.com/dms/image/D560BAQFmDm4C6hymwQ/company-logo_200_200/0/1693577833799/4geeksacademy_logo?e=2147483647&v=beta&t=DQS8WRITL9lws6l7tiUTKxx7W2gKqGNdV7Z_LE5LE1c" alt="forocode" width="50" height="50" />
+        </div>
+        </body>
+        </html>
+        """
+
+        # Enviar el correo electrónico
         message = Message(
             subject="Recuperar contraseña",
             sender=app.config.get("MAIL_USERNAME"),
@@ -178,7 +185,6 @@ def send_email():
         return jsonify(response_data), 200
 
     except Exception as e:
-        # Si hay un error, devuelve una respuesta con 'msg' como 'error' y un mensaje de error
         response_data = { "msg": "error", "error": str(e) }
         return jsonify(response_data), 500
 
