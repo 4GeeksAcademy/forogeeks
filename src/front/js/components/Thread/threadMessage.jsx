@@ -8,22 +8,21 @@ import { IconHeart } from '@tabler/icons-react';
 import { IconArrowForward } from '@tabler/icons-react';
 
 
-export const ThreadMessage = ({ content, autor, date, likes, profileImg }) => {
+export const ThreadMessage = ({ content, autor_id, date }) => {
     const {store, actions} = useContext(Context);
     const user_name = store.user_name;
     const user_profile_image = store.user_profile_image;
 
     useEffect(() => {
         // autor es el id del usuario que escribio el mensaje
-        actions.getUserNameById(autor).then((res)=>{
+        actions.getUserNameById(autor_id).then((res)=>{
             console.log("Nombre de usuario: ", res);
 
         })
-        actions.getUserProfileImageById(autor).then((res) => {
-            console.log("IMAGEN DE USUARIO: ", user_profile_image);
-            console.log("IMAGEN DE USUARIO: ", res);
+        actions.getUserProfileImageById(autor_id).then((res) => {
+            // console.log("IMAGEN DE USUARIO: ", user_profile_image);
         })
-        console.log("Id de usuario: ", autor)
+        console.log("Id de usuario: ", autor_id)
         console.log("Username: ", user_name)
         console.log("IMAGEN DE USUARIO: ", user_profile_image)
     }, []);

@@ -67,7 +67,7 @@ def register():
         email=data["email"],
         password=data["password"],
         user_name=data["username"],
-        profile_picture=data.get("profile_picture", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png")
+        profile_picture=data.get("profile_picture", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png")
     )
 
     # Agregar el usuario a la base de datos

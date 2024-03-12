@@ -14,15 +14,12 @@ import { IconFlag } from '@tabler/icons-react';
 export const InsideThread = () => {
     const { store, actions } = useContext(Context);
     const { id } = useParams();
-    const thread = store.threads;
-    const comments = store.threadComments;
-    const content = store.textEditorContent;
-    const userInfo = store.userInfo;
-
-
+    const thread = store.threads; // Detalles del hilo padre
+    const comments = store.threadComments; // Comentarios del hilo
+    const content = store.textEditorContent; // Contenido del comentario que se esta escribiendo
+    const userInfo = store.userInfo; // Informacion del usuario loggeado para comentar
 
     const reason = "Hilo reportado";
-
 
     const handleCreateComment = (e) => {
         e.preventDefault();
@@ -37,7 +34,7 @@ export const InsideThread = () => {
 
     useEffect(() => {
         if (store.isUserLogged) {
-			actions.getUserInfo();
+			actions.getUserInfo(); // Sirve para dar luego info al crear un comentario
 		}
         actions.getThreadById(id); // Se agrega a store.thread el hilo con el id que se pasa por parametro
         actions.getCommentsByThread(id);
@@ -65,18 +62,18 @@ export const InsideThread = () => {
                                         </a>
                                     </div>
                                 ) : (
-                                    <span>Tienes que iniciar sesión para poder comentar</span>
+                                    <span className="text-muted small">Tienes que iniciar sesión para poder comentar</span>
                                 )}
                             </div>
                         </div>
                         {/* HILO */}
-                        <ThreadParentMessage autor={thread?.user?.user_name} title={thread.title} content={thread.content} date={thread.date} profile_picture={thread.profile_picture} description={thread.description} />
+                        <ThreadParentMessage autor={thread?.user?.user_name} title={thread.title} content={thread.content} date={thread.date} description={thread.description} user_profile_picture={thread?.user?.profile_picture}/>
 
                         {/* COMENTARIOS */}
                         { comments.map((comment, index) => {
                             return (
                                 // Falta agregar likes en DB
-                                <ThreadMessage key={index} id={comment.id} autor={comment.user_id} content={comment.content} date={comment.date} profileImg={comment.profile_picture}  />
+                                <ThreadMessage key={index} id={comment.id} autor_id={comment.user_id} content={comment.content} date={comment.date} profileImg={comment.profile_picture}  />
                             )
                         }
                         )}
