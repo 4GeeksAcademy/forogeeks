@@ -4,11 +4,25 @@ import { Context } from "../store/appContext.js";
 export const SendEmail = () => {
     const { actions } = useContext(Context);
     const [email, setEmail] = useState("");
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertType, setAlertType] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        actions.sendForgotPasswordEmail(email, alert);
+        try {
+            const data = await actions.sendForgotPasswordEmail(email, setAlertMessage, setAlertType);
+    
+            if (data && data.status === 200) {
+                setAlertMessage("Comprueba tu email para restablecer la contraseña.");
+                setAlertType("success");
+            } 
+        } catch (error) {
+            console.error("Error al enviar la solicitud:", error);
+            setAlertMessage("Error al enviar la solicitud. Comprueba que el email es correcto.");
+            setAlertType("danger");
+        }
     };
+    
 
     return (
         <div className="container mt-3">
@@ -16,6 +30,11 @@ export const SendEmail = () => {
                 <div className="col-md-6 offset-md-3">
                     <div className="shadow-sm rounded-3 mb-4 py-4 px-3 bg-white">
                         <h1 className="text-center mb-4">Recuperar contraseña</h1>
+                        {alertMessage && (
+                            <div className={`alert alert-${alertType}`} role="alert">
+                                {alertMessage}
+                            </div>
+                        )}
                         <form onSubmit={handleSubmit}>
                             <div className="mb-3">
                                 <h1 className="text-center mb-4 small">Escribe tu email para acceder a la recuperación de tu contraseña.</h1>

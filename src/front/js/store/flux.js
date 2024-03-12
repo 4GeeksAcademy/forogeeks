@@ -408,25 +408,35 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			sendForgotPasswordEmail: (email, alert) => {
-				var options = {
-					method: 'POST',
-					headers: { "Content-Type": "application/json" },
-          			body: JSON.stringify({ email: email })
+			sendForgotPasswordEmail: async (email, setAlertMessage, setAlertType) => {
+				try {
+					const options = {
+						method: 'POST',
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ email: email })
+					};
+			
+					const response = await fetch(process.env.BACKEND_URL + '/api/sendemail', options);
+					const data = await response.json();
+			
+					console.log("Respuesta del servidor:", data);
+			
+					if (data && data.msg === "success") {
+						setAlertMessage("Comprueba tu email para restablecer la contraseña.");
+						setAlertType("success");
+					} else {
+						setAlertMessage("Error inesperado. Por favor, inténtalo de nuevo.");
+						setAlertType("warning");
+					}
+				} catch (error) {
+					console.error("Error en la solicitud:", error);
+					setAlertMessage("ERROR: Something went wrong");
+					setAlertType("danger");
 				}
-
-				fetch(process.env.BACKEND_URL + '/api/sendemail', options)
-				.then(response => {
-					if (response.ok) return response.json();
-					else throw Error('Something went wrong with the login');
-				})
-				.then(data => {
-					if (data && data.msg == "success") alert("Check your inbox");
-				})
-				.catch(error => {
-					alert("ERROR: Something went wrong");
-				})
 			},
+			
+			
+			
 
 		},
 	};

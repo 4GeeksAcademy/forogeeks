@@ -154,18 +154,25 @@ html_content = """
 
 @app.route("/api/sendemail", methods=["POST"])
 def send_email():
-    email = request.json.get("email", None)
+    try:
+        email = request.json.get("email", None)
 
-    message = Message(
-        subject="Recuperar contraseña",
-        sender=app.config.get("MAIL_USERNAME"),
-        recipients=[email],
-        html=html_content
-    )
+        message = Message(
+            subject="Recuperar contraseña",
+            sender=app.config.get("MAIL_USERNAME"),
+            recipients=[email],
+            html=html_content
+        )
 
-    mail.send(message)
+        mail.send(message)
 
-    return jsonify({ "msg": "success" }), 200
+         # Si el correo se envía correctamente, devuelve una respuesta con 'msg' como 'success'
+        response_data = { "msg": "success" }
+        return jsonify(response_data), 200
+    except Exception as e:
+        # Si hay un error, devuelve una respuesta con 'msg' como 'error' y un mensaje de error
+        response_data = { "msg": "error", "error": str(e) }
+        return jsonify(response_data), 500
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
