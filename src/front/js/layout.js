@@ -12,7 +12,7 @@ import { Chat } from "./pages/chat.jsx";
 import Background from "./components/Background/background.jsx";
 import { InsideThread } from "./pages/inside-thread.jsx";
 import { CreateNewThread } from "./pages/createNewThread.jsx";
-
+import { SendEmail } from "./pages/sendEmail.jsx";
 
 // IMPORT COMPONENTS
 import { Navbar } from "./components/navbar.jsx";
@@ -55,6 +55,10 @@ const Layout = () => {
 					<Route
 						element={<InsideThread />}
 						path="/threads/:category/:id"
+					/>
+					<Route
+						element={<SendEmail />}
+						path="/send-email"
 					/>
 				</Routes>
 				<Footer />

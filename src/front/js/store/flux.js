@@ -406,7 +406,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("[flux.getThreadById] Error fetching threads:", error);
 				}
-			}
+			},
+
+			sendForgotPasswordEmail: (email, alert) => {
+				var options = {
+					method: 'POST',
+					headers: { "Content-Type": "application/json" },
+          			body: JSON.stringify({ email: email })
+				}
+
+				fetch(process.env.BACKEND_URL + '/api/sendemail', options)
+				.then(response => {
+					if (response.ok) return response.json();
+					else throw Error('Something went wrong with the login');
+				})
+				.then(data => {
+					if (data && data.msg == "success") alert("Check your inbox");
+				})
+				.catch(error => {
+					alert("ERROR: Something went wrong");
+				})
+			},
 
 		},
 	};

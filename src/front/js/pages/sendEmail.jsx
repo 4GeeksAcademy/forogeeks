@@ -7,7 +7,7 @@ export const SendEmail = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        actions.sendPasswordResetEmail(email, alert);
+        actions.sendForgotPasswordEmail(email, alert);
     };
 
     return (
@@ -19,18 +19,8 @@ export const SendEmail = () => {
                         <form onSubmit={handleSubmit}>
                             <div className="mb-3">
                                 <h1 className="text-center mb-4 small">Escribe tu email para acceder a la recuperación de tu contraseña.</h1>
-                                <label htmlFor="currentEmail" className="form-label">
-                                    Email
-                                </label>
-                                <input
-                                    type="email"
-                                    className="form-control"
-                                    id="currentEmail"
-                                    name="currentEmail"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)} // Actualiza el estado local cuando el usuario escribe en el campo de entrada
-                                    required
-                                />
+                                <label for="email" className="form-label">Email address</label>
+                                <input type="email" onChange={(e) => setEmail(e.target.value)} className="form-control" id="email" aria-describedby="emailHelp" />
                             </div>
                             <div className="text-center">
                                 <button type="submit" className="btn btn-primary text-white">
