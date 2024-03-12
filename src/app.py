@@ -91,15 +91,76 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0  # avoid cache memory
     return response
 
+html_content = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recuperación de contraseña</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 600px;
+        margin: auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+    }
+    h2 {
+        color: #333;
+    }
+    p {
+        color: #666;
+    }
+    .btn {
+        display: block;
+        width: fit-content;
+        margin: 20px auto;
+        background-color: #007bff; 
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 3px;
+        text-align: center;
+    }
+    .btn svg {
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Recuperación de contraseña</h2>
+    <p>Has solicitado recuperar tu contraseña. Haz clic en el siguiente botón para restablecerla.</p>
+    <a href="#" class="btn" style="color: #ffffff;">
+        Restablecer contraseña
+    </a>
+    <p>Si no has solicitado esta acción, por favor ignora este mensaje.</p>
+    <img src="https://media.licdn.com/dms/image/D560BAQFmDm4C6hymwQ/company-logo_200_200/0/1693577833799/4geeksacademy_logo?e=2147483647&v=beta&t=DQS8WRITL9lws6l7tiUTKxx7W2gKqGNdV7Z_LE5LE1c" alt="forocode" width="50" height="50" />
+</div>
+</body>
+</html>
+"""
+
 @app.route("/api/sendemail", methods=["POST"])
 def send_email():
     email = request.json.get("email", None)
 
     message = Message(
-        subject="Reset your password",
+        subject="Recuperar contraseña",
         sender=app.config.get("MAIL_USERNAME"),
         recipients=[email],
-        html="Prueba"
+        html=html_content
     )
 
     mail.send(message)
