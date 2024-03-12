@@ -1,32 +1,6 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			// categories: [
-			// 	{
-			// 		name: "General",
-			// 		icon: "IconMessages",
-			// 	},
-			// 	{
-			// 		name: "Tecnología",
-			// 		icon: "IconDeviceLaptop",
-			// 	},
-			// 	{
-			// 		name: "Snippets de código",
-			// 		icon: "IconCode",
-			// 	},
-			// 	{
-			// 		name: "Empleo y prácticas",
-			// 		icon: "IconNotes",
-			// 	},
-			// 	{
-			// 		name: "Videojuegos",
-			// 		icon: "IconDeviceGamepad2",
-			// 	},
-			// 	{
-			// 		name: "Info / Ayuda",
-			// 		icon: "IconHelp",
-			// 	},
-			// ],
 
 			logError: null,
 			token: "",
@@ -210,7 +184,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("[flux.getAllThreads] Error fetching threads:", error);
 				}
 			},
-			getThreadsByCategory: async (category) => {
+			getThreadsByCategory: async (category, user_name) => {
 				const store = getStore();
 				const actions = getActions();
 				try {
@@ -460,7 +434,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error al restablecer la contraseña. Por favor, inténtalo de nuevo." };
 				}
 			},
-			
 			changePassword: async (currentPassword, newPassword) => {
 				try {
 					console.log("[flux.changePassword] Iniciando solicitud para cambiar contraseña");
@@ -496,7 +469,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: error.message || "Failed to change password" };
 				}
 			},
+			getThreadsByTitle: async (query) => {
+				try {
+					console.log('Searching for:', query); // Verifica que se esté llamando correctamente
+					const response = await fetch(`${process.env.BACKEND_URL}/api/threads/search/${query}`);
+					if (response.ok) {
+						const data = await response.json();
+						console.log('Search results:', data); // Verifica los resultados de la búsqueda
+						setStore({ threads: data });
+					} else {
+						throw new Error('Failed to fetch search results');
+					}
+				} catch (error) {
+					console.error('Error searching threads:', error);
+				}
+			}
 		},
+
+
 	};
 };
 

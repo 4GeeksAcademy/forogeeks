@@ -2,7 +2,8 @@ from flask import Flask, jsonify, Blueprint
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
 from datetime import datetime
-from flask import request
+from flask import request, redirect, url_for
+
 
 from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, ThreadComments, ReportThread
 # Crear un blueprint llamado 'api'
@@ -455,3 +456,14 @@ def reset_password():
 
     return jsonify({ "msg": "success" }), 200
 
+
+# 🟢 SEARCHBAR 🟢
+# Endpoint para manejar la solicitud GET en '/threads/search/<string:query>'
+@api.route('/threads/search/<string:query>', methods=['GET'])
+def getThreadsByTitle(query):
+    print('Received search query:', query) # Verifica que se reciba la consulta de búsqueda
+    threads = Threads.query.filter(Threads.title.ilike(f"%{query}%")).all()
+    if not threads:
+        return jsonify({"message": "No threads found for the given query"}), 404
+    serialized_threads = [thread.serialize() for thread in threads]
+    return jsonify(serialized_threads), 200
