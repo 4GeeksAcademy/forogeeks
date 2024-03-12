@@ -16,6 +16,7 @@ export const SendEmail = () => {
                 setAlertMessage("Comprueba tu email para restablecer la contraseña.");
                 setAlertType("success");
             } 
+            
         } catch (error) {
             console.error("Error al enviar la solicitud:", error);
             setAlertMessage("Error al enviar la solicitud. Comprueba que el email es correcto.");
