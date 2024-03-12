@@ -50,7 +50,7 @@ export const Home = () => {
 				</div> */}
 				<div className="col-md-8 mb-3 mb-md-0">
 					{/* CATEGORIAS */}
-					<div className="shadow-sm rounded-3 mb-4 p-3 bg-white">
+					<div className="shadow-sm rounded-3 p-3 bg-white">
 						<div className="">
 							<h4 className="mb-4">Categorías</h4>
 						</div>
@@ -66,7 +66,7 @@ export const Home = () => {
 
 					</div>
 				</div>
-				<div className="col-md-4">
+				<div className="col-md-4 p-lg-0">
 					{/* TRENDING */}
 					<AsideTrending />
 					{/* 4GEEKS */}

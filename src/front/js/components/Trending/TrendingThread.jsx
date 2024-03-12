@@ -34,7 +34,7 @@ const TrendingThreads = ({ title, number_of_comments, date, category, id, possit
                         <div className="row">
                             {/* TITULO */}
                             <div className="col-md-12">
-                                <p className="m-0 p-0">{title}</p>
+                                <p className="m-0 p-0 fw-bold">{title}</p>
                             </div>
 
                             {/* NUMERO DE COMENTS Y USERNAME */}
