@@ -237,7 +237,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						const data = await response.json();
 						console.log("[flux.getAllThreads] data", data);
-						setStore({ threads: data });
+						setStore({ trending: data });
 					} else {
 						throw new Error("[flux.getAllThreads] Failed to fetch threads");
 					}

@@ -88,12 +88,12 @@ const AdminReport = () => {
                 {/* TITLE CATEGORY */}
                 <div className="group mt-2 ">
                   <IconTicket stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
-                  <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Titlecategoria" id="TitleCategoria" className=" inputSignUpandRegister " />
+                  <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Nombre" id="TitleCategoria" className=" inputSignUpandRegister " />
                 </div>
                 {/* ICON CATEGORY */}
                 <div className="group mt-2 ">
                   <IconTicket stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
-                  <input value={icon} onChange={(e) => { setIcon(e.target.value); console.log(e.target.value) }} type="text" placeholder="Icon" id="Icon" className="inputSignUpandRegister " />
+                  <input value={icon} onChange={(e) => { setIcon(e.target.value); console.log(e.target.value) }} type="text" placeholder="Icono" id="Icon" className="inputSignUpandRegister " />
                 </div>
                 <div className="d-flex justify-content-end mt-2 w-100">
 
