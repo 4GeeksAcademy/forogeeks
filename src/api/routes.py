@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, Blueprint
 from flask_cors import CORS
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
 from datetime import datetime
+from flask import request
 
 from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, ThreadComments, ReportThread
 # Crear un blueprint llamado 'api'
@@ -424,4 +425,33 @@ def get_trending():
     serialized_threads = list(map(lambda thread: thread.serialize(), threads))
     return jsonify(serialized_threads), 200
 
+
+
+@app.route("/restore-password/<token>", methods=["GET"])
+def restore_password(token):
+    try:
+        # Decodificar el token para obtener el email asociado
+        decoded_token = decode_token(token)
+        email = decoded_token['sub']
+
+        # Redirigir a la página RestorePassword con el email como parámetro en la URL
+        return redirect(url_for('restore_password_page', email=email))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@api.route("/resetpassword", methods=["POST"])
+@jwt_required()
+def reset_password():
+    email = get_jwt_identity()
+    print(email)
+    password = request.json.get("password", None)
+
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        return jsonify({"msg": "User with this email doesn't exist"}), 401
+    
+    user.password = password
+    db.session.commit()
+
+    return jsonify({ "msg": "success" }), 200
 

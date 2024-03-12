@@ -12,8 +12,8 @@ import { Chat } from "./pages/chat.jsx";
 import Background from "./components/Background/background.jsx";
 import { InsideThread } from "./pages/inside-thread.jsx";
 import { CreateNewThread } from "./pages/createNewThread.jsx";
-
-
+import { SendEmail } from "./pages/sendEmail.jsx";
+import { RestorePassword } from "./pages/restorePassword.jsx";
 // IMPORT COMPONENTS
 import { Navbar } from "./components/navbar.jsx";
 import { Footer } from "./components/footer.jsx";
@@ -21,29 +21,29 @@ import AdminReport from "./pages/adminReport.jsx";
 
 //create your first component
 const Layout = () => {
-  //the basename is used when your project is published in a subdirectory and not in the root of the domain
-  // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
-  const basename = process.env.BASENAME || "";
+	//the basename is used when your project is published in a subdirectory and not in the root of the domain
+	// you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
+	const basename = process.env.BASENAME || "";
 
-  // if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "")
-  // 	return <BackendURL />;
+	// if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "")
+	// 	return <BackendURL />;
 
-  const { store, actions } = useContext(Context);
+	const { store, actions } = useContext(Context);
 
-    useEffect(() => {
-        actions.syncTokenFromSessionStore();
-    }, []);
+	useEffect(() => {
+		actions.syncTokenFromSessionStore();
+	}, []);
 
 	return (
 		<BrowserRouter basename={basename}>
 			<Navbar />
-			<div className="main-container" style={{ marginTop: "4rem"}}>
+			<div className="main-container" style={{ marginTop: "4rem" }}>
 				<Routes>
 					<Route element={<Home />} path="/" />
-					<Route element={<AdminReport/>} path="/admin-report" />
-					
-				
-					
+					<Route element={<AdminReport />} path="/admin-report" />
+
+
+
 					<Route element={<Profile />} path="/profile" />
 					<Route element={<CreateNewThread />} path="/nuevo-hilo" />
 					<Route element={<Chat />} path="/chat" />
@@ -55,6 +55,14 @@ const Layout = () => {
 					<Route
 						element={<InsideThread />}
 						path="/threads/:category/:id"
+					/>
+					<Route
+						element={<SendEmail />}
+						path="/send-email"
+					/>
+					<Route
+						element={<RestorePassword />}
+						path="/restore-password"
 					/>
 				</Routes>
 				<Footer />
