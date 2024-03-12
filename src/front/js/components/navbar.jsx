@@ -21,10 +21,6 @@ import { IconPencilPlus } from '@tabler/icons-react';
 import Icon from "./icons/icon.jsx";
 
 
-const reportedThreadsExample = [{
-	name
-}]
-
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	const token = localStorage.getItem("token");
