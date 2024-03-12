@@ -50,11 +50,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			syncTokenFromSessionStore: () => {
 				const store = getStore();
 				const token = localStorage.getItem("token");
-				console.log("[flux.syncTokenFromSessionStore]Token en LocalStorage\n\n" + token + "\n");
 				if (token && token !== "") {
 					const updatedStore = { token: token };
 					setStore(updatedStore);
-					console.log("[flux.syncTokenFromSessionStore]Token en store\n\n" + store.token + "\n");
+					// console.log("[flux.syncTokenFromSessionStore]Token en store\n\n" + store.token + "\n");
 					getActions().getUserInfo();
 				} else {
 					setStore({ isUserLogged: false });

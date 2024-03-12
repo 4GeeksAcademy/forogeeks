@@ -34,10 +34,12 @@ export const InsideThread = () => {
     }
 
     useEffect(() => {
-        actions.getUserInfo()
-        actions.getThreadById(id);
-        console.log("id del hilo: ", id);
+        if (store.isUserLogged) {
+			actions.getUserInfo();
+		}
+        actions.getThreadById(id); // Se agrega a store.thread el hilo con el id que se pasa por parametro
         actions.getCommentsByThread(id);
+        // console.log("id del hilo: ", id);
     }, []);
 
     return (
