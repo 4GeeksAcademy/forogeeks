@@ -460,6 +460,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error al cambiar la contraseña. Por favor, inténtalo de nuevo." };
 				}
 			},
+			changeEmail: async (token, newEmail) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/changeemail`, { // Corrige la URL de la solicitud fetch
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ email: newEmail }), // Asegúrate de enviar el nuevo correo electrónico en el cuerpo de la solicitud
+					});
+					const data = await response.json();
+			
+					// Log de la respuesta JSON para depuración
+					console.log('Response data:', data);
+			
+					if (response.ok) {
+						return { success: true };
+					} else {
+						return { success: false, error: data.msg || "Error al cambiar el email." };
+					}
+				} catch (error) {
+					console.error("Error al cambiar el email:", error);
+					return { success: false, error: "Error al cambiar el email. Por favor, inténtalo de nuevo." };
+				}
+			},
 			getThreadsByTitle: async (query) => {
 				try {
 					console.log('Searching for:', query); // Verifica que se esté llamando correctamente

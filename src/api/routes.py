@@ -478,9 +478,25 @@ def change_password():
 
     user = User.query.filter_by(email=email).first()
     if user is None:
-        return jsonify({"msg": "User with this email doesn't exist"}), 401
+        return jsonify({"msg": "No existe este usuario"}), 401
 
     user.password = password
+    db.session.commit()
+
+    return jsonify({"msg": "success"}), 200
+
+# Ruta para cambiar el correo electrónico
+@api.route("/changeemail", methods=["POST"])
+@jwt_required()
+def change_email():
+    email = get_jwt_identity()
+
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        return jsonify({"msg": "No existe este usuario"}), 401
+
+    # Aquí deberías asignar newEmail al campo de correo electrónico del usuario
+    user.email = request.json.get('email')
     db.session.commit()
 
     return jsonify({"msg": "success"}), 200

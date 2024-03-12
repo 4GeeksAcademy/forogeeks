@@ -48,7 +48,7 @@ const ProfileConfigurationPc = ({ showPassword,showEmail }) => {
 
 const handleSubmitEmail = async (e) => {
   e.preventDefault();
-  // Validar que las contraseñas coincidan
+  // Validar que los correos electrónicos coincidan
   if (newEmail !== confirmNewEmail) {
       setAlertMessage("Los correos no coinciden.");
       setAlertType("danger");
@@ -59,16 +59,17 @@ const handleSubmitEmail = async (e) => {
       // Obtener el token del estado
       const token = store.token;
 
-      // Enviar la solicitud para cambiar la contraseña utilizando el token obtenido
-      const { success, error } = await actions.changePassword(token, newEmail);
+      // Enviar la solicitud para cambiar el correo electrónico utilizando el token obtenido
+      const { success, error } = await actions.changeEmail(token, newEmail);
       
       if (success) {
           // Mostrar alerta de éxito
-          setAlertMessage("Tu correo se ha actualizado.");
+          setAlertMessage("Tu correo se ha actualizado. Inicia sesión con tu nuevo correo.");
           setAlertType("success");
           // Vaciar los campos de entrada después de un envío exitoso
           setNewEmail("");
           setConfirmNewEmail("");
+          actions.logout();
       } else {
           // Mostrar alerta de error
           setAlertMessage(error || "Error al cambiar el correo. Por favor, inténtalo de nuevo.");
@@ -140,7 +141,7 @@ const handleSubmitEmail = async (e) => {
                   Confirmar nuevo email
                 </label>
                 <input
-                  type="password"
+                  type="email"
                   className="form-control"
                   id="confirmNewEmail"
                   value={confirmNewEmail}
