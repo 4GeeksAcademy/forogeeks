@@ -57,6 +57,12 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
             // Manejar errores durante el inicio de sesión, por ejemplo, mostrar un mensaje de error en la interfaz de usuario.
         }
     };
+
+    const handleForgotPasswordClick = () => {
+        // Navegar a la página /send-email
+        handleCloseLogin();
+        navigate("/send-email");
+    };
     
 
     return (
@@ -99,7 +105,7 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
 
                                         {/* FORGOT PASSWORD */}
                                         <div className="m-auto mt-2">
-                                            <span className="text-muted small">¿Olvidaste tu{" "}<a className="txt2 col-4" href="#" style={{ textDecoration: "none" }}>contraseña</a>?</span>
+                                        <span className="text-muted small" onClick={handleForgotPasswordClick}>¿Olvidaste tu{" "}<a className="txt2 col-4" href="#" style={{ textDecoration: "none" }}>contraseña</a>?</span>
 
                                         </div>
 
