@@ -28,6 +28,9 @@ export const RestorePassword = () => {
       // Mostrar alerta de éxito
       setAlertMessage("Tu contraseña se ha actualizado.");
       setAlertType("success");
+      // Vaciar los campos de entrada después de un envío exitoso
+      setNewPassword("");
+      setConfirmNewPassword("");
     } else {
       // Mostrar alerta de error
       setAlertMessage(error || "Error al restablecer la contraseña. Por favor, inténtalo de nuevo.");
@@ -77,7 +80,7 @@ export const RestorePassword = () => {
                 />
               </div>
               <div className="text-center">
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary text-white">
                   Enviar
                 </button>
               </div>
