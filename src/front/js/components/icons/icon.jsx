@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import LOGOUT from "./logout.jsx";
 import ARROWRIGHT from "./arrow-right.jsx";
 import LOGO from "./logo.jsx";
+import FLAME from "./flame.jsx";
 import { IconMessages } from "@tabler/icons-react";
 import { IconDeviceLaptop } from "@tabler/icons-react";
 import { IconHelp } from "@tabler/icons-react";
@@ -23,6 +24,7 @@ const ICONS = {
 	IconCode,
 	IconNotes,
 	IconDeviceGamepad2,
+	FLAME,
 };
 
 const Icon = ({ name, size, color, stroke }) => {

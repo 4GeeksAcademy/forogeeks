@@ -51,7 +51,7 @@ export const TextEditor = () => {
 
 	return (
 		<div className="col-md-12">
-			<div className="border border-1 rounded-3 p-1">
+			<div className=" p-1">
 
 				<ReactQuill
 					theme="snow"

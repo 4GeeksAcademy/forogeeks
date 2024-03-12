@@ -1,8 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { IconFlame } from "@tabler/icons-react";
 import { Context } from "../store/appContext";
 import { Link, useParams } from "react-router-dom";
 import TrendingThreads from "./Trending/TrendingThread.jsx";
+
+// ICONS
+import Icon from "./icons/icon.jsx";
+import FLAME from "./icons/flame.jsx";
 
 const AsideTrending = () => {
 	const { store, actions } = useContext(Context);
@@ -24,20 +27,21 @@ const AsideTrending = () => {
 		<div className="shadow-sm rounded-3 mb-2 bg-white">
 			<div className="d-flex flex-column ps-3 pt-3 pb-0">
 				<div className="d-flex flex-row p-0">
-					<IconFlame size={26} stroke={1.5} />
-					<h4 className="p-0">Trending</h4>
+					<Icon name="FLAME" size={25} color="currentColor" />
+					<h4 className="p-0 m-0">Trending</h4>
 				</div>
 				<div>
-					<span className="text-muted small">Los hilos del momento</span>
+					<span className="text-muted small ps-1">Los hilos del momento</span>
 				</div>
 			</div>
 			<div>
-				<div className="d-flex flex-column align-items-center">
+				<div className="py-3">
 					{trending &&
 						// Mapear TrendingThreads por cada thread
 						trending.slice(0, 5).map((thread, index) => (
 							<TrendingThreads
 								key={index}
+								possition={index}
 								title={thread.title}
 								likes={thread.likes}
 								number_of_comments={thread?.thread_comments?.length}

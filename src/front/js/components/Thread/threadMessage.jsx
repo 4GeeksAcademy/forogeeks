@@ -32,26 +32,30 @@ export const ThreadMessage = ({ content, autor_id, date }) => {
                 <div className="col-md-12 p-0">
                     {/* CONTENEDOR DEL HILO */}
                     <div className="shadow-sm rounded-3 py-1 px-3 bg-white">
-                        <div className="row align-items-center p-2">
+                        <div className="row align-items-center py-2">
 
                             <div className='d-flex justify-content-between mb-3'>
                                 {/* USERNAME */}
-                                <div className="col-md-6">
-                                    <div className="d-flex flex-row gap-3">
+                                <div className="">
+                                    <div className="d-flex flex-row gap-3 align-items-center">
                                         <img src={user_profile_image} alt="profile" className="rounded-circle" style={{ width: "40px", height: "40px" }} />
-                                        <div className="d-flex flex-column mb-2">
-                                            <span className="m-0 p-0">@{user_name}</span>
+                                        <div className="d-flex flex-column">
+                                            <span className="m-0 p-0 d-flex align-items-center fw-bold text-primary">{"@" + user_name}</span>
+                                            <span className="text-muted small p-0 m-0" >Estoy usando ForoGeeks</span>
                                         </div>
                                     </div>
                                 </div>
                                 {/* DATE */}
-                                <div className='col-md-6'>
+                                <div className="">
                                     <div className='d-flex justify-content-end'>
-                                        <span className="text-muted small p-0 m-0">{moment(date).fromNow()}</span>
+                                        <span className="text-muted small p-0 m-0" style={{fontSize:"12.25px"}}>{moment(date).fromNow()}</span>
                                     </div>
                                 </div>
 
                             </div>
+
+                            {/* DIVIDIER */}
+                            <hr className="hr" style={{opacity:"10%"}}></hr>
 
                             {/* CONTENT */}
                             <div className="col-md-12">
@@ -60,7 +64,7 @@ export const ThreadMessage = ({ content, autor_id, date }) => {
                                 </div>
                             </div>
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
-                                <div className="d-flex align-items-center gap-2 border p-1 border-1 rounded-3">
+                                <div className="d-flex align-items-center gap-1">
                                     <span className="text-muted small">12</span>
                                     <IconHeart size={20} stroke={1} />
                                 </div>

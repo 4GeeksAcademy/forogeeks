@@ -9,7 +9,7 @@ import { TextEditor } from "../components/TextEditor/text-editor.jsx";
 
 // ICONS
 import { IconSquareRoundedPlus } from '@tabler/icons-react';
-import { IconFlag } from '@tabler/icons-react';
+import { IconFlag,IconArrowUp } from '@tabler/icons-react';
 
 export const InsideThread = () => {
     const { store, actions } = useContext(Context);
@@ -51,9 +51,10 @@ export const InsideThread = () => {
                 <div className="col-md-12">
                     {/* CONTENEDOR DEL HILO */}
                     <div className=" rounded-3 mb-4 py-1 px-2">
-                        {/* ADD COMENTARIO */}
+                        {/* ISLOGGED REPORTAR Y COMENTAR */}
+
                         <div className="col-md-12">
-                            <div className="d-flex justify-content-end text-muted pt-2">
+                            <div className="d-flex justify-content-end text-muted mb-2">
                                 {store.isUserLogged ? (
                                     <div className="d-flex gap-3">
                                         <a onClick={handleReportThread} className="d-flex align-items-center text-muted" href="#comentar" style={{ textDecoration: "none", color: "currentColor" }} >
@@ -70,14 +71,33 @@ export const InsideThread = () => {
                                 )}
                             </div>
                         </div>
-                        {/* TITULO DEL HILO */}
-                        <div className="d-flex align-items-center py-3">
-                            <h3 className="d-flex align-items-center text-align-center">{thread.title}</h3>
-                        </div>
+
 
                         {/* HILO */}
 
+                        {/* PAGINATION */}
+                        <ul className="pagination mb-2 border-0">
+                            <li className="page-item">
+                                <a className="page-link" href="#" >
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item active"><a className="page-link" href="#">1</a></li>
+                            <li class="page-item"><a className="page-link" href="#">2</a></li>
+                            <li class="page-item"><a className="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+
                         <div className="d-flex flex-column gap-1">
+                            {/* TITULO DEL HILO */}
+                            <div className="d-flex align-items-center py-2 ps-3 bg-white rounded-3 shadow-sm">
+                                <h3 className="d-flex align-items-center text-align-center m-0">{thread.title}</h3>
+                            </div>
+
                             <ThreadParentMessage autor={thread?.user?.user_name} content={thread.content} date={thread.date} description={thread.description} user_profile_picture={thread?.user?.profile_picture} />
 
                             {/* COMENTARIOS */}
@@ -90,21 +110,38 @@ export const InsideThread = () => {
                             )}
                         </div>
 
-
+                        {/* EDITOR PARA COMENTAR */}
                         {store.isUserLogged &&
                             <div className="col-md-12">
-                                <div className="bg-white">
+                                <div className="mt-2 bg-white shadow-sm rounded-3">
 
                                     <form id="comentar" className="">
                                         <TextEditor />
-                                        <div className="d-flex justify-content-end">
-                                            <button onClick={handleCreateComment} type="submit" className="btn btn-primary text-white rounded-5">Comentar</button>
+                                        <div className="d-flex justify-content-end p-2">
+                                            <button onClick={handleCreateComment} type="submit" className="btn btn-primary rounded-circle px-2 text-white rounded-5"><IconArrowUp stroke={1.8} color="white"/></button>
                                         </div>
                                     </form>
                                 </div>
 
                             </div>
                         }
+
+                        {/* PAGINATION */}
+                        <ul className="pagination mt-2 border-0">
+                            <li className="page-item">
+                                <a className="page-link" href="#" >
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item active"><a className="page-link" href="#">1</a></li>
+                            <li class="page-item"><a className="page-link" href="#">2</a></li>
+                            <li class="page-item"><a className="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
