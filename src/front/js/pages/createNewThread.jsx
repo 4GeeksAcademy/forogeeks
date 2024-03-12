@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { TextEditor } from "../components/TextEditor/text-editor.jsx"
 
 // ICONS
-import { IconSend } from '@tabler/icons-react';
 import { IconArrowNarrowRight } from '@tabler/icons-react';
 
 export const CreateNewThread = () => {
@@ -49,10 +48,12 @@ export const CreateNewThread = () => {
         if (!hasErrors) {
             console.log("[createNewThread] Create new thread", title, content, category);
             actions.createNewThread(title, content, category);
-            navigate('/'); 
+            actions.getTrendingThreads()
+            navigate('/');
+
         }
     }
-    
+
 
     useEffect(() => {
         actions.getAllCategories()
@@ -67,7 +68,7 @@ export const CreateNewThread = () => {
                                 <div className="d-flex justify-content-end mb-3 mt-3">
                                     <button type="submit" className="btn btn-primary rounded-5 text-white" onClick={handleCreateThread}>
                                         Crear hilo{" "}
-                                    <IconArrowNarrowRight stroke={2} size={18} color="white"/></button>
+                                        <IconArrowNarrowRight stroke={2} size={18} color="white" /></button>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="category" className="form-label">Category</label>

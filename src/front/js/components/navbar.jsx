@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { Context } from "../store/appContext";
 
 // ICONS
-import { IconBrandCodesandbox } from "@tabler/icons-react";
+
 import { IconUserCircle } from "@tabler/icons-react";
 import { IconSun } from "@tabler/icons-react";
 import { IconMail } from "@tabler/icons-react";

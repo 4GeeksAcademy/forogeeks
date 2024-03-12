@@ -1,11 +1,19 @@
 import React from "react";
+import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { Context } from "../../store/appContext";
 
 // ICONS
 import { IconHeart } from '@tabler/icons-react';
 import { IconBookmark } from '@tabler/icons-react';
 import { IconArrowForward } from '@tabler/icons-react';
 
-export const ThreadParentMessage = ({ title, content, autor, description, date, likes, profileImg }) => {
+export const ThreadParentMessage = ({ autor, content, date, profile_picture, description, title }) => {
+    const {store, actions} = useContext(Context);
+
+    // useEffect(() => {
+    // }, []);
+
     return (
         <div>
             <div className="row">
@@ -17,9 +25,9 @@ export const ThreadParentMessage = ({ title, content, autor, description, date, 
                             <div className="col-md-6">
                                 <div className="d-flex flex-row gap-3">
 
-                                    <img src={profileImg} alt="profile" className="rounded-circle" style={{ width: "40px", height: "40px" }} />
+                                    <img src={profile_picture} alt="profile" className="rounded-circle" style={{ width: "40px", height: "40px" }} />
                                     <div className="d-flex flex-column mb-2">
-                                        <span className="m-0 p-0">{autor}</span>
+                                        <span className="m-0 p-0">@{autor}</span>
                                         <span className="text-muted small p-0 m-0">{description}</span>
                                     </div>
                                 </div>
@@ -34,7 +42,7 @@ export const ThreadParentMessage = ({ title, content, autor, description, date, 
                             <div className="col-md-12">
                                 <div className="">
                                     <h4>{title}</h4>
-                                    <p>{content}</p>
+                                    <div dangerouslySetInnerHTML={{ __html: content }} />
                                 </div>
                             </div>
 

@@ -13,9 +13,11 @@ import Background from "./components/Background/background.jsx";
 import { InsideThread } from "./pages/inside-thread.jsx";
 import { CreateNewThread } from "./pages/createNewThread.jsx";
 
+
 // IMPORT COMPONENTS
 import { Navbar } from "./components/navbar.jsx";
 import { Footer } from "./components/footer.jsx";
+import AdminReport from "./pages/adminReport.jsx";
 
 //create your first component
 const Layout = () => {
@@ -38,6 +40,10 @@ const Layout = () => {
 			<div className="main-container" style={{ marginTop: "4rem"}}>
 				<Routes>
 					<Route element={<Home />} path="/" />
+					<Route element={<AdminReport/>} path="/admin-report" />
+					
+				
+					
 					<Route element={<Profile />} path="/profile" />
 					<Route element={<CreateNewThread />} path="/nuevo-hilo" />
 					<Route element={<Chat />} path="/chat" />
