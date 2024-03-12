@@ -459,11 +459,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error al restablecer la contraseña. Por favor, inténtalo de nuevo." };
 				}
 			},
+			changePassword: async (currentPassword, newPassword) => {
+				try {
+					console.log("[flux.changePassword] Iniciando solicitud para cambiar contraseña");
 
+					const token = localStorage.getItem("token");
+					console.log("[flux.changePassword] Token recuperado del almacenamiento local:", token);
 
+					const requestBody = { current_password: currentPassword, new_password: newPassword };
+					console.log("[flux.changePassword] Cuerpo de la solicitud:", requestBody);
 
+					const response = await fetch(`${process.env.BACKEND_URL}/api/changePassword`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify(requestBody),
+					});
 
+					console.log("[flux.changePassword] Respuesta recibida:", response);
 
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.changePassword] Respuesta JSON recibida:", data);
+						return { success: true, message: data.message };
+					} else {
+						const errorData = await response.json();
+						console.error("[flux.changePassword] Error en la respuesta:", errorData);
+						throw new Error(errorData.message || "Failed to change password");
+					}
+				} catch (error) {
+					console.error("[flux.changePassword] Error durante la solicitud para cambiar contraseña:", error);
+					return { success: false, error: error.message || "Failed to change password" };
+				}
+			},
 		},
 	};
 };
