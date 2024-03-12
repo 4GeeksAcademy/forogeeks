@@ -6,64 +6,14 @@ import { useContext } from "react";
 import { Context } from "../store/appContext";
 import { Threads } from "../pages/threads.jsx";
 // ICONS
+import { IconUserCircle, IconSun, IconMail, IconSettings2, IconLogout, IconBookmark, IconBell, IconMessageCircle2Filled, IconPencilPlus } from "@tabler/icons-react";
 
-import { IconUserCircle } from "@tabler/icons-react";
-import { IconSun } from "@tabler/icons-react";
-import { IconMail } from "@tabler/icons-react";
-import { IconSettings2 } from "@tabler/icons-react";
-import { IconLogout } from "@tabler/icons-react";
-import { IconBookmark } from "@tabler/icons-react";
-import { IconSearch } from "@tabler/icons-react";
-import { IconBell } from "@tabler/icons-react";
-import { IconCircleDotted } from "@tabler/icons-react";
-import { IconMessageCircle2Filled } from "@tabler/icons-react";
-import { IconPencilPlus } from '@tabler/icons-react';
 import Icon from "./icons/icon.jsx";
-
-
-const reportedThreadsExample = [{
-	name
-}]
-
-
-const getFilteredItems = (query, items) => {
-    if (!query) {
-        return [];
-    }
-    const filteredItems = items.filter(thread => thread.title.toLowerCase().includes(query.toLowerCase()));
-    return filteredItems;
-};
 
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	const token = localStorage.getItem("token");
 	const userInfo = store.userInfo
-
-	//
-	const [query, setQuery] = useState('');
-	const [filteredThreads, setFilteredThreads] = useState([]);
-
-	useEffect(() => {
-		if (query.trim() !== '') {
-			const filtered = store.threads.filter(thread => thread.title.toLowerCase().includes(query.toLowerCase()));
-			setFilteredThreads(filtered);
-		} else {
-			setFilteredThreads([]);
-		}
-	}, [query, store.threads]);
-
-	const handleSearch = () => {
-		actions.chandleSearch(query);
-	};
-
-	const handleKeyPress = (event) => {
-		if (event.key === 'Enter') {
-			handleSearch();
-		}
-	};
-
-
-	//
 
 	//Login
 	const [showLogin, setShowLogin] = useState(false);
@@ -76,17 +26,34 @@ export const Navbar = () => {
 	//Raul
 	const [isMovileSize, setIsMobileSize] = useState(false);
 
+	//SEARCHBAR
+	const [query, setQuery] = useState('');
+	const [filteredThreads, setFilteredThreads] = useState([]);
+
 	const handleLogout = (e) => {
 		e.preventDefault()
 		actions.logout()
 		window.location.reload();
 	}
 
+	
 	useEffect(() => {
 		if (store.isUserLogged) {
 			actions.getUserInfo();
 		}
+		
+		// SEARCHBAR
+		if (query.trim() !== '') {
+			const filtered = store.threads.filter(thread => thread.title.toLowerCase().includes(query.toLowerCase()));
+			setFilteredThreads(filtered);
+		} else {
+			setFilteredThreads([]);
+		}
+		// Searchbar
+		actions.chandleSearch(query);
 
+
+		// Ajustar tamaño de la pantalla
 		const handleResize = () => {
 			setIsMobileSize(window.innerWidth < 768);
 		};
@@ -94,7 +61,7 @@ export const Navbar = () => {
 		return () => {
 			window.removeEventListener("resize", handleResize);
 		};
-	}, []);
+	}, [query, store.threads]);
 
 	return (
 		<>
@@ -144,17 +111,16 @@ export const Navbar = () => {
 										style={{ width: "100%", lineHeight: "1.2" }}
 										value={query}
 										onChange={(e) => setQuery(e.target.value)}
-										onKeyDown={handleKeyPress}
 									/>
 								</li>
-									{/* Mostrar resultados aquí */}
-									{filteredThreads.length > 0 && (
-										<div className=" row search-results">
-											{filteredThreads.map((thread, index) => (
-												<div key={index} className="search-result-item">{thread.title}</div>
-											))}
-										</div>
-									)}
+								{/* Mostrar resultados aquí */}
+								{filteredThreads.length > 0 && (
+									<div className=" row search-results">
+										{filteredThreads.map((thread, index) => (
+											<div key={index} className="search-result-item">{thread.title}</div>
+										))}
+									</div>
+								)}
 							</div>
 						</ul>
 
@@ -325,3 +291,4 @@ export const Navbar = () => {
 		</>
 	);
 };
+
