@@ -229,8 +229,8 @@ def get_threads_by_category(category):
     serialized_threads = list(map(lambda thread: thread.serialize(), threads))
     return jsonify(serialized_threads), 200
 
-# Endpoint para manejar la solicitud GET en '/threads/<int:thread_id>'
-@api.route('/thread/<int:thread_id>', methods=['GET'])
+# Endpoint GET thread by ID
+@api.route('/threads/<int:thread_id>', methods=['GET'])
 def get_thread_by_id(thread_id):
     thread = Threads.query.filter_by(id=thread_id).first()
     if thread is None:
@@ -360,8 +360,24 @@ def get_comments():
 
 
 # ⚪️ ADMIN REPORTS ⚪️
+#Verify user is admin
 # Endpoint para manejar la solicitud Delete category  en '/admin-reports'
+@api.route('/admin-reports/<int:report_id>', methods=['DELETE'])
+def delete_report(report_id):
+    report = ReportThread.query.filter_by(id=report_id).first()
+    if report is None:
+        return jsonify({"message": "Report not found"}), 404
+    db.session.delete(report)
+    db.session.commit()
+    return jsonify({"message": "Report deleted"}), 200
+
 # Endpoint para manejar la solicitud GET en '/admin-reports'
+@api.route('/admin-reports', methods=['GET'])
+def get_admin_reports():
+    reports = ReportThread.query.all()
+    serialized_reports = list(map(lambda report: report.serialize(), reports))
+    return jsonify(serialized_reports), 200
+
 # Endpoint para manejar la solicitud DELETE en '/admin-reports/<int:report_id>'
 
 # 🟠 THREAT LIKES ENDPOINTS 🟠

@@ -6,29 +6,29 @@ import TrendingThreads from "./Trending/TrendingThread.jsx";
 
 const AsideTrending = () => {
 	const { store, actions } = useContext(Context);
-	const threads = store.threads;
-	const { category } = useParams();
+	const threads = store.threads
 	const [loading, setLoading] = useState(true);
 
+
 	useEffect(() => {
-		actions.getTrendingThreads(category).then(() => {
+		actions.getTrendingThreads()
 			setLoading(false);
-		});
-		console.log("[threads] useParams: ", category)
+		
+		console.log(threads)
 
 	}, []);
 
 	return (
-		<div className="shadow-sm rounded-3 p-3 mb-2 bg-white">
-			<div className="d-flex">
-				<IconFlame size={24} stroke={1.5} />
-				<h4 className="mb-4 ms-2">Trending Threads</h4>
+		<div className="shadow-sm rounded-3 mb-2 bg-white">
+			<div className="d-flex ps-3 pt-3 pb-0">
+				<IconFlame size={26} stroke={1.5} />
+				<h4 className="">Trending treads</h4>
 			</div>
 			<div>
 				<div className="d-flex flex-column align-items-center">
-					{
+					{threads &&
 						// Mapear TrendingThreads por cada thread
-						threads.map((thread, index) => (
+						threads.slice(0, 5).map((thread, index) => (
 							<TrendingThreads
 								key={index}
 								title={thread.title}

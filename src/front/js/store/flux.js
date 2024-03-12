@@ -38,6 +38,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			textEditorContent: "",
 			user_name: "",
 			threadComments: [],
+			trending: [],
+			reportedThreads: [],
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -371,6 +373,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				}
 			},
+			getReportedThreads: async () => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/admin-reports", {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getReportedThreads] data", data);
+						setStore({ reportedThreads: data });
+					} else {
+						throw new Error("[flux.getReportedThreads] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getReportedThreads] Error fetching threads:", error);
+				}
+			},
+			getThreadById: async (id) => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/threads/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getThreadById] data", data);
+						setStore({ threads: data });
+					} else {
+						throw new Error("[flux.getThreadById] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getThreadById] Error fetching threads:", error);
+				}
+			}
 
 		},
 	};
