@@ -414,7 +414,7 @@ def get_trending():
 
 #nain prueba searchbar
 @api.route('/threads/search/<string:query>', methods=['GET'])
-def search_threads(query):
+def getThreadsByTitle(query):
     print('Received search query:', query) # Verifica que se reciba la consulta de búsqueda
     threads = Threads.query.filter(Threads.title.ilike(f"%{query}%")).all()
     if not threads:

@@ -382,7 +382,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			//prueba seacxrh nain
-			chandleSearch: async (query) => {
+			getThreadsByTitle: async (query) => {
 				try {
 					console.log('Searching for:', query); // Verifica que se esté llamando correctamente
 					const response = await fetch(`${process.env.BACKEND_URL}/api/threads/search/${query}`);

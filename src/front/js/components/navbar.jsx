@@ -37,31 +37,36 @@ const getFilteredItems = (query, items) => {
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	const token = localStorage.getItem("token");
-	const userInfo = store.userInfo
-
+	const userInfo = store.userInfo;
 	//
 	const [query, setQuery] = useState('');
-	const [filteredThreads, setFilteredThreads] = useState([]);
+    const [filteredThreads, setFilteredThreads] = useState([]);
 
-	useEffect(() => {
-		if (query.trim() !== '') {
-			const filtered = store.threads.filter(thread => thread.title.toLowerCase().includes(query.toLowerCase()));
-			setFilteredThreads(filtered);
-		} else {
-			setFilteredThreads([]);
-		}
-	}, [query, store.threads]);
+    useEffect(() => {
+        if (query.trim() !== '') {
+            const filtered = store.threads.filter(thread => thread.title.toLowerCase().startsWith(query.toLowerCase()));
+            filtered.sort((a, b) => a.title.localeCompare(b.title)); // Ordenar alfabéticamente
+            setFilteredThreads(filtered);
+        } else {
+            setFilteredThreads([]);
+        }
+    }, [query, store.threads]);
 
-	const handleSearch = () => {
-		actions.chandleSearch(query);
-	};
+    // Este efecto se activará cada vez que el valor de query cambie
+    useEffect(() => {
+        // Llama a la función de búsqueda automáticamente cuando el valor de query cambie
+        handleSearch();
+    }, [query]);
 
-	const handleKeyPress = (event) => {
-		if (event.key === 'Enter') {
-			handleSearch();
-		}
-	};
+    const handleSearch = () => {
+        actions.getThreadsByTitle(query);
+    };
 
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleSearch();
+        }
+    };
 
 	//
 
