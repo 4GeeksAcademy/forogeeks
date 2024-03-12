@@ -1,39 +1,56 @@
 import React from "react";
-import { IconMessage, IconHeartFilled, IconMessages, IconTrash } from "@tabler/icons-react";
+import { useEffect,useState } from "react";
+import { useContext } from "react";
+import { Context } from "../../store/appContext";
 
-const ThreadReport = ({ title, likes, coments, autor, onDelete }) => {
+// ICONS
+import { IconMessage, IconX, IconCheck, IconExclamationCircle } from "@tabler/icons-react";
+
+const ThreadReport = ({ thread_id, autor, onDelete }) => {
+  const { store, actions } = useContext(Context);
+  const [loading, setLoading] = useState(true); 
+
+  useEffect(() => {
+    actions.getThreadById(thread_id).then(() => setLoading(false));
+  }, []);
+
+
   return (
-    
-    <tr key={title} onClick={() => onDelete(title)}>
+    <tr>
       {/* Thread Title */}
-      <td className="col-sm-6 col-md-auto">
-        <div className="d-flex align-items-center">
-          <IconMessage size={20} stroke={1.5} color="#007bff" />
-          <hr className="vr mx-3" />
-          <div className="d-flex flex-column">
-            <p className="m-0 p-0">{title}</p>
-            <div>
-              <span className="text-muted small p-0 m-0">@user08</span>
-              <span className="text-muted small p-0 m-0"> - 2h</span>
+      <td className="col-sm-12 col-md-auto">
+
+        <div className="d-flex justify-content-between align-items-center">
+          {/* CONTENT */}
+          <div className="d-flex align-items-center">
+            <IconExclamationCircle size={20} stroke={1.5} color="#FF0000" />
+            <hr className="vr mx-3" />
+            <div className="d-flex flex-column">
+              {loading ? <p className="m-0 p-0">Loading...</p> : <p className="m-0 p-0">{store.threads.title}</p>}
+              <p className="m-0 p-0">{store.reportedThreads.title}</p>
             </div>
           </div>
+
+          {/* BUTTONS */}
+          <div className="d-flex gap-2 h-50">
+
+            <button className="btn btn-sm btn-primary d-flex gap-2 align-items-center">
+              <IconCheck size={18} stroke={3} color="white" />
+              <span className="text-white">No action</span>
+            </button>
+            <button className="btn btn-sm btn-danger d-flex gap-2 align-items-center">
+              <IconX size={18} stroke={3} color="white" />
+              <span className="text-white">Eliminar</span>
+            </button>
+
+
+          </div>
+
+
         </div>
       </td>
 
-      {/* Likes and Comments */}
-      <td className="col-sm-6 col-md-4 d-flex justify-content-end gap-3 text-muted small">
-        <div className="d-flex align-items-center">
-        
-          <span className="ms-2">{likes}</span>
-        </div>
-        <div className="d-flex align-items-center">
-        
-          <span className="ms-2">{coments}</span>
-        </div>
-        <button onClick={() => onDelete(title)} className="btn btn-sm btn-danger ms-3">
-          <IconTrash size={18} /> Eliminar
-        </button>
-      </td>
+
     </tr>
   );
 };

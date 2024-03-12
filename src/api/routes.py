@@ -1,10 +1,9 @@
 from flask import Flask, jsonify, Blueprint
 from flask_cors import CORS
-from flask_socketio import SocketIO, emit
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from datetime import datetime
 
-from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, ThreadComments
+from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, ThreadComments, ReportThread
 # Crear un blueprint llamado 'api'
 api = Blueprint('api', __name__)
 
@@ -13,8 +12,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
 CORS(app, resources={r"/api/*": {"origins": ["https://ominous-guide-665q7xv5pjhr94g-3000.app.github.dev"]}})
 
-# Inicializar el servidor SocketIO
-socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Agregar los endpoints de la API Flask
 
@@ -56,15 +53,21 @@ def register():
         return jsonify({"[routes.py/register] message": "Passwords do not match"}), 400
 
     # Verificar si el usuario ya existe en la base de datos
-    existing_user = User.query.filter_by(email=data["email"]).first()
-    if existing_user:
-        return jsonify({"message": "User already exists"}), 409
+    existing_username = User.query.filter_by(user_name=data["username"]).first()
+    existing_email = User.query.filter_by(email=data["email"]).first()
+    
+    if existing_username:
+        return jsonify({"message": "Username already exists"}), 409
+    
+    if existing_email:
+        return jsonify({"message": "Email already exists"}), 409
 
     # Crear un nuevo usuario con los datos proporcionados
     new_user = User(
         email=data["email"],
         password=data["password"],
-        user_name=data["username"]
+        user_name=data["username"],
+        profile_picture=data.get("profile_picture", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png")
     )
 
     # Agregar el usuario a la base de datos
@@ -83,6 +86,26 @@ def register():
     }
     # Devolver una respuesta con un código de estado 201 (Created)
     return jsonify(response_body), 201
+
+# Endpoint para manejar la solicitud POST en '/check-user-exists'
+@api.route('/check-user-exists', methods=['POST'])
+def check_user_exists():
+    # Obtener los datos JSON de la solicitud
+    data = request.get_json()
+    
+    # Verificar si se proporcionó un nombre de usuario o correo electrónico
+    if "username" not in data and "email" not in data:
+        return jsonify({"message": "Missing username or email"}), 400
+    
+    # Buscar si el usuario existe en la base de datos por su nombre de usuario o correo electrónico
+    user_by_username = User.query.filter_by(user_name=data.get("username")).first()
+    user_by_email = User.query.filter_by(email=data.get("email")).first()
+    
+    # Devolver un JSON con el resultado de la verificación
+    response = {
+        "exists": user_by_username is not None or user_by_email is not None
+    }
+    return jsonify(response), 200
 
 # 🟢 USER  🟢
 # Endpoint para manejar la solicitud POST en '/login'
@@ -206,7 +229,45 @@ def get_threads_by_category(category):
     serialized_threads = list(map(lambda thread: thread.serialize(), threads))
     return jsonify(serialized_threads), 200
 
-# Endpoint para manejar la solicitud DELETE en '/threads/<int:thread_id>'
+# Endpoint GET thread by ID
+@api.route('/threads/<int:thread_id>', methods=['GET'])
+def get_thread_by_id(thread_id):
+    thread = Threads.query.filter_by(id=thread_id).first()
+    if thread is None:
+        return jsonify({"message": "Thread not found"}), 404
+    serialized_thread = thread.serialize()
+    return jsonify(serialized_thread), 200
+
+# Endpoint para manejar la solicitud POST de un threadId en ReportThread
+@api.route('/report-thread', methods=['POST'])
+@jwt_required()
+def report_thread():
+    current_user = get_jwt_identity()
+    report_data = request.get_json()
+    user_id = report_data.get("user_id")
+    thread_id = report_data.get("thread_id")
+    reason = report_data.get("reason")
+
+    if reason is None:
+        return jsonify({"[routes.py/report_thread] message": "Missing required fields"}), 400
+
+    new_report = ReportThread(
+        user_id=user_id,
+        thread_id=thread_id,
+        reason=reason
+    )
+
+    db.session.add(new_report)
+    db.session.commit()
+
+    serialized_report = {
+        "id": new_report.id,
+        "user_id": new_report.user_id,
+        "thread_id": new_report.thread_id,
+        "reason": new_report.reason
+    }
+
+    return jsonify(serialized_report), 201
 
 # 🔴 CATEGORIAS ENDPOINTS 🔴
 # Endpoint para manejar la solicitud GET de categorías en '/categories'
@@ -247,9 +308,76 @@ def create_category():
 
 # Endpoint para manejar la solicitud DELETE en '/categories/<int:category_id>'
 
+# 🔴 COMMENTS 🔴
+# Endpoint para manejar la solicitud POST en '/create-comment'
+@api.route('/create-comment', methods=['POST'])
+@jwt_required()
+def create_comment():
+    current_user = get_jwt_identity()
+    comment_data = request.get_json()
+    user_id = comment_data.get("user_id")
+    thread_id = comment_data.get("thread_id")
+    content = comment_data.get("content")
+
+    print(comment_data)
+    if content is None:
+        return jsonify({"[routes.py/create_comment] message": "Missing required fields"}), 400
+        
+    if len(content) < 3:
+        return jsonify({"[routes.py/create_comment] message": "Content must be at least 3 characters"}), 400
+
+    new_comment = ThreadComments(
+        user_id=user_id,
+        thread_id=thread_id,
+        content=content
+    )
+
+    db.session.add(new_comment)
+    db.session.commit()
+
+    serialized_comment = {
+        "id": new_comment.id,
+        "user_id": new_comment.user_id,
+        "thread_id": new_comment.thread_id,
+        "content": new_comment.content
+    }
+
+    return jsonify(serialized_comment), 201
+
+# Endpoint para manejar la solicitud GET por thread id en '/comments'
+@api.route('/comments/<int:thread_id>', methods=['GET'])
+def get_comments_by_thread_id(thread_id):
+    comments = ThreadComments.query.filter_by(thread_id=thread_id).all()
+    serialized_comments = list(map(lambda comment: comment.serialize(), comments))
+    return jsonify(serialized_comments), 200
+
+# Endpoint para manejar la solicitud GET en '/comments'
+@api.route('/comments', methods=['GET'])
+def get_comments():
+    comments = ThreadComments.query.all()
+    serialized_comments = list(map(lambda comment: comment.serialize(), comments))
+    return jsonify(serialized_comments), 200
+
+
 # ⚪️ ADMIN REPORTS ⚪️
+#Verify user is admin
 # Endpoint para manejar la solicitud Delete category  en '/admin-reports'
+@api.route('/admin-reports/<int:report_id>', methods=['DELETE'])
+def delete_report(report_id):
+    report = ReportThread.query.filter_by(id=report_id).first()
+    if report is None:
+        return jsonify({"message": "Report not found"}), 404
+    db.session.delete(report)
+    db.session.commit()
+    return jsonify({"message": "Report deleted"}), 200
+
 # Endpoint para manejar la solicitud GET en '/admin-reports'
+@api.route('/admin-reports', methods=['GET'])
+def get_admin_reports():
+    reports = ReportThread.query.all()
+    serialized_reports = list(map(lambda report: report.serialize(), reports))
+    return jsonify(serialized_reports), 200
+
 # Endpoint para manejar la solicitud DELETE en '/admin-reports/<int:report_id>'
 
 # 🟠 THREAT LIKES ENDPOINTS 🟠

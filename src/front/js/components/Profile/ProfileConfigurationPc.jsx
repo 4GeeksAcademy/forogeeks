@@ -1,7 +1,8 @@
 import React from "react";
 import { IconUserCircle, IconPencil } from "@tabler/icons-react";
+import ProfilePicture from "./ProfilePicture.jsx";
 
-const ProfileConfigurationPc = ({ showEmail, showPassword }) => {
+const ProfileConfigurationPc = ({ showEmail, showPassword, profileImg }) => {
   return (
     <div className="col-md-8">
       {/* Contenedor de configuración del perfil en versión de escritorio */}
@@ -13,15 +14,18 @@ const ProfileConfigurationPc = ({ showEmail, showPassword }) => {
             src="https://static.vecteezy.com/system/resources/thumbnails/002/558/861/small/blue-background-with-hexagonal-grid-header-abstract-stainless-steel-banner-modern-creative-design-temlates-colorful-illustration-vector.jpg"
             alt=""
           />
-          {/* Ícono superpuesto */}
-          <IconUserCircle size={100} className="icon-sticker" />
+
         </div>
         {/* Título de la sección */}
         <div className="user-info">
           {/* Texto de usuario */}
           <div className="d-flex align-items-center">
             <h1 className="display-6 fw-semibold">username</h1>
+            {/* Ícono superpuesto */}
             <IconPencil className="mb-4 ms-1" />
+          </div>
+          <div className="d-flex align-items-center">
+            <ProfilePicture size="5rem" />
           </div>
           {/* Descripción */}
           <div className="d-flex align-items-center">
