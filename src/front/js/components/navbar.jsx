@@ -13,20 +13,16 @@ import Icon from "./icons/icon.jsx";
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	const token = localStorage.getItem("token");
-	const userInfo = store.userInfo
-
+	const userInfo = store.userInfo;
 	//Login
 	const [showLogin, setShowLogin] = useState(false);
 	const handleCloseLogin = () => setShowLogin(false);
 	const handleShowLogin = () => setShowLogin(true);
-
 	//Register
 	const [showRegister, setShowRegister] = useState(false); const handleCloseRegister = () => setShowRegister(false); const handleShowRegister = () => setShowRegister(true);
-
-	//Raul
+	//Resize movile
 	const [isMovileSize, setIsMobileSize] = useState(false);
-
-	//SEARCHBAR
+	// Searchbar
 	const [query, setQuery] = useState('');
 	const [filteredThreads, setFilteredThreads] = useState([]);
 
@@ -36,24 +32,21 @@ export const Navbar = () => {
 		window.location.reload();
 	}
 
-	
 	useEffect(() => {
 		if (store.isUserLogged) {
 			actions.getUserInfo();
 		}
-		
-		// SEARCHBAR
+		// Searchbar
 		if (query.trim() !== '') {
-			const filtered = store.threads.filter(thread => thread.title.toLowerCase().includes(query.toLowerCase()));
+			const filtered = store.threads.filter(thread => thread.title.toLowerCase().startsWith(query.toLowerCase()));
+			actions.getThreadsByTitle(query);
+			filtered.sort((a, b) => a.title.localeCompare(b.title)); // Ordenar alfabéticamente
 			setFilteredThreads(filtered);
 		} else {
 			setFilteredThreads([]);
 		}
-		// Searchbar
-		actions.chandleSearch(query);
 
-
-		// Ajustar tamaño de la pantalla
+		// Resize mobile
 		const handleResize = () => {
 			setIsMobileSize(window.innerWidth < 768);
 		};
