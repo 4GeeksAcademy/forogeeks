@@ -549,7 +549,28 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.error("[flux.getUserById] Error fetching threads:", error);
                 }
-            }
+            },
+			getFavoriteThreads: async () => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/favorite-thread`, {
+						method: "GET",
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					});
+			
+					if (response.ok) {
+						const data = await response.json();
+						return { success: true, favoriteThreads: data };
+					} else {
+						throw new Error("Failed to fetch favorite threads");
+					}
+				} catch (error) {
+					console.error("Error fetching favorite threads:", error);
+					return { success: false, error: "Error fetching favorite threads. Please try again." };
+				}
+			},
 		},
 	};
 };

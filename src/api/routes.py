@@ -400,7 +400,27 @@ def get_admin_reports():
 
 # 🟣 FAVORITE THREADS ENDPOINTS 🟣
 # Endpoint para manejar la solicitud POST en '/favorite-thread'
+# Ruta para obtener los hilos favoritos del usuario
+@app.route("/api/favorite-thread", methods=["GET"])
+@jwt_required()
+def get_favorite_threads():
+    try:
+        # Obtenemos el ID del usuario desde el token JWT
+        user_id = get_jwt_identity()
 
+        # Consultamos los hilos favoritos del usuario
+        favorite_threads = FavoriteThreads.query.filter_by(user_id=user_id).all()
+
+        # Serializamos los hilos favoritos
+        favorite_threads_data = []
+        for favorite_thread in favorite_threads:
+            thread = Threads.query.get(favorite_thread.thread_id)
+            favorite_threads_data.append(thread.serialize())
+
+        return jsonify(favorite_threads_data), 200
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+    
 # 🟤 THREAD COMMENTS ENDPOINTS 🟤
 # Endpoint para manejar la solicitud POST en '/create-comment'
 

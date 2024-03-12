@@ -10,6 +10,8 @@ const ProfileConfigurationPc = ({ showPassword, showEmail }) => {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const [userInfo, setUserInfo] = useState(null);
+  const [favoriteThreads, setFavoriteThreads] = useState([]);
+
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -18,6 +20,20 @@ const ProfileConfigurationPc = ({ showPassword, showEmail }) => {
         console.error("Error fetching user info:", error);
       }
     };
+    const fetchFavoriteThreads = async () => {
+      try {
+        const token = store.token;
+        const { success, favoriteThreads, error } = await actions.getFavoriteThreads(token);
+        if (success) {
+          setFavoriteThreads(favoriteThreads);
+        } else {
+          console.error("Error fetching favorite threads:", error);
+        }
+      } catch (error) {
+        console.error("Error fetching favorite threads:", error);
+      }
+    };
+    fetchFavoriteThreads();
     fetchUserInfo();
   }, []);
 
