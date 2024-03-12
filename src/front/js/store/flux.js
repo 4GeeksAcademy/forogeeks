@@ -483,10 +483,42 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error('Error searching threads:', error);
 				}
-			}
+			},
+			getUserNameById: async (id) => {
+                const store = getStore();
+                try {
+                    const response = await fetch(process.env.BACKEND_URL + `/api/user/${id}`, {
+                        method: "GET",
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log("[flux.getUserNameById] data", data);
+                        setStore({ ...store, user_name: String(data["username"]) });
+                    } else {
+                        throw new Error("[flux.getUserById] Failed to fetch threads");
+                    }
+                } catch (error) {
+                    console.error("[flux.getUserById] Error fetching threads:", error);
+                }
+            },
+			getUserProfileImageById: async (id) => {
+                const store = getStore();
+                try {
+                    const response = await fetch(process.env.BACKEND_URL + `/api/user/profile-picture/${id}`, {
+                        method: "GET",
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log("[flux.getUserProfileImageById] data", data);
+                        setStore({ ...store, user_profile_image: String(data["profile_picture"]) });
+                    } else {
+                        throw new Error("[flux.getUserById] Failed to fetch threads");
+                    }
+                } catch (error) {
+                    console.error("[flux.getUserById] Error fetching threads:", error);
+                }
+            }
 		},
-
-
 	};
 };
 
