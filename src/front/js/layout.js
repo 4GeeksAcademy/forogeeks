@@ -64,7 +64,7 @@ const Layout = () => {
 					/>
 				</Routes>
 			</div>
-				{/* <Footer /> */}
+			{/* <Footer /> */}
 		</BrowserRouter>
 	);
 };

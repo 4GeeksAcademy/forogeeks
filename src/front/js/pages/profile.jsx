@@ -14,22 +14,7 @@ import ProfileCardMobile from "../components/Profile/ProfileCardMobile.jsx";
 import { IconUpload, IconPencil, IconChartPie, IconUserCircle } from '@tabler/icons-react';
 
 export const Profile = () => {
-	// Determinar el contenido a mostrar según la resolución
-	useEffect(() => {
-		const handleResize = () => {
-			setIsMobile(window.innerWidth <= 768);
-		};
-
-		window.addEventListener("resize", handleResize);
-
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, []);
-
-	// Acceso al contexto de la aplicación
 	const { store, actions } = useContext(Context);
-	// Estado para el tamaño de la pantalla
 	const [isMobile, setIsMobile] = useState(false);
 	// Estado para el modal de econtraseña
 	const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -53,10 +38,24 @@ export const Profile = () => {
 		setshowEmail(false);
 	};
 
+	// FIREBASE TEST
+
+	const [imageUpload, setImageUpload] = useState(null);
+
+	const upLoadImg = () => {
+	};
+
 	useEffect(() => {
+		const handleResize = () => {
+			setIsMobile(window.innerWidth <= 768);
+		};
 
+		window.addEventListener("resize", handleResize);
+
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
 	}, []);
-
 
 	return (
 		<div className="container">
@@ -68,7 +67,7 @@ export const Profile = () => {
 					<div className="col-md-12 shadow-sm rounded-top-3 h-100 position-relative" style={{ background: 'rgb(0,41,167)', background: 'linear-gradient(90deg, rgba(0,41,167,1) 0%, rgba(0,123,255,1) 46%, rgba(0,161,255,1) 69%, rgba(0,212,255,1) 100%)' }}>
 						{/* Imagen de perfil superpuesta */}
 						<div className="position-absolute start-50 translate-middle-x" style={{ bottom: '-50px', zIndex: '1' }}>
-							<img src="https://www.raulcano.dev/me.webp" alt="Profile" className="rounded-circle border border-primary border-3" style={{ width: '100px', height: '100px' }} />
+							<img src="https://www.raulcano.dev/me.webp" alt="Profile" className="rounded-circle border border-primary border-4" style={{ width: '100px', height: '100px' }} />
 							{/* ICONO SUBIR IMAGEN */}
 							<button type="upload" className="btn btn-primary rounded-circle position-absolute top-50 translate-middle-x p-0 w-50 h-50 "><IconUpload size={20} color="white" /></button>
 						</div>
@@ -122,6 +121,14 @@ export const Profile = () => {
 						</div>
 					</div>
 				</div>
+
+				<div className="">
+					<input
+						type="file"
+						onChange={(e) => setImageUpload(e.target.files[0])}
+					/>
+				</div>
+				<button onClick={upLoadImg}>Upload img</button>
 
 			</div>
 		</div>
