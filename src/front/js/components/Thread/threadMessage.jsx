@@ -3,11 +3,15 @@ import { Context } from "../../store/appContext";
 import moment from "moment";
 import { IconHeart, IconArrowForward, IconHeartFilled } from '@tabler/icons-react';
 
+
 export const ThreadMessage = ({ content, date, id }) => {
     const { store, actions } = useContext(Context);
     const [isLiked, setIsLiked] = useState(false);
     const user_name = store.user_name;
     const user_profile_image = store.user_profile_image;
+    const token = localStorage.getItem("token");
+    const userInfo = store.userInfo;
+    const [showOptions, setShowoptions] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
@@ -29,7 +33,7 @@ export const ThreadMessage = ({ content, date, id }) => {
             const isLiked = likedComments.some(likedComment => likedComment.id === id);
             setIsLiked(isLiked);
         }
-        
+
         actions.checkLikedComment(id, setIsLiked)
             .then(response => {
                 setIsLiked(response.isLiked);
@@ -37,7 +41,7 @@ export const ThreadMessage = ({ content, date, id }) => {
             .catch(error => {
                 console.error('Error checking liked comment:', error);
             });
-        
+
     }, [store.likedComments, id]);
 
     const handleLikeComment = (id) => {
@@ -110,13 +114,12 @@ export const ThreadMessage = ({ content, date, id }) => {
                                 )}
                             </div>
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className="text-muted small">12</span>
-                                    {isLiked ? <IconHeartFilled size={20} stroke={1} className="text-danger" onClick={() => handleLikeComment(id)} /> : <IconHeart size={20} stroke={1} onClick={() => handleLikeComment(id)} />}
-                                </div>
-                                <div className="d-flex align-items-center gap-3">
-                                    <IconArrowForward size={20} stroke={1} />
-                                </div>
+                            {store.isUserLogged && (
+                                    <div className="d-flex align-items-center gap-1">
+                                        <span className="text-muted small">12</span>
+                                        {isLiked ? <IconHeartFilled size={20} stroke={1} className="text-danger" onClick={() => handleLikeComment(id)} /> : <IconHeart size={20} stroke={1} onClick={() => handleLikeComment(id)} />}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

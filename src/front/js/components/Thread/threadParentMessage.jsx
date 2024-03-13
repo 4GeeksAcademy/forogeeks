@@ -8,7 +8,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
-    
+
 
     useEffect(() => {
         const favoriteThreads = store.favoriteThreads;
@@ -32,7 +32,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
             const isThreadFavorite = favoriteThreads.some(favThread => favThread.id === thread_id);
             setIsFavorite(isThreadFavorite);
         }
-        
+
         // Llama a la acción para comprobar si el hilo está marcado como favorito
         actions.checkFavoriteThread(thread_id, setIsFavorite)
             .then(response => {
@@ -41,7 +41,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
             .catch(error => {
                 console.error('Error checking favorite thread:', error);
             });
-        
+
         // Llama a la acción para comprobar si el hilo está marcado como gustado
         actions.checkLikedThread(thread_id, setIsLiked)
             .then(response => {
@@ -51,7 +51,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                 console.error('Error checking liked thread:', error);
             });
     }, [store.favoriteThreads, store.likedThreads, thread_id]);
-    
+
     const handleFavoriteThread = (thread_id) => {
         if (store.isUserLogged) {
             if (isFavorite) {
@@ -137,16 +137,18 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                                 Por favor, inicia sesión para marcar este hilo como favorito o darle like.
                             </div>
                         )}
-                        <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
-                            <div className="d-flex align-items-center gap-1">
-                                <span className="text-muted small">13</span>
-                                {isLiked ? <IconHeartFilled className="text-danger" size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} /> : <IconHeart size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} />}
+                        {store.isUserLogged && (
+                            <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
+                                <div className="d-flex align-items-center gap-1">
+                                    <span className="text-muted small">13</span>
+                                    {isLiked ? <IconHeartFilled className="text-danger" size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} /> : <IconHeart size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} />}
+                                </div>
+                                <div className="d-flex align-items-center gap-3">
+                                    {isFavorite ? <IconBookmarkFilled size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} /> : <IconBookmark size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} />}
+                                    <IconArrowForward size={20} stroke={1} />
+                                </div>
                             </div>
-                            <div className="d-flex align-items-center gap-3">
-                                {isFavorite ? <IconBookmarkFilled size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} /> : <IconBookmark size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} />}
-                                <IconArrowForward size={20} stroke={1} />
-                            </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>
