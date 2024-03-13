@@ -184,6 +184,7 @@ def get_profile_picture(user_id):
 
 # Endpoint para POST la profile_picture a traves de user_id
 @api.route('/user/profile-picture/<int:user_id>', methods=['POST'])
+@jwt_required()
 def post_profile_picture(user_id):
     user = User.query.filter_by(id=user_id).first()
     data = request.get_json()

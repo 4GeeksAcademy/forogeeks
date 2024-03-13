@@ -556,10 +556,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log("[flux.postProfilePictureByUserID] data", data);
 						return data;
 					} else {
-						throw new Error("[flux.postProfilePictureByUserID] Failed to fetch threads");
+						throw new Error("[flux.postProfilePictureByUserID] Failed to post profile img");
 					}
 				} catch (error) {
-					console.error("[flux.postProfilePictureByUserID] Error fetching threads:", error);
+					console.error("[flux.postProfilePictureByUserID] Error post profile img:", error);
 				}
 			}
 		},

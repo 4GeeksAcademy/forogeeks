@@ -3,7 +3,7 @@ import { Context } from "../store/appContext.js";
 
 // FIREBASE
 import { storage } from "../firebase";
-import { ref, uploadBytes, listAll } from "firebase/storage";
+import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 
 // IMPORTAR SCSS
@@ -12,54 +12,39 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 // ICON
 import { IconUpload, IconPencil, IconChartPie, IconUserCircle } from '@tabler/icons-react';
-
 export const Profile = () => {
 	const { store, actions } = useContext(Context);
 	const [isMobile, setIsMobile] = useState(false);
-	// Estado para el modal de econtraseña
 	const [showPasswordModal, setShowPasswordModal] = useState(false);
-	// Estado para la confirmación de contraseña
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-	// Estado para la configuración de email en pantallas grandes
 	const [showEmail, setshowEmail] = useState(false);
-	// Estado para la configuración de contraseña en pantallas grandes
 	const [showPassword, setshowPassword] = useState(false);
 	const [userThreads, setUserThreads] = useState([]);
-
-	// Funciones para mostrar opciones de configuración
-	// Función para mostrar opciones de email
-	const handleShowEmail = () => {
-		setshowEmail(!showEmail);
-		setshowPassword(false);
-	};
-
-	// Función para mostrar opciones de contraseña
-	const handleShowPassword = () => {
-		setshowPassword(!showPassword);
-		setshowEmail(false);
-	};
-
-	// FIREBASE TEST
 	const [imageUpload, setImageUpload] = useState(null);
 	const [userId, setUserId] = useState(null);
 	const [imageUrl, setImageUrl] = useState(null);
 
-	const folderRef = ref(storage, `profile-img/${userId}`);
-
-	// Input seleccionar imagen del ordenador
 	const handleFileInputChange = (event) => {
-        const file = event.target.files[0];
-        setImageUpload(file);
-    };
+		const file = event.target.files[0];
+		setImageUpload(file);
+	};
 
-	// Button
 	const upLoadImg = async () => {
 		if (!imageUpload || !userId) return;
-	
+
 		try {
-			const storageRef = ref(storage, `profile-img/${userId}/${imageUpload.name}`);
+			const fileName = "profile_picture.jpg";
+			const storageRef = ref(storage, `profile-img/${userId}/${fileName}`);
+			// const storageRef = ref(storage, `profile-img/${userId}/${imageUpload.name}`);
 			await uploadBytes(storageRef, imageUpload);
 			console.log("Image uploaded successfully!");
+
+			// Obtener la URL de descarga de la última imagen subida
+			const lastUploadedImageUrl = await getLastUploadedImageUrl(userId);
+
+			// Actualizar la imagen de perfil del usuario
+			await actions.postProfilePictureByUserID(userId, lastUploadedImageUrl);
+			console.log("Profile picture updated successfully!: ", lastUploadedImageUrl);
 		} catch (error) {
 			console.error("Error uploading image:", error);
 		}
@@ -69,22 +54,46 @@ export const Profile = () => {
 		const fetchData = async () => {
 			try {
 				const user = await actions.getUserInfo();
-				const userThreads = await actions.getAllTreadsByUserId(userId)
+				// const userThreads = await actions.getAllTreadsByUserId(userId)
 				setUserId(user);
+				// setUserThreads([...userThreads]);
 				console.log("User ID:", user);
-				setUserThreads([...userThreads])
 				console.log("User Threads:", userThreads);
-
 			} catch (error) {
 				console.error("Error fetching user data:", error);
 			}
 		};
 
-		listAll(folderRef)
-
 		fetchData();
 
 	}, []);
+
+	// Función para obtener la URL de descarga de la última imagen subida
+	const getLastUploadedImageUrl = async (userId) => {
+		try {
+			const folderRef = ref(storage, `profile-img/${userId}`);
+			const listResult = await listAll(folderRef);
+
+			// Obtener la lista de URLs de descarga de los archivos de la carpeta
+			const downloadUrls = await Promise.all(listResult.items.map(async (itemRef) => {
+				return getDownloadURL(itemRef);
+			}));
+
+			// Ordenar las URLs por fecha de modificación en orden descendente
+			downloadUrls.sort((a, b) => {
+				return a.updated - b.updated;
+			});
+
+			// Obtener la URL de la última imagen subida
+			const lastUploadedImageUrl = downloadUrls[0];
+
+			return lastUploadedImageUrl;
+		} catch (error) {
+			console.error("Error getting last uploaded image URL:", error);
+			throw error;
+		}
+	};
+
 
 	return (
 		<div className="container">
