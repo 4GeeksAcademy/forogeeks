@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext.js";
+import ModalProfile from "../components/Modal/ModalProfile.jsx";
 
 // FIREBASE
 import { storage } from "../firebase";
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
-import { v4 } from "uuid";
 
 // IMPORTAR SCSS
 import "../../scss/profile.scss";
@@ -29,7 +29,17 @@ export const Profile = () => {
 	const [userId, setUserId] = useState(null);
 	const [imageUrl, setImageUrl] = useState(null);
 	const [userProfileImage, setUserImageProfile] = useState(null);
+	const [userName, setUserName] = useState(null);
 	const [showUpdateProfileImageModal, setShowUpdateProfileImageModal] = useState(false);
+	const [activeModal, setActiveModal] = useState(null);
+
+	const handleCloseModal = () => {
+		setActiveModal(null);
+	};
+
+	const handleOpenModal = (modalName) => {
+		setActiveModal(modalName);
+	};
 
 	const handleFileInputChange = (event) => {
 		const file = event.target.files[0];
@@ -58,29 +68,6 @@ export const Profile = () => {
 		}
 	};
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const user = await actions.getUserInfo();
-				setUserId(user);
-				console.log("User ID:", user);
-
-				// Obtener la imagen de perfil del usuario
-				const userProfileImg = await actions.getUserProfileImageById(user);
-				setUserImageProfile(userProfileImg);
-				console.log("User Profile Image:", userProfileImg);
-
-				// setUserThreads([...userThreads]); // Esto deberías manejarlo si es necesario
-
-			} catch (error) {
-				console.error("Error fetching user data:", error);
-			}
-		};
-
-		fetchData();
-
-	}, []);
-
 	// Función para obtener la URL de descarga de la última imagen subida
 	const getLastUploadedImageUrl = async (userId) => {
 		try {
@@ -107,6 +94,30 @@ export const Profile = () => {
 		}
 	};
 
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const user = await actions.getUserInfo();
+				setUserId(user);
+				console.log("User ID:", user);
+
+				// Obtener la imagen de perfil del usuario
+				const userProfileImg = await actions.getUserProfileImageById(user);
+				const userName = await actions.getUserNameById(user);
+				setUserImageProfile(userProfileImg);
+				setUserName(userName);
+				console.log("User Profile Image:", userProfileImg);
+
+				// setUserThreads([...userThreads]); // Esto deberías manejarlo si es necesario
+
+			} catch (error) {
+				console.error("Error fetching user data:", error);
+			}
+		};
+
+		fetchData();
+
+	}, []);
 
 	return (
 		<div className="container">
@@ -130,7 +141,12 @@ export const Profile = () => {
 								}}
 							/>
 							{/* ICONO SUBIR IMAGEN */}
-							<button type="upload" className="btn btn-primary rounded-circle position-absolute top-50 translate-middle-x p-0 w-50 h-50 "><IconUpload size={20} color="white" /></button>
+							<button
+								onClick={() => setShowUpdateProfileImageModal(true)}
+								className="btn btn-primary rounded-circle position-absolute top-50 translate-middle-x p-0 w-50 h-50"
+							>
+								<IconUpload size={20} color="white" />
+							</button>
 						</div>
 					</div>
 					{/* NECESARIO PARA CENTRAR LA IMAGEN Y HEIGHT DEL BANNER*/}
@@ -138,50 +154,76 @@ export const Profile = () => {
 				</div>
 
 
-				{/* 2 ABAJO DEL BANNER */}
-				<div className="col-md-12 shadow-sm bg-white rounded-bottom-3">
+				{/* TRES BLOQUES PRINCIPALES */}
+				<div className="col-md-12 shadow-sm bg-white rounded-bottom-3 pb-4">
 					<div className="mt-5 pt-4 px-4">
-						<div className="row d-flex align-items-center">
+						<div className="row d-flex align-items-start justify-content-around">
 							{/* Bloque izquierdo con nombre de usuario y descripción */}
-							<div className="col-md-6">
-
-								{/* DESCRIPCION Y USUARIO */}
-								<div className="d-flex flex-column align-items-center mb-3 gap-2">
-									{/* USUARIO */}
-									<div className="d-flex flex-row align-items-center gap-1">
-										<h4 className="text-primary mb-0">@raul</h4>
-										{/* Agrega un icono de usuario si es relevante */}
-										<button type="button" className="btn bg-transparent p-0 pb-1"><IconPencil size={20} stroke={1.3} /></button>
-									</div>
-
-									{/* DESCRIPCION */}
-									<div className="d-flex flex-row align-items-center gap-1">
-										<p className="mb-0 text-center">Me encanta ForoGeeks!</p>
-										<button type="button" className="btn bg-transparent p-0 pb-1"><IconPencil size={20} stroke={1.3} /></button>
-									</div>
-
+							<div className="col-md-4">
+								<div className="d-flex justify-content-start flex-column align-items-start mb-3 gap-2 w-100">
+									<ul className="list-group rounded w-100">
+										<li className="list-group-item bg-primary rounded-5 fw-bold text-white">Información de usuario</li>
+										<li className="list-group-item border-0">
+											<div className="d-flex justify-content-between align-items-center">
+												<span>Usuario: <span className="text-primary">{userName && "@" + userName}</span></span>
+												<button type="button" onClick={() => handleOpenModal("username")} className="btn bg-transparent p-0 pb-1"><IconPencil size={20} stroke={1.3} /></button>
+											</div>
+										</li>
+										<li className="list-group-item border-0">
+											<div className="d-flex justify-content-between align-items-center">
+												<span>Descripción: <span className="text-primary">Me encanta ForoGeeks!</span></span>
+												<button type="button" onClick={() => handleOpenModal("description")} className="btn bg-transparent p-0 pb-1"><IconPencil size={20} stroke={1.3} /></button>
+											</div>
+										</li>
+									</ul>
 								</div>
+							</div>
 
+							{/* Bloque para cambiar email y contraseña */}
+							<div className="col-md-4">
+								<div className="d-flex justify-content-start flex-column align-items-start mb-3 gap-2 w-100">
+									<ul className="list-group rounded w-100">
+										<li className="list-group-item bg-primary rounded-5 fw-bold text-white">Opciones de cuenta</li>
+										<li className="list-group-item border-0 d-flex justify-content-between align-items-center">
+											<span>Cambiar email</span>
+											<button type="button" onClick={() => handleOpenModal("email")} className="btn bg-transparent p-0 pb-1"><IconPencil size={20} stroke={1.3} /></button>
+										</li>
+										<li className="list-group-item border-0 d-flex justify-content-between align-items-center">
+											<span>Cambiar contraseña</span>
+											<button type="button" onClick={() => handleOpenModal("password")} className="btn bg-transparent p-0 pb-1"><IconPencil size={20} stroke={1.3} /></button>
+										</li>
+									</ul>
+								</div>
 							</div>
 
 							{/* Bloque derecho con estadísticas sobre número de hilos creados */}
-							<div className="col-md-6">
-								<div className="d-flex justify-content-center align-items-center gap-5">
-									<div>
-										<IconChartPie size={90} stroke={1.5} color="#007bff" />
-									</div>
-									<div>
-										<h5 className="text-primary">Estadísticas</h5>
-										<p>Total de hilos: 20</p>
-										<p>Hilos activos: 15</p>
-										<p>Hilos cerrados: 5</p>
-									</div>
-
+							<div className="col-md-4">
+								<div className="d-flex justify-content-start flex-column align-items-start mb-3 gap-2 w-100">
+									<ul className="list-group rounded w-100">
+										<li className="list-group-item bg-primary rounded-5 fw-bold text-white">Estadísticas</li>
+										<li className="list-group-item border-0 d-flex justify-content-between align-items-center">Total de hilos: <span className="text-primary fw-bold">20</span></li>
+										<li className="list-group-item border-0 d-flex justify-content-between align-items-center">Total de comentarios: <span className="text-primary fw-bold">15</span></li>
+										<li className="list-group-item border-0 d-flex justify-content-between align-items-center">Total de likes: <span className="text-primary fw-bold">5</span></li>
+									</ul>
 								</div>
 							</div>
 						</div>
+
 					</div>
 				</div>
+				<div className="container">
+					<div className="row d-flex justify-content-between">
+						<div className="col-md-6">
+							<div className="shadow-sm bg-white rounded-bottom-3 mt-2 p-0">Hola</div>
+						</div>
+
+						<div className="col-md-6">
+							<div className="shadow-sm bg-white rounded-bottom-3 mt-2 p-0">Hola</div>
+						</div>
+					</div>
+				</div>
+
+
 
 				<div className="">
 					<input
@@ -192,7 +234,51 @@ export const Profile = () => {
 				<button onClick={upLoadImg}>Upload img</button>
 
 			</div>
+			<UpdateProfileImage
+				show={showUpdateProfileImageModal}
+				onClose={() => setShowUpdateProfileImageModal(false)}
+				onUpload={upLoadImg}
+				handleFileInputChange={handleFileInputChange}
+			/>
+			{/* Modales */}
+			{/* Modal para cambiar el nombre de usuario */}
+			<ModalProfile
+				show={activeModal === "username"}
+				handleClose={handleCloseModal}
+				title="Nombre de usuario"
+				inputType="username"
+				username="InitialUsername"
+				description="InitialDescription"
+			/>
+			{/* Modal para cambiar la descripción */}
+			<ModalProfile
+				show={activeModal === "description"}
+				handleClose={handleCloseModal}
+				title="Descripción"
+				inputType="description"
+				username="InitialUsername"
+				description="InitialDescription"
+			/>
+			{/* Modal para cambiar el correo electrónico */}
+			<ModalProfile
+				show={activeModal === "email"}
+				handleClose={handleCloseModal}
+				title="Email"
+				inputType="email"
+				username="InitialUsername"
+				description="InitialDescription"
+			/>
+			{/* Modal para cambiar la contraseña */}
+			<ModalProfile
+				show={activeModal === "password"}
+				handleClose={handleCloseModal}
+				title="Contraseña"
+				inputType="password"
+				username="InitialUsername"
+				description="InitialDescription"
+			/>
 		</div>
+
 	);
 };
 

@@ -71,6 +71,7 @@
 		"qs": "^6.11.2",
 		"react": "^16.8.4",
 		"react-bootstrap": "^2.10.1",
+		"react-cropper": "^2.3.3",
 		"react-dom": "^16.8.4",
 		"react-polyfills": "0.0.1",
 		"react-quill": "^2.0.0",
