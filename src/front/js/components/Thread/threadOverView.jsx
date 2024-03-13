@@ -13,7 +13,7 @@ import { IconMessages } from "@tabler/icons-react";
 
 // Falta poner el Link para que redireccione a la página del thread
 
-const IndividualThreadExternalView = ({ title, likes, number_of_comments, autor, date, category, id }) => {
+const IndividualThreadExternalView = ({ title, likes, number_of_comments, autor, date, category, id ,thread_id,report_id}) => {
 	const { store, actions } = useContext(Context);
 
 	useEffect(() => {

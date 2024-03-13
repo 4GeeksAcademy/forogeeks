@@ -375,11 +375,12 @@ def get_comments():
 
 
 # ⚪️ ADMIN REPORTS ⚪️
-#Verify user is admin
+#esyaba en if= report id report_id
+#Verify user is admin 
 # Endpoint para manejar la solicitud Delete category  en '/admin-reports'
 @api.route('/admin-reports/<int:report_id>', methods=['DELETE'])
 def delete_report(report_id):
-    report = ReportThread.query.filter_by(id=report_id).first()
+    report = ReportThread.query.filter_by(id = report_id).first()
     if report is None:
         return jsonify({"message": "Report not found"}), 404
     db.session.delete(report)

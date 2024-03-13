@@ -69,7 +69,7 @@ const AdminReport = () => {
               </thead>
               <tbody>
               {reportedThreads.map((thread, index) => (
-                      <ThreadReport key={index} thread_id={thread.thread_id} />
+                      <ThreadReport key={index} thread_id={thread.thread_id} title={thread?.thread?.title} />
                     ))}
               </tbody>
             </table>
@@ -97,7 +97,7 @@ const AdminReport = () => {
                 </div>
                 <div className="d-flex justify-content-end mt-2 w-100">
 
-                  <button onClick={handleTest} type="submit" className="mt-2 btn btn-primary text-white rounded-5 w-100">Submit</button>
+                  <button onClick={handleDelete} type="submit" className="mt-2 btn btn-primary text-white rounded-5 w-100">Submit</button>
                 </div>
               </form>
             </div>
