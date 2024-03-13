@@ -42,8 +42,6 @@ const Layout = () => {
 					<Route element={<Home />} path="/" />
 					<Route element={<AdminReport />} path="/admin-report" />
 
-
-
 					<Route element={<Profile />} path="/profile" />
 					<Route element={<CreateNewThread />} path="/nuevo-hilo" />
 					<Route element={<Chat />} path="/chat" />
@@ -66,7 +64,7 @@ const Layout = () => {
 					/>
 				</Routes>
 			</div>
-				<Footer />
+				{/* <Footer /> */}
 		</BrowserRouter>
 	);
 };
