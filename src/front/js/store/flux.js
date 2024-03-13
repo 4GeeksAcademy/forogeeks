@@ -603,7 +603,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error removing thread from favorites. Please try again." };
 				}
 			},
-			getUserFavoriteThreads: async () => {
+			getUserFavoriteThreads: async (token) => {
 				try {
 					const token = localStorage.getItem("token");
 					const response = await fetch(`${process.env.BACKEND_URL}/api/userfavoritethreads`, {
@@ -612,7 +612,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							Authorization: `Bearer ${token}`,
 						},
 					});
-
+			
 					if (response.ok) {
 						const data = await response.json();
 						console.log("[flux.getUserFavoriteThreads] Favorite threads fetched successfully:", data);
@@ -626,7 +626,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("[flux.getUserFavoriteThreads] Error fetching favorite threads:", error);
 					return { success: false, error: "Error fetching favorite threads. Please try again." };
 				}
-			},
+			},			
 			likedThread: async ({ user_id, thread_id }) => {
 				try {
 					const token = localStorage.getItem("token");
@@ -677,7 +677,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error al eliminar el hilo de gustados. Prueba de nuevo." };
 				}
 			},
-			getUserLikedThreads: async () => {
+			getUserLikedThreads: async (token) => {
 				try {
 					const token = localStorage.getItem("token");
 					const response = await fetch(`${process.env.BACKEND_URL}/api/userlikedthreads`, {
