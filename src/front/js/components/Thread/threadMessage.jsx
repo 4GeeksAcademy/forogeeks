@@ -16,15 +16,15 @@ export const ThreadMessage = ({ content, autor_id, date }) => {
     useEffect(() => {
         // autor es el id del usuario que escribio el mensaje
         actions.getUserNameById(autor_id).then((res)=>{
-            console.log("Nombre de usuario: ", res);
+            // console.log("Username: ", user_name);
 
         })
         actions.getUserProfileImageById(autor_id).then((res) => {
             // console.log("IMAGEN DE USUARIO: ", user_profile_image);
         })
-        console.log("Id de usuario: ", autor_id)
-        console.log("Username: ", user_name)
-        console.log("IMAGEN DE USUARIO: ", user_profile_image)
+        //console.log("Id de usuario: ", autor_id)
+        //console.log("Username: ", user_name)
+        //console.log("IMAGEN DE USUARIO: ", user_profile_image)
     }, []);
     return (
         <div className='container'>

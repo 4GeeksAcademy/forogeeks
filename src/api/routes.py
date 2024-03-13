@@ -396,7 +396,94 @@ def get_admin_reports():
 
 # 🟠 THREAT LIKES ENDPOINTS 🟠
 # Endpoint para manejar la solicitud POST en '/like-thread'
+# Cambia el decorador para aceptar solicitudes POST
+# Ruta para manejar la solicitud POST en '/liked-thread'
+@api.route('/liked-thread', methods=['POST'])
+@jwt_required()
+def liked_thread():
+    try:
+        # Obtener los datos JSON de la solicitud
+        data = request.get_json()
+        user_id = data.get("user_id")
+        thread_id = data.get("thread_id")
 
+        # Verificar si se proporcionaron los campos necesarios
+        if user_id is None or thread_id is None:
+            return jsonify({"message": "Missing user_id or thread_id"}), 400
+
+        # Verificar si el usuario y el hilo existen en la base de datos
+        user = User.query.get(user_id)
+        thread = Threads.query.get(thread_id)
+        if user is None or thread is None:
+            return jsonify({"message": "No se encuentra hilo o usuario"}), 404
+
+        # Verificar si el hilo ya está en la lista de gustados del usuario
+        if thread in user.thread_likes:
+            return jsonify({"message": "Este hilo ya te gusta"}), 400
+
+        # Agregar el hilo a la lista de gustados del usuario
+        user.thread_likes.append(thread)
+        db.session.commit()
+
+        return jsonify({"message": "Hilo añadido a favoritos"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Ruta para manejar la solicitud POST en '/unliked-thread'
+@api.route('/unliked-thread', methods=['POST'])
+@jwt_required()
+def unliked_thread():
+    try:
+        # Obtener los datos JSON de la solicitud
+        data = request.get_json()
+        user_id = data.get("user_id")
+        thread_id = data.get("thread_id")
+
+        # Verificar si se proporcionaron los campos necesarios
+        if user_id is None or thread_id is None:
+            return jsonify({"message": "Falta id de usuario o id de hilo"}), 400
+
+        # Verificar si el hilo está en la lista de gustados del usuario
+        liked_thread = ThreadLikes.query.filter_by(user_id=user_id, thread_id=thread_id).first()
+        if liked_thread is None:
+            return jsonify({"message": "El hilo no está en tu lista de gustados"}), 404
+
+        # Eliminar el hilo de la lista de gustados del usuario
+        db.session.delete(liked_thread)
+        db.session.commit()
+
+        return jsonify({"message": "Hilo eliminado de tu lista de gustados"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    # Para obtener los hilos gustados del usuario logueado
+@api.route('/userlikedthreads', methods=['GET'])
+@jwt_required()
+def userlikedthreads():
+    try:
+        current_user = get_jwt_identity()
+        # Buscar al usuario en la base de datos por su ID
+        user = User.query.filter(User.email == current_user).first()
+        if user:
+            # Obtener los hilos gustados del usuario
+            liked_threads = user.thread_likes
+            # Serializar los hilos gustados
+            serialized_liked_threads = [thread.serialize() for thread in liked_threads]
+
+            # Crear el cuerpo de la respuesta con la información de los hilos gustados del usuario
+            response_body = {
+                "liked_threads": serialized_liked_threads
+            }
+
+            # Devolver la información de los hilos gustados como JSON con un código de estado 200 (OK)
+            return jsonify(response_body), 200
+        else:
+            # Manejar el caso en el que el usuario no existe
+            return jsonify({"error": "User not found"}), 404
+    except Exception as e:
+        # Manejar cualquier otro error que pueda ocurrir durante la ejecución de la función
+        return jsonify({"error": str(e)}), 500
 # 🟣 FAVORITE THREADS ENDPOINTS 🟣
 # Endpoint para manejar la solicitud POST en '/favorite-thread'
     

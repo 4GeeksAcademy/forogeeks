@@ -36,6 +36,7 @@ class User(db.Model):
     profile_picture = db.Column(db.String(120), unique=False, nullable=True)
     description = db.Column(db.String(120), unique=False, nullable=True)
     favorite_threads = db.relationship('Threads', secondary='favorite_threads', backref='user_favorite', lazy=True)
+    thread_likes = db.relationship('Threads', secondary='thread_likes', backref='user_like', lazy=True)
     admin = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
@@ -150,7 +151,6 @@ class FavoriteThreads(db.Model):
         return {
             "user_id": self.user_id,
             "thread_id": self.thread_id,
-            # do not serialize the password, its a security breach
         }
 
 

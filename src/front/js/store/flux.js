@@ -18,6 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user_profile_image: "",
 			user: null,
 			favoriteThreads: [],
+			likedThreads: [],
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -605,13 +606,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUserFavoriteThreads: async () => {
 				try {
 					const token = localStorage.getItem("token");
-					const response = await fetch(`${process.env.BACKEND_URL}/api/favorite-thread`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/userfavoritethreads`, {
 						method: "GET",
 						headers: {
 							Authorization: `Bearer ${token}`,
 						},
 					});
-			
+
 					if (response.ok) {
 						const data = await response.json();
 						console.log("[flux.getUserFavoriteThreads] Favorite threads fetched successfully:", data);
@@ -626,7 +627,81 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error fetching favorite threads. Please try again." };
 				}
 			},
-			
+			likedThread: async ({ user_id, thread_id }) => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/liked-thread`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ user_id, thread_id }),
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.likedThread] Thread added to favorites successfully:", data);
+						return { success: true, message: "Hilo añadido a gustados" };
+					} else {
+						const errorMessage = await response.text(); // Get error message from response body
+						throw new Error(errorMessage || "Error al añadir a gustados");
+					}
+				} catch (error) {
+					console.error("[flux.likedThread] Error añadiendo el hilo a gustados:", error);
+					return { success: false, error: "Error añadiendo el hilo a gustados. Prueba de nuevo." };
+				}
+			},
+			// En el archivo getState.js
+			unlikedThread: async ({ user_id, thread_id }) => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/unliked-thread`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ user_id, thread_id }),
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.unlikedThread] Este hilo ya no te gusta:", data);
+						return { success: true };
+					} else {
+						throw new Error("Error al quitar el hilo de gustados");
+					}
+				} catch (error) {
+					console.error("[flux.unlikedThread] Error al eliminar el hilo de gustados:", error);
+					return { success: false, error: "Error al eliminar el hilo de gustados. Prueba de nuevo." };
+				}
+			},
+			getUserLikedThreads: async () => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/userlikedthreads`, {
+						method: "GET",
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getUserLikedThreads] Liked threads fetched successfully:", data);
+						setStore({ likedThreads: data });
+						return { success: true };
+					} else {
+						const errorMessage = await response.text();
+						throw new Error(errorMessage || "Failed to fetch liked threads");
+					}
+				} catch (error) {
+					console.error("[flux.getUserLikedThreads] Error fetching liked threads:", error);
+					return { success: false, error: "Error fetching liked threads. Please try again." };
+				}
+			},
+
 		},
 	};
 };

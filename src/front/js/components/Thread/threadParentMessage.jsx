@@ -6,6 +6,7 @@ import { IconHeart, IconBookmark, IconArrowForward } from '@tabler/icons-react';
 export const ThreadParentMessage = ({ autor, content, date, user_profile_picture, description, title, thread_id }) => {
     const { store, actions } = useContext(Context);
     const [isFavorite, setIsFavorite] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
     const [showAlert, setShowAlert] = useState(false); // Estado para controlar si se muestra la alerta
 
     useEffect(() => {
@@ -15,6 +16,14 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
             setIsFavorite(isThreadFavorite);
         }
     }, [store.favoriteThreads, thread_id]);
+
+    useEffect(() => {
+        const likedThreads = store.likedThreads;
+        if (likedThreads && thread_id) {
+            const isThreadLiked = likedThreads.some(likedThread => likedThread.id === thread_id);
+            setIsLiked(isThreadLiked);
+        }
+    }, [store.likedThreads, thread_id]);
 
     const handleFavoriteThread = (thread_id) => {
         if (store.isUserLogged) {
@@ -43,9 +52,32 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
         }
     };
 
-    useEffect(() => {
-        console.log('Hilos favoritos guardados:', store.favoriteThreads);
-    }, [store.favoriteThreads]);
+    const handleLikeThread = (thread_id) => {
+        if (store.isUserLogged) {
+            if (isLiked) {
+                actions.unlikedThread({ user_id: store.userInfo.id, thread_id })
+                    .then(response => {
+                        console.log(response.message);
+                        setIsLiked(false);
+                    })
+                    .catch(error => {
+                        console.error('Error unliking thread:', error);
+                    });
+            } else {
+                actions.likedThread({ user_id: store.userInfo.id, thread_id })
+                    .then(response => {
+                        console.log(response.message);
+                        setIsLiked(true);
+                    })
+                    .catch(error => {
+                        console.error('Error liking thread:', error);
+                    });
+            }
+        } else {
+            // Mostrar la alerta si el usuario no está autenticado
+            setShowAlert(true);
+        }
+    };
 
     return (
         <div className="row">
@@ -76,28 +108,18 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                         </div>
                         {/* Alerta Bootstrap para mostrar cuando el usuario no está autenticado */}
                         {showAlert && (
-                                <div className="alert alert-warning" role="alert">
-                                    Por favor, inicia sesión para marcar este hilo como favorito.
-                                </div>
-                            )}
+                            <div className="alert alert-warning" role="alert">
+                                Por favor, inicia sesión para marcar este hilo como favorito o darle like.
+                            </div>
+                        )}
                         <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
-                            <div className="d-flex align-items-center gap-1">
+                            <div className={`d-flex align-items-center gap-1 ${isLiked ? 'text-success' : ''}`}>
                                 <span className="text-muted small">13</span>
-                                <IconHeart size={20} stroke={1} />
+                                <IconHeart size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} />
                             </div>
                             <div className={`d-flex align-items-center gap-3 ${isFavorite ? 'text-danger' : ''}`}>
                                 <IconBookmark size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} />
                                 <IconArrowForward size={20} stroke={1} />
-                            </div>
-                            
-                            <div className={`row ${isFavorite ? 'favorite-thread' : ''}`}>
-                                <div className="col-md-12">
-                                    <div className="d-flex align-items-center gap-1">
-                                        <span className="text-muted small">{"@" + autor}</span>
-                                        <span className="text-muted small">{"-"}</span>
-                                        <span className="text-muted small">{title}</span>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
