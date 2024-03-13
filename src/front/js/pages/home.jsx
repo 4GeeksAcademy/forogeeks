@@ -135,7 +135,7 @@ export const Home = () => {
 						{/* DIEGO */}
 						<div className="col-md-4 text-center p-2">
 							<img className="rounded-circle mb-3" src="https://avatars.githubusercontent.com/u/93382813?v=4" style={{ width: "130px", height: "130px" }} alt="" />
-							<p className="text-align-center fst-italic p-2">"Tengo la suerte de formar parte de forogeeks Cada uno de nosotros está demostrando cariño y dedicación. Me siento orgulloso de mí trabajo y de el de mis compañeros."
+							<p className="text-align-center fst-italic p-2">"Tengo la suerte de formar parte de ForoGeeks, cada uno de nosotros está demostrando cariño y dedicación. Me siento orgulloso de mí trabajo y del de mis compañeros."
 							</p>
 							<p className="fw-bold">Diego Gomez - Madrid</p>
 						</div>
