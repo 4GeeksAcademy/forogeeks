@@ -588,9 +588,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						const data = await response.json();
 						console.log("[flux.favoriteThread] Thread added to favorites successfully:", data);
-						return { success: true };
+						return { success: true, message: "Thread added to favorites successfully" };
 					} else {
-						throw new Error("Failed to add thread to favorites");
+						const errorMessage = await response.text(); // Get error message from response body
+						throw new Error(errorMessage || "Failed to add thread to favorites");
 					}
 				} catch (error) {
 					console.error("[flux.favoriteThread] Error adding thread to favorites:", error);
@@ -620,6 +621,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("[flux.unfavoriteThread] Error removing thread from favorites:", error);
 					return { success: false, error: "Error removing thread from favorites. Please try again." };
+				}
+			},
+			getUserFavoriteThreads: async () => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/userfavoritethreads`, {
+						method: "GET",
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getUserFavoriteThreads] Favorite threads fetched successfully:", data);
+						return { success: true, favoriteThreads: data.favorite_threads };
+					} else {
+						const errorMessage = await response.text(); // Get error message from response body
+						throw new Error(errorMessage || "Failed to fetch favorite threads");
+					}
+				} catch (error) {
+					console.error("[flux.getUserFavoriteThreads] Error fetching favorite threads:", error);
+					return { success: false, error: "Error fetching favorite threads. Please try again." };
 				}
 			},
 		},
