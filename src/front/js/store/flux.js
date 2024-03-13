@@ -16,6 +16,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			reportedThreads: [],
 			user_name: "",
 			user_profile_image: "",
+			user: null,
+			favoriteThreads: [],
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -82,7 +84,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					const data = await response.json();
 					localStorage.setItem("token", data.token); // Almacenar el token en localStorage
-					setStore({ token: data.token, logError: null });
+					setStore({ token: data.token, logError: null, user: data.user });
 					getActions().getUserInfo();
 				} catch (error) {
 					console.error("[flux.login] login-error:", error);
@@ -132,7 +134,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						const data = await response.json();
 						console.log("getUserInfo")
 						console.log("[flux.getUserInfo] respuesta de routes.py userinfo]\n", data);
-						setStore({ userInfo: data, profilePicture: data.profile_picture })
+						setStore({ userInfo: data, profilePicture: data.profile_picture, favoriteThreads: data.favoriteThreads })
 						setStore({ isUserLogged: true })
 						// setIsUserLogged(true);
 					} else {
@@ -471,10 +473,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify({ email: newEmail }), // Asegúrate de enviar el nuevo correo electrónico en el cuerpo de la solicitud
 					});
 					const data = await response.json();
-			
+
 					// Log de la respuesta JSON para depuración
 					console.log('Response data:', data);
-			
+
 					if (response.ok) {
 						return { success: true };
 					} else {
@@ -517,39 +519,39 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			getUserNameById: async (id) => {
-                const store = getStore();
-                try {
-                    const response = await fetch(process.env.BACKEND_URL + `/api/user/${id}`, {
-                        method: "GET",
-                    });
-                    if (response.ok) {
-                        const data = await response.json();
-                        console.log("[flux.getUserNameById] data", data);
-                        setStore({ ...store, user_name: String(data["username"]) });
-                    } else {
-                        throw new Error("[flux.getUserById] Failed to fetch threads");
-                    }
-                } catch (error) {
-                    console.error("[flux.getUserById] Error fetching threads:", error);
-                }
-            },
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/user/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getUserNameById] data", data);
+						setStore({ ...store, user_name: String(data["username"]) });
+					} else {
+						throw new Error("[flux.getUserById] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getUserById] Error fetching threads:", error);
+				}
+			},
 			getUserProfileImageById: async (id) => {
-                const store = getStore();
-                try {
-                    const response = await fetch(process.env.BACKEND_URL + `/api/user/profile-picture/${id}`, {
-                        method: "GET",
-                    });
-                    if (response.ok) {
-                        const data = await response.json();
-                        console.log("[flux.getUserProfileImageById] data", data);
-                        setStore({ ...store, user_profile_image: String(data["profile_picture"]) });
-                    } else {
-                        throw new Error("[flux.getUserById] Failed to fetch threads");
-                    }
-                } catch (error) {
-                    console.error("[flux.getUserById] Error fetching threads:", error);
-                }
-            },
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/user/profile-picture/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getUserProfileImageById] data", data);
+						setStore({ ...store, user_profile_image: String(data["profile_picture"]) });
+					} else {
+						throw new Error("[flux.getUserById] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getUserById] Error fetching threads:", error);
+				}
+			},
 			getFavoriteThreads: async () => {
 				try {
 					const token = localStorage.getItem("token");
@@ -559,7 +561,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							Authorization: `Bearer ${token}`,
 						},
 					});
-			
+
 					if (response.ok) {
 						const data = await response.json();
 						return { success: true, favoriteThreads: data };
@@ -569,6 +571,55 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("Error fetching favorite threads:", error);
 					return { success: false, error: "Error fetching favorite threads. Please try again." };
+				}
+			},
+			favoriteThread: async ({ user_id, thread_id }) => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/favorite-thread`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ user_id, thread_id }),
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.favoriteThread] Thread added to favorites successfully:", data);
+						return { success: true };
+					} else {
+						throw new Error("Failed to add thread to favorites");
+					}
+				} catch (error) {
+					console.error("[flux.favoriteThread] Error adding thread to favorites:", error);
+					return { success: false, error: "Error adding thread to favorites. Please try again." };
+				}
+			},
+			// En el archivo getState.js
+			unfavoriteThread: async ({ user_id, thread_id }) => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/unfavorite-thread`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ user_id, thread_id }),
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.unfavoriteThread] Thread removed from favorites successfully:", data);
+						return { success: true };
+					} else {
+						throw new Error("Failed to remove thread from favorites");
+					}
+				} catch (error) {
+					console.error("[flux.unfavoriteThread] Error removing thread from favorites:", error);
+					return { success: false, error: "Error removing thread from favorites. Please try again." };
 				}
 			},
 		},

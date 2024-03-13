@@ -138,30 +138,28 @@ def login():
 @jwt_required()
 def userinfo():
     try:
-
         current_user = get_jwt_identity()
         # Buscar al usuario en la base de datos por su ID
         user = User.query.filter(User.email == current_user).first()
-        print(user)
         if user:
-            # Crear el cuerpo de la respuesta con un mensaje de saludo que incluye el correo electrónico del usuario
-            response_body = user.serialize()
-            # Puedes sacar esto con serialize ej: <p>{user.description}</p>
-            # "user_name": self.user_name,
-            # "email": self.email,
-            # "profile_picture": self.profile_picture,
-            # "description": self.description,
-            # "admin": self.admin
+            # Obtener los hilos favoritos del usuario
+            favorite_threads = user.favorite_threads
+            # Serializar los hilos favoritos
+            serialized_favorite_threads = [thread.serialize() for thread in favorite_threads]
+            
+            # Crear el cuerpo de la respuesta con la información del usuario y sus hilos favoritos
+            response_body = {
+                "user_info": user.serialize(),
+                "favorite_threads": serialized_favorite_threads
+            }
 
-            # Devolver el mensaje de saludo como JSON con un código de estado 200 (OK)
+            # Devolver la información del usuario y sus hilos favoritos como JSON con un código de estado 200 (OK)
             return jsonify(response_body), 200
         else:
             # Manejar el caso en el que el usuario no existe
-            print("error else")
             return jsonify({"error": "User not found"}), 404
-
     except Exception as e:
-        # Manejar cualquier otro error que pueda ocurrir
+        # Manejar cualquier otro error que pueda ocurrir durante la ejecución de la función
         return jsonify({"error": str(e)}), 500
 
 # Endpoint para obtener el username a traves de user_id
@@ -421,6 +419,49 @@ def get_favorite_threads():
     except Exception as e:
         return jsonify({"message": str(e)}), 500
     
+
+@app.route('/favorite-thread', methods=['POST'])
+def favorite_thread():
+    if request.method == 'POST':
+        data = request.get_json()
+        user_id = data.get('user_id')
+        thread_id = data.get('thread_id')
+
+        if user_id is None or thread_id is None:
+            return jsonify({'error': 'Missing user_id or thread_id'}), 400
+
+        favorite_thread = FavoriteThreads(user_id=user_id, thread_id=thread_id)
+        db.session.add(favorite_thread)
+        db.session.commit()
+
+        return jsonify({'message': 'Thread added to favorites successfully'}), 200
+
+# Ruta para manejar la solicitud POST en '/unfavorite-thread'
+@api.route('/unfavorite-thread', methods=['POST'])
+@jwt_required()
+def unfavorite_thread():
+    try:
+        # Obtener los datos JSON de la solicitud
+        data = request.get_json()
+        user_id = data.get("user_id")
+        thread_id = data.get("thread_id")
+
+        # Verificar si se proporcionaron los campos necesarios
+        if user_id is None or thread_id is None:
+            return jsonify({"message": "Missing user_id or thread_id"}), 400
+
+        # Verificar si el hilo está en la lista de favoritos del usuario
+        favorite_thread = FavoriteThreads.query.filter_by(user_id=user_id, thread_id=thread_id).first()
+        if favorite_thread is None:
+            return jsonify({"message": "Thread is not in favorites list"}), 404
+
+        # Eliminar el hilo de la lista de favoritos del usuario
+        db.session.delete(favorite_thread)
+        db.session.commit()
+
+        return jsonify({"message": "Thread removed from favorites successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 # 🟤 THREAD COMMENTS ENDPOINTS 🟤
 # Endpoint para manejar la solicitud POST en '/create-comment'
 

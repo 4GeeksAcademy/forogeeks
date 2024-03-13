@@ -98,7 +98,7 @@ export const InsideThread = () => {
                                 <h3 className="d-flex align-items-center text-align-center m-0">{thread.title}</h3>
                             </div>
 
-                            <ThreadParentMessage autor={thread?.user?.user_name} content={thread.content} date={thread.date} description={thread.description} user_profile_picture={thread?.user?.profile_picture} />
+                            <ThreadParentMessage autor={thread?.user?.user_name} content={thread.content} date={thread.date} description={thread.description} user_profile_picture={thread?.user?.profile_picture} thread_id={thread.id} />
 
                             {/* COMENTARIOS */}
                             {comments.map((comment, index) => {
