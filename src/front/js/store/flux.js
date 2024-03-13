@@ -808,7 +808,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return { success: true };
 					} else {
 						const errorMessage = await response.text();
-						console.log("[flux.getUserLikedComments]", data);
 						throw new Error(errorMessage || "Failed to fetch liked comments");
 					}
 				} catch (error) {

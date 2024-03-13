@@ -37,6 +37,7 @@ class User(db.Model):
     description = db.Column(db.String(120), unique=False, nullable=True)
     favorite_threads = db.relationship('Threads', secondary='favorite_threads', backref='user_favorite', lazy=True)
     thread_likes = db.relationship('Threads', secondary='thread_likes', backref='user_like', lazy=True)
+    comment_likes = db.relationship('ThreadComments', secondary='comment_likes', backref='user_likeComment', lazy=True)
     admin = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
