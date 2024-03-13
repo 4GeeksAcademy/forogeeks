@@ -6,6 +6,7 @@ import { IconHeart, IconBookmark, IconArrowForward } from '@tabler/icons-react';
 export const ThreadParentMessage = ({ autor, content, date, user_profile_picture, description, title, thread_id }) => {
     const { store, actions } = useContext(Context);
     const [isFavorite, setIsFavorite] = useState(false);
+    const [showAlert, setShowAlert] = useState(false); // Estado para controlar si se muestra la alerta
 
     useEffect(() => {
         const favoriteThreads = store.favoriteThreads;
@@ -37,7 +38,8 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                     });
             }
         } else {
-            console.log('El usuario debe estar autenticado para favoritar hilos');
+            // Mostrar la alerta si el usuario no está autenticado
+            setShowAlert(true);
         }
     };
 
@@ -72,15 +74,22 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                                 <div dangerouslySetInnerHTML={{ __html: content }} />
                             </div>
                         </div>
+                        {/* Alerta Bootstrap para mostrar cuando el usuario no está autenticado */}
+                        {showAlert && (
+                                <div className="alert alert-warning" role="alert">
+                                    Por favor, inicia sesión para marcar este hilo como favorito.
+                                </div>
+                            )}
                         <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
-                            <div className="d-flex align-items-center gap-1" onClick={() => handleFavoriteThread(thread_id)}>
-                                <span className={`text-muted small ${isFavorite ? 'text-danger' : ''}`}>13</span>
+                            <div className="d-flex align-items-center gap-1">
+                                <span className="text-muted small">13</span>
                                 <IconHeart size={20} stroke={1} />
                             </div>
-                            <div className="d-flex align-items-center gap-3">
-                                <IconBookmark size={20} stroke={1} />
+                            <div className={`d-flex align-items-center gap-3 ${isFavorite ? 'text-danger' : ''}`}>
+                                <IconBookmark size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} />
                                 <IconArrowForward size={20} stroke={1} />
                             </div>
+                            
                             <div className={`row ${isFavorite ? 'favorite-thread' : ''}`}>
                                 <div className="col-md-12">
                                     <div className="d-flex align-items-center gap-1">
