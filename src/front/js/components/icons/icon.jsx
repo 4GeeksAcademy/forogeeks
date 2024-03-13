@@ -12,6 +12,8 @@ import { IconHelp } from "@tabler/icons-react";
 import { IconCode } from "@tabler/icons-react";
 import { IconNotes } from "@tabler/icons-react";
 import { IconDeviceGamepad2 } from "@tabler/icons-react";
+import { IconUfo } from '@tabler/icons-react';
+import { IconCoinBitcoin } from '@tabler/icons-react';
 
 // Objeto que mapea nombres de iconos a componentes de iconos
 const ICONS = {
@@ -25,6 +27,8 @@ const ICONS = {
 	IconNotes,
 	IconDeviceGamepad2,
 	FLAME,
+	IconUfo,
+	IconCoinBitcoin,
 };
 
 const Icon = ({ name, size, color, stroke }) => {
