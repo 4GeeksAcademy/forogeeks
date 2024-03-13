@@ -8,24 +8,25 @@ import { IconHeart } from '@tabler/icons-react';
 import { IconArrowForward } from '@tabler/icons-react';
 
 
-export const ThreadMessage = ({ content, autor_id, date }) => {
+export const ThreadMessage = ({ comment, authorId, date }) => {
     const {store, actions} = useContext(Context);
-    const user_name = store.user_name;
-    const user_profile_image = store.user_profile_image;
+    const [authorName, setAuthorName] = useState("");
+    const [authorProfileImage, setAuthorProfileImage] = useState("");
 
     useEffect(() => {
-        // autor es el id del usuario que escribio el mensaje
-        actions.getUserNameById(autor_id).then((res)=>{
-            console.log("Nombre de usuario: ", res);
-
-        })
-        actions.getUserProfileImageById(autor_id).then((res) => {
-            // console.log("IMAGEN DE USUARIO: ", user_profile_image);
-        })
-        console.log("Id de usuario: ", autor_id)
-        console.log("Username: ", user_name)
-        console.log("IMAGEN DE USUARIO: ", user_profile_image)
-    }, []);
+        const fetchData = async () => {
+            try {
+                const userName = await actions.getUserNameById(authorId);
+                const profileImage = await actions.getUserProfileImageById(authorId);
+                setAuthorName(userName);
+                setAuthorProfileImage(profileImage);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+    
+        fetchData();
+    }, [authorId]);
     return (
         <div className='container'>
             <div className="row">
@@ -38,9 +39,9 @@ export const ThreadMessage = ({ content, autor_id, date }) => {
                                 {/* USERNAME */}
                                 <div className="">
                                     <div className="d-flex flex-row gap-3 align-items-center">
-                                        <img src={user_profile_image} alt="profile" className="rounded-circle" style={{ width: "40px", height: "40px" }} />
+                                        <img src={authorProfileImage} alt="profile" className="rounded-circle" style={{ width: "40px", height: "40px" }} />
                                         <div className="d-flex flex-column">
-                                            <span className="m-0 p-0 d-flex align-items-center fw-bold text-primary">{"@" + user_name}</span>
+                                            <span className="m-0 p-0 d-flex align-items-center fw-bold text-primary">{"@" + authorName}</span>
                                             <span className="text-muted small p-0 m-0" >Estoy usando ForoGeeks</span>
                                         </div>
                                     </div>
@@ -60,7 +61,7 @@ export const ThreadMessage = ({ content, autor_id, date }) => {
                             {/* CONTENT */}
                             <div className="col-md-12">
                                 <div className="">
-                                <div dangerouslySetInnerHTML={{ __html: content }} />
+                                <div dangerouslySetInnerHTML={{ __html: comment }} />
                                 </div>
                             </div>
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">

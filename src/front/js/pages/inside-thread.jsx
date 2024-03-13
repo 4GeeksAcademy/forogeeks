@@ -42,7 +42,8 @@ export const InsideThread = () => {
         }
         actions.getThreadById(id); // Se agrega a store.thread el hilo con el id que se pasa por parametro
         actions.getCommentsByThread(id);
-        // console.log("id del hilo: ", id);
+    
+
     }, []);
 
     return (
@@ -104,7 +105,7 @@ export const InsideThread = () => {
                             {comments.map((comment, index) => {
                                 return (
                                     // Falta agregar likes en DB
-                                    <ThreadMessage key={index} id={comment.id} autor_id={comment.user_id} content={comment.content} date={comment.date} profileImg={comment.profile_picture} />
+                                    <ThreadMessage key={comment.id} id={comment.id} authorId={comment.user_id} comment={comment.content} date={comment.date} profileImg={comment.profile_picture} />
                                 )
                             }
                             )}

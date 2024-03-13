@@ -1,7 +1,6 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-
 			logError: null,
 			token: "",
 			modalRegistersuccess: false,
@@ -14,8 +13,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			threadComments: [],
 			trending: [],
 			reportedThreads: [],
-			user_name: "",
-			user_profile_image: "",
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -500,7 +497,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     if (response.ok) {
                         const data = await response.json();
                         console.log("[flux.getUserNameById] data", data);
-                        setStore({ ...store, user_name: String(data["username"]) });
+                        return String(data.username);
                     } else {
                         throw new Error("[flux.getUserById] Failed to fetch threads");
                     }
@@ -517,7 +514,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     if (response.ok) {
                         const data = await response.json();
                         console.log("[flux.getUserProfileImageById] data", data);
-                        setStore({ ...store, user_profile_image: String(data["profile_picture"]) });
+						return String(data.profile_picture);
                     } else {
                         throw new Error("[flux.getUserById] Failed to fetch threads");
                     }
