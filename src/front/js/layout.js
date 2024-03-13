@@ -65,8 +65,8 @@ const Layout = () => {
 						path="/restore-password"
 					/>
 				</Routes>
-				<Footer />
 			</div>
+				<Footer />
 		</BrowserRouter>
 	);
 };
