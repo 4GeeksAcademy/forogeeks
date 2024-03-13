@@ -8,6 +8,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const [showAlert, setShowAlert] = useState(false); // Estado para controlar si se muestra la alerta
+    
 
     useEffect(() => {
         const favoriteThreads = store.favoriteThreads;
@@ -19,19 +20,46 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
 
     useEffect(() => {
         const likedThreads = store.likedThreads;
+        console.log(likedThreads)
         if (likedThreads && thread_id) {
             const isThreadLiked = likedThreads.some(likedThread => likedThread.id === thread_id);
             setIsLiked(isThreadLiked);
         }
     }, [store.likedThreads, thread_id]);
 
+    useEffect(() => {
+        const favoriteThreads = store.favoriteThreads;
+        if (favoriteThreads && thread_id) {
+            const isThreadFavorite = favoriteThreads.some(favThread => favThread.id === thread_id);
+            setIsFavorite(isThreadFavorite);
+        }
+        
+        // Llama a la acción para comprobar si el hilo está marcado como favorito
+        actions.checkFavoriteThread(thread_id, setIsFavorite)
+            .then(response => {
+                setIsFavorite(response.isFavorite);
+            })
+            .catch(error => {
+                console.error('Error checking favorite thread:', error);
+            });
+        
+        // Llama a la acción para comprobar si el hilo está marcado como gustado
+        actions.checkLikedThread(thread_id, setIsLiked)
+            .then(response => {
+                setIsLiked(response.isLiked);
+            })
+            .catch(error => {
+                console.error('Error checking liked thread:', error);
+            });
+    }, [store.favoriteThreads, store.likedThreads, thread_id]);
+    
     const handleFavoriteThread = (thread_id) => {
         if (store.isUserLogged) {
             if (isFavorite) {
                 actions.unfavoriteThread({ user_id: store.userInfo.id, thread_id })
                     .then(response => {
                         console.log(response.message);
-                        setIsFavorite(false);
+                        setIsFavorite(false); // Actualizar el estado directamente
                     })
                     .catch(error => {
                         console.error('Error unfavoriting thread:', error);
@@ -40,7 +68,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                 actions.favoriteThread({ user_id: store.userInfo.id, thread_id })
                     .then(response => {
                         console.log(response.message);
-                        setIsFavorite(true);
+                        setIsFavorite(true); // Actualizar el estado directamente
                     })
                     .catch(error => {
                         console.error('Error favoriting thread:', error);
