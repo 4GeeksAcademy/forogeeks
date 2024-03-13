@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../../store/appContext";
 import moment from "moment";
-import { IconHeart, IconBookmark, IconArrowForward } from '@tabler/icons-react';
+import { IconHeart, IconBookmark, IconArrowForward, IconHeartFilled, IconBookmarkFilled } from '@tabler/icons-react';
 
 export const ThreadParentMessage = ({ autor, content, date, user_profile_picture, description, title, thread_id }) => {
     const { store, actions } = useContext(Context);
@@ -113,12 +113,12 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                             </div>
                         )}
                         <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
-                            <div className={`d-flex align-items-center gap-1 ${isLiked ? 'text-success' : ''}`}>
+                            <div className="d-flex align-items-center gap-1">
                                 <span className="text-muted small">13</span>
-                                <IconHeart size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} />
+                                {isLiked ? <IconHeartFilled className="text-danger" size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} /> : <IconHeart size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} />}
                             </div>
-                            <div className={`d-flex align-items-center gap-3 ${isFavorite ? 'text-danger' : ''}`}>
-                                <IconBookmark size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} />
+                            <div className="d-flex align-items-center gap-3">
+                                {isFavorite ? <IconBookmarkFilled size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} /> : <IconBookmark size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} />}
                                 <IconArrowForward size={20} stroke={1} />
                             </div>
                         </div>
