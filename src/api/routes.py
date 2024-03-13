@@ -646,21 +646,21 @@ def user_liked_comments():
         # Buscar al usuario en la base de datos por su ID
         user = User.query.filter(User.email == current_user).first()
         if user:
-            # Obtener los comentarios que le gustan al usuario
-            liked_comments = CommentLikes.query.filter_by(user_id=user.id).all()
-            # Serializar los comentarios
-            serialized_liked_comments = [like.serialize() for like in liked_comments]
+            # Obtener los hilos favoritos del usuario
+            comments = user.comment_likes
+            # Serializar los hilos favoritos
+            serialized_comments = [comment.serialize() for comment in comments]
 
-            # Crear el cuerpo de la respuesta con la información de los comentarios que le gustan al usuario
+            # Crear el cuerpo de la respuesta con la información de los hilos favoritos del usuario
             response_body = {
-                "liked_comments": serialized_liked_comments
+                "comment_likes": serialized_comments
             }
 
-            # Devolver la información de los comentarios que le gustan como JSON con un código de estado 200 (OK)
+            # Devolver la información de los hilos favoritos como JSON con un código de estado 200 (OK)
             return jsonify(response_body), 200
         else:
             # Manejar el caso en el que el usuario no existe
-            return jsonify({"error": "Usuario no encontrado"}), 404
+            return jsonify({"error": "User not found"}), 404
     except Exception as e:
         # Manejar cualquier otro error que pueda ocurrir durante la ejecución de la función
         return jsonify({"error": str(e)}), 500

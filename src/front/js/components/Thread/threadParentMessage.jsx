@@ -7,7 +7,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
     const { store, actions } = useContext(Context);
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
-    const [showAlert, setShowAlert] = useState(false); // Estado para controlar si se muestra la alerta
+    const [showAlert, setShowAlert] = useState(false);
     
 
     useEffect(() => {

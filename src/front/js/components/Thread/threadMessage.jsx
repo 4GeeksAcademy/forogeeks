@@ -11,6 +11,11 @@ export const ThreadMessage = ({ content, date, id }) => {
     const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
+        actions.getUserLikedComments()
+        console.log(store.likedComments)
+    }, []);
+
+    useEffect(() => {
         const likedComments = store.likedComments;
         if (likedComments && id) {
             const isLiked = likedComments.some(likedComment => likedComment.id === id);
