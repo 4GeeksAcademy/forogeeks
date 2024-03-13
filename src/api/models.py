@@ -33,7 +33,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), unique=False, nullable=False)
     user_threads = db.relationship('Threads', backref='user', lazy=True)
-    profile_picture = db.Column(db.String(120), unique=False, nullable=True)
+    profile_picture = db.Column(db.String(300), unique=False, nullable=True)
     description = db.Column(db.String(120), unique=False, nullable=True)
     favorite_threads = db.relationship('Threads', secondary='favorite_threads', backref='user_favorite', lazy=True)
     admin = db.Column(db.Boolean, default=False)
@@ -152,7 +152,6 @@ class FavoriteThreads(db.Model):
             "thread_id": self.thread_id,
             # do not serialize the password, its a security breach
         }
-
 
 # 7. Message
 class PrivateMessages(db.Model):

@@ -86,7 +86,7 @@ export const Home = () => {
 					<div className="row p-0 m-auto">
 						<div className="col-lg-6 pe-0 ps-lg-5 py-md-5 ">
 							<div className="text-container d-flex flex-column justify-content-center h-100">
-								<h4 className="fw-bold display-6 pt-3" style={{fontSize:"1.7rem"}}>¡Bienvenido a ForoGeeks!</h4>
+								<h4 className="fw-bold display-6 pt-3" style={{ fontSize: "1.7rem" }}>¡Bienvenido a ForoGeeks!</h4>
 								<p>¡Hola, forer@! Estás a punto de sumergirte en un mundo donde la pasión por la programación y la tecnología se fusionan en una comunidad vibrante y llena de conocimientos.</p>
 								<ul className="list-group list-group-flush lh-lg">
 									<li className="list-group-item">
@@ -102,7 +102,8 @@ export const Home = () => {
 										<strong>Desarrolla tus habilidades:</strong> Encuentra recursos para mejorar tus habilidades de programación.
 									</li>
 								</ul>
-								<a className="btn btn-primary text-white mt-4 rounded-5 align-self-start" href="https://4geeks.com/" data-bs-target="#modal1">¡Únete a la comunidad!</a>
+								<a className="btn btn-primary text-white mt-4 rounded-5 align-self-start" href="https://4geeks.com/" target="_blank" rel="noopener noreferrer" data-bs-target="#modal1">¡Únete a la comunidad!</a>
+
 							</div>
 						</div>
 						{/* IMAGEN */}
@@ -119,7 +120,7 @@ export const Home = () => {
 				<section className="testimonials mb-8 py-3 shadow-sm rounded-3 bg-white">
 					<div className="p-3">
 
-					<h4 className="fw-bold display-6 ps-lg-2" style={{fontSize:"1.7rem"}}>¡Conoce a los creadores!</h4>
+						<h4 className="fw-bold display-6 ps-lg-2" style={{ fontSize: "1.7rem" }}>¡Conoce a los creadores!</h4>
 					</div>
 					<div className="row m-auto w-100 p-3">
 						{/* RAUL */}

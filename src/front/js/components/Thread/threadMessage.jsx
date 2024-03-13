@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState, useContext } from "react";
-import {Context} from "../../store/appContext";
+import { Context } from "../../store/appContext";
 import moment from "moment"
 
 // ICONS
@@ -9,7 +9,7 @@ import { IconArrowForward } from '@tabler/icons-react';
 
 
 export const ThreadMessage = ({ comment, authorId, date }) => {
-    const {store, actions} = useContext(Context);
+    const { store, actions } = useContext(Context);
     const [authorName, setAuthorName] = useState("");
     const [authorProfileImage, setAuthorProfileImage] = useState("");
 
@@ -23,8 +23,9 @@ export const ThreadMessage = ({ comment, authorId, date }) => {
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
+
         };
-    
+
         fetchData();
     }, [authorId]);
     return (
@@ -49,19 +50,19 @@ export const ThreadMessage = ({ comment, authorId, date }) => {
                                 {/* DATE */}
                                 <div className="">
                                     <div className='d-flex justify-content-end'>
-                                        <span className="text-muted small p-0 m-0" style={{fontSize:"12.25px"}}>{moment(date).fromNow()}</span>
+                                        <span className="text-muted small p-0 m-0" style={{ fontSize: "12.25px" }}>{moment(date).fromNow()}</span>
                                     </div>
                                 </div>
 
                             </div>
 
                             {/* DIVIDIER */}
-                            <hr className="hr" style={{opacity:"10%"}}></hr>
+                            <hr className="hr" style={{ opacity: "10%" }}></hr>
 
                             {/* CONTENT */}
                             <div className="col-md-12">
                                 <div className="">
-                                <div dangerouslySetInnerHTML={{ __html: comment }} />
+                                    <div dangerouslySetInnerHTML={{ __html: comment }} />
                                 </div>
                             </div>
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">

@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext.js";
 
+// FIREBASE
+import { storage } from "../firebase";
+import { ref, uploadBytes, listAll } from "firebase/storage";
+import { v4 } from "uuid";
+
 // IMPORTAR SCSS
 import "../../scss/profile.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-// IMPORTAR COMPONENTES
-import ProfileCardPc from "../components/Profile/ProfileCardPc.jsx";
-import ProfileConfigurationPc from "../components/Profile/ProfileConfigurationPc.jsx";
-import ProfileCardMobile from "../components/Profile/ProfileCardMobile.jsx";
 
 // ICON
 import { IconUpload, IconPencil, IconChartPie, IconUserCircle } from '@tabler/icons-react';
@@ -24,6 +24,7 @@ export const Profile = () => {
 	const [showEmail, setshowEmail] = useState(false);
 	// Estado para la configuración de contraseña en pantallas grandes
 	const [showPassword, setshowPassword] = useState(false);
+	const [userThreads, setUserThreads] = useState([]);
 
 	// Funciones para mostrar opciones de configuración
 	// Función para mostrar opciones de email
@@ -39,22 +40,50 @@ export const Profile = () => {
 	};
 
 	// FIREBASE TEST
-
 	const [imageUpload, setImageUpload] = useState(null);
+	const [userId, setUserId] = useState(null);
+	const [imageUrl, setImageUrl] = useState(null);
 
-	const upLoadImg = () => {
+	const folderRef = ref(storage, `profile-img/${userId}`);
+
+	// Input seleccionar imagen del ordenador
+	const handleFileInputChange = (event) => {
+        const file = event.target.files[0];
+        setImageUpload(file);
+    };
+
+	// Button
+	const upLoadImg = async () => {
+		if (!imageUpload || !userId) return;
+	
+		try {
+			const storageRef = ref(storage, `profile-img/${userId}/${imageUpload.name}`);
+			await uploadBytes(storageRef, imageUpload);
+			console.log("Image uploaded successfully!");
+		} catch (error) {
+			console.error("Error uploading image:", error);
+		}
 	};
 
 	useEffect(() => {
-		const handleResize = () => {
-			setIsMobile(window.innerWidth <= 768);
+		const fetchData = async () => {
+			try {
+				const user = await actions.getUserInfo();
+				const userThreads = await actions.getAllTreadsByUserId(userId)
+				setUserId(user);
+				console.log("User ID:", user);
+				setUserThreads([...userThreads])
+				console.log("User Threads:", userThreads);
+
+			} catch (error) {
+				console.error("Error fetching user data:", error);
+			}
 		};
 
-		window.addEventListener("resize", handleResize);
+		listAll(folderRef)
 
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
+		fetchData();
+
 	}, []);
 
 	return (
@@ -125,7 +154,7 @@ export const Profile = () => {
 				<div className="">
 					<input
 						type="file"
-						onChange={(e) => setImageUpload(e.target.files[0])}
+						onChange={handleFileInputChange}
 					/>
 				</div>
 				<button onClick={upLoadImg}>Upload img</button>
@@ -135,6 +164,11 @@ export const Profile = () => {
 	);
 };
 
+
+// IMPORTAR COMPONENTES
+// import ProfileCardPc from "../components/Profile/ProfileCardPc.jsx";
+// import ProfileConfigurationPc from "../components/Profile/ProfileConfigurationPc.jsx";
+// import ProfileCardMobile from "../components/Profile/ProfileCardMobile.jsx";
 
 // <div className="container mt-3">
 // <div className="row">
@@ -156,3 +190,13 @@ export const Profile = () => {
 // </div>
 
 
+// useEffect(() => {
+// 	const handleResize = () => {
+// 		setIsMobile(window.innerWidth <= 768);
+// 	};
+// 	window.addEventListener("resize", handleResize);
+
+// 	return () => {
+// 		window.removeEventListener("resize", handleResize);
+// 	};
+// }, []);

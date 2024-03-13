@@ -124,13 +124,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 							},
 						}
 					);
-
 					if (response.ok) {
 						const data = await response.json();
 						console.log("getUserInfo")
 						console.log("[flux.getUserInfo] respuesta de routes.py userinfo]\n", data);
 						setStore({ userInfo: data, profilePicture: data.profile_picture })
 						setStore({ isUserLogged: true })
+						return String(data.id);
 						// setIsUserLogged(true);
 					} else {
 						throw new Error("Failed to fetch user info");
@@ -521,7 +521,47 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.error("[flux.getUserById] Error fetching threads:", error);
                 }
-            }
+            },
+			getAllTreadsByUserId: async (id) => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/threads/user/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getAllTreadsByUserId] data", data);
+						return data;
+					} else {
+						throw new Error("[flux.getAllTreadsByUserId] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getAllTreadsByUserId] Error fetching threads:", error);
+				}
+			},
+			postProfilePictureByUserID: async (id, profile_picture) => {
+				const store = getStore();
+				const token = localStorage.getItem("token");
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/user/profile-picture/${id}`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ profile_picture }),
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.postProfilePictureByUserID] data", data);
+						return data;
+					} else {
+						throw new Error("[flux.postProfilePictureByUserID] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.postProfilePictureByUserID] Error fetching threads:", error);
+				}
+			}
 		},
 	};
 };
