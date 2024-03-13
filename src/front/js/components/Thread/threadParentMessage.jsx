@@ -20,7 +20,6 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
 
     useEffect(() => {
         const likedThreads = store.likedThreads;
-        console.log(likedThreads)
         if (likedThreads && thread_id) {
             const isThreadLiked = likedThreads.some(likedThread => likedThread.id === thread_id);
             setIsLiked(isThreadLiked);
@@ -85,7 +84,6 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
             if (isLiked) {
                 actions.unlikedThread({ user_id: store.userInfo.id, thread_id })
                     .then(response => {
-                        console.log(response.message);
                         setIsLiked(false);
                     })
                     .catch(error => {
@@ -94,7 +92,6 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
             } else {
                 actions.likedThread({ user_id: store.userInfo.id, thread_id })
                     .then(response => {
-                        console.log(response.message);
                         setIsLiked(true);
                     })
                     .catch(error => {

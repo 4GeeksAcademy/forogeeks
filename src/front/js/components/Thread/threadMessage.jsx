@@ -112,7 +112,7 @@ export const ThreadMessage = ({ content, date, id }) => {
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
                                 <div className="d-flex align-items-center gap-1">
                                     <span className="text-muted small">12</span>
-                                    {isLiked ? <IconHeartFilled size={20} stroke={1} onClick={() => handleLikeComment(id)} /> : <IconHeart size={20} stroke={1} onClick={() => handleLikeComment(id)} />}
+                                    {isLiked ? <IconHeartFilled size={20} stroke={1} className="text-danger" onClick={() => handleLikeComment(id)} /> : <IconHeart size={20} stroke={1} onClick={() => handleLikeComment(id)} />}
                                 </div>
                                 <div className="d-flex align-items-center gap-3">
                                     <IconArrowForward size={20} stroke={1} />

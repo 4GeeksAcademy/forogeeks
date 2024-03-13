@@ -218,7 +218,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 					if (response.ok) {
 						const data = await response.json();
-						console.log("[flux.getAllThreads] data", data);
 						setStore({ trending: data });
 					} else {
 						throw new Error("[flux.getAllThreads] Failed to fetch threads");
@@ -239,7 +238,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 					if (response.ok) {
 						const data = await response.json();
-						console.log("[flux.getAllCategories] data", data);
 						setStore({ categories: data });
 					} else {
 						throw new Error("[flux.getAllCategories] Failed to fetch categories");
@@ -744,13 +742,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify({ user_id, comment_id }), // Pasamos comment_id en lugar de id
 					});
-			
+
 					if (response.ok) {
 						// Actualizar el estado local
 						const store = getStore();
 						const updatedLikedComments = [...store.likedComments, { id: comment_id }];
 						setStore({ likedComments: updatedLikedComments });
-			
+
 						return { success: true, message: "Comment liked successfully" };
 					} else {
 						throw new Error("Failed to like comment");
@@ -771,13 +769,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify({ user_id, comment_id }), // Pasamos comment_id en lugar de id
 					});
-			
+
 					if (response.ok) {
 						// Eliminar el comentario de la lista de comentarios gustados en el store
 						const store = getStore();
 						const updatedLikedComments = store.likedComments.filter(likedComment => likedComment.id !== comment_id);
 						setStore({ likedComments: updatedLikedComments });
-			
+
 						const data = await response.json();
 						console.log("[flux.unlikedComment] This comment is no longer liked:", data);
 						return { success: true };
@@ -789,7 +787,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error removing comment from liked comments. Please try again." };
 				}
 			},
-			
+
 			// Acción para obtener todos los likes de comentarios de un usuario
 			getUserLikedComments: async (token) => {
 				try {
@@ -804,7 +802,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						const data = await response.json();
 						console.log("[flux.getUserLikedComments] Liked comments fetched successfully:", data);
-						setStore({ likedComments: data?.likedComments });
+						setStore({ likedComments: data?.comment_likes });
 						return { success: true };
 					} else {
 						const errorMessage = await response.text();
