@@ -81,6 +81,15 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                                 <IconBookmark size={20} stroke={1} />
                                 <IconArrowForward size={20} stroke={1} />
                             </div>
+                            <div className={`row ${isFavorite ? 'favorite-thread' : ''}`}>
+                                <div className="col-md-12">
+                                    <div className="d-flex align-items-center gap-1">
+                                        <span className="text-muted small">{"@" + autor}</span>
+                                        <span className="text-muted small">{"-"}</span>
+                                        <span className="text-muted small">{title}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
