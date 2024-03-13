@@ -10,8 +10,13 @@ import { v4 } from "uuid";
 import "../../scss/profile.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// MODAL
+import UpdateProfileImage from "../components/Modal/modalActualizarImagenPerfil.jsx";
+
 // ICON
 import { IconUpload, IconPencil, IconChartPie, IconUserCircle } from '@tabler/icons-react';
+
+
 export const Profile = () => {
 	const { store, actions } = useContext(Context);
 	const [isMobile, setIsMobile] = useState(false);
@@ -24,6 +29,7 @@ export const Profile = () => {
 	const [userId, setUserId] = useState(null);
 	const [imageUrl, setImageUrl] = useState(null);
 	const [userProfileImage, setUserImageProfile] = useState(null);
+	const [showUpdateProfileImageModal, setShowUpdateProfileImageModal] = useState(false);
 
 	const handleFileInputChange = (event) => {
 		const file = event.target.files[0];
@@ -46,6 +52,7 @@ export const Profile = () => {
 			// Actualizar la imagen de perfil del usuario
 			await actions.postProfilePictureByUserID(userId, lastUploadedImageUrl);
 			console.log("Profile picture updated successfully!: ", lastUploadedImageUrl);
+			window.location.reload();
 		} catch (error) {
 			console.error("Error uploading image:", error);
 		}
@@ -57,21 +64,21 @@ export const Profile = () => {
 				const user = await actions.getUserInfo();
 				setUserId(user);
 				console.log("User ID:", user);
-	
+
 				// Obtener la imagen de perfil del usuario
-				const userProfileImg = await actions.getUserProfileImageById(5);
+				const userProfileImg = await actions.getUserProfileImageById(user);
 				setUserImageProfile(userProfileImg);
 				console.log("User Profile Image:", userProfileImg);
-	
+
 				// setUserThreads([...userThreads]); // Esto deberías manejarlo si es necesario
-	
+
 			} catch (error) {
 				console.error("Error fetching user data:", error);
 			}
 		};
-	
+
 		fetchData();
-	
+
 	}, []);
 
 	// Función para obtener la URL de descarga de la última imagen subida
@@ -111,7 +118,17 @@ export const Profile = () => {
 					<div className="col-md-12 shadow-sm rounded-top-3 h-100 position-relative" style={{ background: 'rgb(0,41,167)', background: 'linear-gradient(90deg, rgba(0,41,167,1) 0%, rgba(0,123,255,1) 46%, rgba(0,161,255,1) 69%, rgba(0,212,255,1) 100%)' }}>
 						{/* Imagen de perfil superpuesta */}
 						<div className="position-absolute start-50 translate-middle-x" style={{ bottom: '-50px', zIndex: '1' }}>
-							<img src={userProfileImage} alt="Profile" className="rounded-circle border border-primary border-4" style={{ width: '100px', height: '100px' }} />
+							<img
+								src={userProfileImage}
+								alt="Profile"
+								className="rounded-circle border border-primary border-4 bg-white"
+								style={{
+									width: '100px',
+									height: '100px',
+									objectFit: 'cover', // Para recortar la imagen de forma cuadrada
+									borderRadius: '50%', // Para hacer que la imagen sea redonda
+								}}
+							/>
 							{/* ICONO SUBIR IMAGEN */}
 							<button type="upload" className="btn btn-primary rounded-circle position-absolute top-50 translate-middle-x p-0 w-50 h-50 "><IconUpload size={20} color="white" /></button>
 						</div>
