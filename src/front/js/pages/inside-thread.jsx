@@ -95,7 +95,7 @@ export const InsideThread = () => {
 
                         <div className="d-flex flex-column gap-1">
                             {/* TITULO DEL HILO */}
-                            <div className="d-flex align-items-center py-2 ps-3 bg-white rounded-3 shadow-sm">
+                            <div className="d-flex align-items-center py-3 ps-3 mb-2 bg-white rounded-3 shadow-sm">
                                 <h3 className="d-flex align-items-center text-align-center m-0">{thread.title}</h3>
                             </div>
 
