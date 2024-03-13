@@ -1,31 +1,67 @@
-import React from 'react';
-import { useEffect, useState, useContext } from "react";
-import {Context} from "../../store/appContext";
-import moment from "moment"
+import React, { useEffect, useState, useContext } from "react";
+import { Context } from "../../store/appContext";
+import moment from "moment";
+import { IconHeart, IconArrowForward, IconHeartFilled } from '@tabler/icons-react';
 
-// ICONS
-import { IconHeart } from '@tabler/icons-react';
-import { IconArrowForward } from '@tabler/icons-react';
-
-
-export const ThreadMessage = ({ content, autor_id, date }) => {
-    const {store, actions} = useContext(Context);
+export const ThreadMessage = ({ content, date, id }) => {
+    const { store, actions } = useContext(Context);
+    const [isLiked, setIsLiked] = useState(false);
     const user_name = store.user_name;
     const user_profile_image = store.user_profile_image;
+    const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
-        // autor es el id del usuario que escribio el mensaje
-        actions.getUserNameById(autor_id).then((res)=>{
-            // console.log("Username: ", user_name);
+        const likedComments = store.likedComments;
+        if (likedComments && id) {
+            const isLiked = likedComments.some(likedComment => likedComment.id === id);
+            setIsLiked(isLiked);
+        }
+    }, [store.likedComments, id]);
 
-        })
-        actions.getUserProfileImageById(autor_id).then((res) => {
-            // console.log("IMAGEN DE USUARIO: ", user_profile_image);
-        })
-        //console.log("Id de usuario: ", autor_id)
-        //console.log("Username: ", user_name)
-        //console.log("IMAGEN DE USUARIO: ", user_profile_image)
-    }, []);
+    useEffect(() => {
+        const likedComments = store.likedComments;
+        if (likedComments && id) {
+            const isLiked = likedComments.some(likedComment => likedComment.id === id);
+            setIsLiked(isLiked);
+        }
+        
+        actions.checkLikedComment(id, setIsLiked)
+            .then(response => {
+                setIsLiked(response.isLiked);
+            })
+            .catch(error => {
+                console.error('Error checking liked comment:', error);
+            });
+        
+    }, [store.likedComments, id]);
+
+    const handleLikeComment = (id) => {
+        if (store.isUserLogged) {
+            if (isLiked) {
+                actions.unlikedComment({ user_id: store.userInfo.id, comment_id: id })
+                    .then(response => {
+                        console.log(response.message);
+                        setIsLiked(false);
+                    })
+                    .catch(error => {
+                        console.error('Error unliking thread:', error);
+                    });
+            } else {
+                actions.likedComment({ user_id: store.userInfo.id, comment_id: id })
+                    .then(response => {
+                        console.log(response.message);
+                        setIsLiked(true);
+                    })
+                    .catch(error => {
+                        console.error('Error liking thread:', error);
+                    });
+            }
+        } else {
+            // Mostrar la alerta si el usuario no está autenticado
+            setShowAlert(true);
+        }
+    };
+
     return (
         <div className='container'>
             <div className="row">
@@ -48,25 +84,30 @@ export const ThreadMessage = ({ content, autor_id, date }) => {
                                 {/* DATE */}
                                 <div className="">
                                     <div className='d-flex justify-content-end'>
-                                        <span className="text-muted small p-0 m-0" style={{fontSize:"12.25px"}}>{moment(date).fromNow()}</span>
+                                        <span className="text-muted small p-0 m-0" style={{ fontSize: "12.25px" }}>{moment(date).fromNow()}</span>
                                     </div>
                                 </div>
 
                             </div>
 
                             {/* DIVIDIER */}
-                            <hr className="hr" style={{opacity:"10%"}}></hr>
+                            <hr className="hr" style={{ opacity: "10%" }}></hr>
 
                             {/* CONTENT */}
                             <div className="col-md-12">
                                 <div className="">
-                                <div dangerouslySetInnerHTML={{ __html: content }} />
+                                    <div dangerouslySetInnerHTML={{ __html: content }} />
                                 </div>
+                                {showAlert && (
+                                    <div className="alert alert-warning" role="alert">
+                                        Por favor, inicia sesión para marcar este comentario como favorito.
+                                    </div>
+                                )}
                             </div>
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
                                 <div className="d-flex align-items-center gap-1">
                                     <span className="text-muted small">12</span>
-                                    <IconHeart size={20} stroke={1} />
+                                    {isLiked ? <IconHeartFilled size={20} stroke={1} onClick={() => handleLikeComment(id)} /> : <IconHeart size={20} stroke={1} onClick={() => handleLikeComment(id)} />}
                                 </div>
                                 <div className="d-flex align-items-center gap-3">
                                     <IconArrowForward size={20} stroke={1} />
@@ -77,5 +118,5 @@ export const ThreadMessage = ({ content, autor_id, date }) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

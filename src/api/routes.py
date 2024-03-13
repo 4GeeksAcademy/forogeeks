@@ -5,7 +5,7 @@ from datetime import datetime
 from flask import request, redirect, url_for
 
 
-from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, ThreadComments, ReportThread
+from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, ThreadComments, ReportThread, CommentLikes
 # Crear un blueprint llamado 'api'
 api = Blueprint('api', __name__)
 
@@ -584,6 +584,87 @@ def userfavoritethreads():
 # Endpoint para manejar la solicitud GET en '/comments/<int:comment_id>'
 
 # Endpoint para manejar la solicitud DELETE en '/comments/<int:comment_id>'
+# Endpoint para manejar la solicitud DELETE en '/comments/<int:comment_id>'
+@api.route('/liked-comment', methods=['POST'])
+@jwt_required()
+def liked_comment():
+    try:
+        # Obtener los datos JSON de la solicitud
+        data = request.get_json()
+        user_id = data.get("user_id")
+        comment_id = data.get("comment_id")
+
+        # Verificar si se proporcionaron los campos necesarios
+        if user_id is None or comment_id is None:
+            return jsonify({"message": "Falta id de usuario o id de comentario"}), 400
+
+        # Verificar si el comentario ya está en la lista de likes del usuario
+        if CommentLikes.query.filter_by(user_id=user_id, comment_id=comment_id).first():
+            return jsonify({"message": "Este comentario ya te gusta"}), 400
+
+        # Agregar el like del usuario al comentario
+        like = CommentLikes(user_id=user_id, comment_id=comment_id)
+        db.session.add(like)
+        db.session.commit()
+
+        return jsonify({"message": "Comentario añadido a favoritos"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+# Ruta para manejar la solicitud POST en '/unfavorite-thread'
+@api.route('/unliked-comment', methods=['POST'])
+@jwt_required()
+def unliked_comment():
+    try:
+        # Obtener los datos JSON de la solicitud
+        data = request.get_json()
+        user_id = data.get("user_id")
+        comment_id = data.get("comment_id")
+
+        # Verificar si se proporcionaron los campos necesarios
+        if user_id is None or comment_id is None:
+            return jsonify({"message": "Falta user_id o comment_id"}), 400
+
+        # Verificar si el comentario está en la lista de favoritos del usuario
+        liked_comment = CommentLikes.query.filter_by(user_id=user_id, comment_id=comment_id).first()
+        if liked_comment is None:
+            return jsonify({"message": "El comentario no está en la lista de favoritos"}), 404
+
+        # Eliminar el comentario de la lista de favoritos del usuario
+        db.session.delete(liked_comment)
+        db.session.commit()
+
+        return jsonify({"message": "Comentario eliminado de favoritos exitosamente"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@api.route('/userlikedcomments', methods=['GET'])
+@jwt_required()
+def user_liked_comments():
+    try:
+        current_user = get_jwt_identity()
+        # Buscar al usuario en la base de datos por su ID
+        user = User.query.filter(User.email == current_user).first()
+        if user:
+            # Obtener los comentarios que le gustan al usuario
+            liked_comments = CommentLikes.query.filter_by(user_id=user.id).all()
+            # Serializar los comentarios
+            serialized_liked_comments = [like.serialize() for like in liked_comments]
+
+            # Crear el cuerpo de la respuesta con la información de los comentarios que le gustan al usuario
+            response_body = {
+                "liked_comments": serialized_liked_comments
+            }
+
+            # Devolver la información de los comentarios que le gustan como JSON con un código de estado 200 (OK)
+            return jsonify(response_body), 200
+        else:
+            # Manejar el caso en el que el usuario no existe
+            return jsonify({"error": "Usuario no encontrado"}), 404
+    except Exception as e:
+        # Manejar cualquier otro error que pueda ocurrir durante la ejecución de la función
+        return jsonify({"error": str(e)}), 500
+
 
 # 🟢 MESSAGES ENDPOINTS 🟢
 # Endpoint para manejar la solicitud POST en '/send-message'

@@ -19,8 +19,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user: null,
 			favoriteThreads: [],
 			likedThreads: [],
+			likedComments: [],
 			isFavorite: false,
 			isLiked: false,
+			isCommentLiked: false
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -93,17 +95,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("[flux.login] login-error:", error);
 				}
 			},
-			 clearUserData : () => {
-				localStorage.removeItem('favoriteThreads');
-				// Elimina otros datos relacionados con el usuario si los hay
-			},
 			// Función para cerrar sesión
 			logout: () => {
 				// Limpia el token de autenticación y otros datos relacionados con el usuario
 				localStorage.removeItem("token");
 				setStore({ token: "", isUserLogged: false, userInfo: null });
-				clearUserData(); // Limpia los datos de likes y favoritos
-				console.log("[flux.logout] Logout, token removed");
 			},
 
 			checkUserExists: async (username, email) => {
@@ -572,13 +568,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify({ user_id, thread_id }),
 					});
-			
+
 					if (response.ok) {
 						// Actualizar el estado local
 						const store = getStore();
 						const updatedFavoriteThreads = [...store.favoriteThreads, { id: thread_id }];
 						setStore({ favoriteThreads: updatedFavoriteThreads });
-			
+
 						return { success: true, message: "Thread added to favorites successfully" };
 					} else {
 						throw new Error("Failed to add thread to favorites");
@@ -588,7 +584,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error adding thread to favorites. Please try again." };
 				}
 			},
-			
+
 			unfavoriteThread: async ({ user_id, thread_id }) => {
 				try {
 					const token = localStorage.getItem("token");
@@ -600,13 +596,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify({ user_id, thread_id }),
 					});
-			
+
 					if (response.ok) {
 						// Eliminar el hilo de la lista de favoritos en el store
 						const store = getStore();
 						const updatedFavoriteThreads = store.favoriteThreads.filter(favThread => favThread.id !== thread_id);
 						setStore({ favoriteThreads: updatedFavoriteThreads });
-			
+
 						const data = await response.json();
 						console.log("[flux.unfavoriteThread] Thread removed from favorites successfully:", data);
 						return { success: true };
@@ -654,13 +650,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify({ user_id, thread_id }),
 					});
-			
+
 					if (response.ok) {
 						// Actualizar el estado local
 						const store = getStore();
 						const updatedLikedThreads = [...store.likedThreads, { id: thread_id }];
 						setStore({ likedThreads: updatedLikedThreads });
-					
+
 						return { success: true, message: "Thread liked successfully" };
 					} else {
 						throw new Error("Failed to like thread");
@@ -670,7 +666,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error liking thread. Please try again." };
 				}
 			},
-			
+
 			unlikedThread: async ({ user_id, thread_id }) => {
 				try {
 					const token = localStorage.getItem("token");
@@ -682,13 +678,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify({ user_id, thread_id }),
 					});
-			
+
 					if (response.ok) {
 						// Eliminar el hilo de la lista de me gusta en el store
 						const store = getStore();
 						const updatedLikedThreads = store.likedThreads.filter(likedThread => likedThread.id !== thread_id);
 						setStore({ likedThreads: updatedLikedThreads });
-			
+
 						const data = await response.json();
 						console.log("[flux.unlikedThread] This thread is no longer liked:", data);
 						return { success: true };
@@ -736,8 +732,98 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const isLiked = store.likedThreads.some(likedThread => likedThread.id === thread_id);
 				return { isLiked };
 			},
+
+			likedComment: async ({ user_id, comment_id }) => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/liked-comment`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ user_id, comment_id }), // Pasamos comment_id en lugar de id
+					});
 			
+					if (response.ok) {
+						// Actualizar el estado local
+						const store = getStore();
+						const updatedLikedComments = [...store.likedComments, { id: comment_id }];
+						setStore({ likedComments: updatedLikedComments });
+			
+						return { success: true, message: "Comment liked successfully" };
+					} else {
+						throw new Error("Failed to like comment");
+					}
+				} catch (error) {
+					console.error("[flux.likedComment] Error liking comment:", error);
+					return { success: false, error: "Error liking comment. Please try again." };
+				}
+			},
+			unlikedComment: async ({ user_id, comment_id }) => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/unliked-comment`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ user_id, comment_id }), // Pasamos comment_id en lugar de id
+					});
+			
+					if (response.ok) {
+						// Eliminar el comentario de la lista de comentarios gustados en el store
+						const store = getStore();
+						const updatedLikedComments = store.likedComments.filter(likedComment => likedComment.id !== comment_id);
+						setStore({ likedComments: updatedLikedComments });
+			
+						const data = await response.json();
+						console.log("[flux.unlikedComment] This comment is no longer liked:", data);
+						return { success: true };
+					} else {
+						throw new Error("Failed to remove comment from liked comments");
+					}
+				} catch (error) {
+					console.error("[flux.unlikedComment] Error removing comment from liked comments:", error);
+					return { success: false, error: "Error removing comment from liked comments. Please try again." };
+				}
+			},
+			
+			// Acción para obtener todos los likes de comentarios de un usuario
+			getUserLikedComments: async (token) => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/userlikedcomments`, {
+						method: "GET",
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getUserLikedComments] Liked comments fetched successfully:", data);
+						setStore({ likedComments: data?.likedComments });
+						return { success: true };
+					} else {
+						const errorMessage = await response.text();
+						throw new Error(errorMessage || "Failed to fetch liked comments");
+					}
+				} catch (error) {
+					console.error("[flux.getUserLikedComments] Error fetching liked comments:", error);
+					return { success: false, error: "Error fetching liked comments. Please try again." };
+				}
+			},
+			checkLikedComment: async (id) => {
+				const store = getStore();
+				const isLiked = store.likedComments.some(likedComment => likedComment.id === id);
+				return { isLiked };
+			},
+
+
 		},
+
 	};
 };
 
