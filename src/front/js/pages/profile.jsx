@@ -211,10 +211,13 @@ export const Profile = () => {
 
 					</div>
 				</div>
+
 				<div className="container">
 					<div className="row d-flex justify-content-between">
 						<div className="col-md-6">
-							<div className="shadow-sm bg-white rounded-bottom-3 mt-2 p-0">Hola</div>
+							<div className="shadow-sm bg-white rounded-bottom-3 mt-2 p-0">
+								
+							</div>
 						</div>
 
 						<div className="col-md-6">
@@ -222,24 +225,33 @@ export const Profile = () => {
 						</div>
 					</div>
 				</div>
-
-
-
-				<div className="">
-					<input
-						type="file"
-						onChange={handleFileInputChange}
-					/>
-				</div>
-				<button onClick={upLoadImg}>Upload img</button>
-
 			</div>
+
+
+
+
+
+
+
+
+
+
+
 			<UpdateProfileImage
 				show={showUpdateProfileImageModal}
 				onClose={() => setShowUpdateProfileImageModal(false)}
 				onUpload={upLoadImg}
 				handleFileInputChange={handleFileInputChange}
 			/>
+
+
+
+
+
+
+
+
+
 			{/* Modales */}
 			{/* Modal para cambiar el nombre de usuario */}
 			<ModalProfile

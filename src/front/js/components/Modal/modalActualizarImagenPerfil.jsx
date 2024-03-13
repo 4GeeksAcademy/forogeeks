@@ -1,30 +1,30 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
-const UpdateProfileImage = ({ show, onClose, onUpload }) => {
+const UpdateProfileImage = ({ show, onClose, onUpload, handleFileInputChange }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState('');
 
-    const handleFileInputChange = (event) => {
-        const file = event.target.files[0];
-        setSelectedFile(file);
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreviewUrl(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+    // const handleFileInputChange = (event) => {
+    //     const file = event.target.files[0];
+    //     setSelectedFile(file);
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onloadend = () => {
+    //             setPreviewUrl(reader.result);
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    // };
 
-    const handleUpload = () => {
-        if (selectedFile) {
-            // Aquí puedes implementar la lógica para subir la imagen
-            console.log('Selected file:', selectedFile);
-            onUpload(selectedFile);
-        }
-        onClose();
-    };
+    // const handleUpload = () => {
+    //     if (selectedFile) {
+    //         // Aquí puedes implementar la lógica para subir la imagen
+    //         console.log('Selected file:', selectedFile);
+    //         onUpload();
+    //     }
+    //     onClose();
+    // };
 
     return (
         <Modal show={show} onHide={onClose}>
@@ -39,7 +39,7 @@ const UpdateProfileImage = ({ show, onClose, onUpload }) => {
                 )}
             </Modal.Body>
             <div className='d-flex justify-content-end pe-3 pb-3'>
-                <Button variant="primary" className='text-white rounded-5' onClick={handleUpload}>
+                <Button variant="primary" className='text-white rounded-5' onClick={onUpload}>
                     Subir
                 </Button>
 

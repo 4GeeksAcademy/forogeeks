@@ -231,25 +231,19 @@ export const Navbar = () => {
 										<Link to="/profile" style={{ textDecoration: "none", color: "currentColor" }}>
 											<div className="dropdown-item">
 												<div className="d-flex gap-2 align-items-center mt-1">
-													<IconSettings2 stroke={1} />
-													Configuración
+													<IconUserCircle stroke={1} />
+													Ver perfil
 												</div>
 											</div>
 										</Link>
 
-										<a className="dropdown-item" href="#">
+										<a className="dropdown-item disabled" href="#">
 											<div className="d-flex gap-2 align-items-center mt-1">
 												<IconMail stroke={1} />
 												Mensajes privados
 											</div>
 										</a>
-										<a className="dropdown-item" href="#">
-											<div className="d-flex gap-2 align-items-center mt-1">
-												<IconBookmark stroke={1} />
-												Guardados
-											</div>
-										</a>
-										<a className="dropdown-item">
+										<a className="dropdown-item disabled">
 											<div className="d-flex gap-2 align-items-center">
 												<IconSun stroke={1} />
 												Modo oscuro
