@@ -154,7 +154,7 @@ class ReportThread(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     thread_id = db.Column(db.Integer, db.ForeignKey('threads.id'))
     reason = db.Column(db.String(120), unique=False, nullable=False)
-    thread = db.relationship('Threads', backref='report_thread', lazy=True)
+    thread = db.relationship('Threads', backref='thread', lazy=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
