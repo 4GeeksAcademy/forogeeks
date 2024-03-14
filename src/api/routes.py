@@ -11,11 +11,10 @@ from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, T
 # Crear un blueprint llamado 'api'
 api = Blueprint('api', __name__)
 
-# Inicializar la aplicación Flask
-# app = Flask(__name__)
-# app.config['SECRET_KEY'] = 'your_secret_key'
-# CORS(app, resources={r"/api/*": {"origins": ["https://ominous-guide-665q7xv5pjhr94g-3000.app.github.dev"]}})
-CORS(api)
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key'
+CORS(app, resources={r"/api/*": {"origins": ["https://sample-service-name-bbqu.onrender.com"]}})
+#CORS(api)
 
 
 # Agregar los endpoints de la API Flask
