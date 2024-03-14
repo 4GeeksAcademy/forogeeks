@@ -1,7 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext.js";
 import ModalProfile from "../components/Modal/ModalProfile.jsx";
-
+import ModalProfileEmail from "../components/Modal/ModalProfileEmail.jsx";
+import ModalProfileDescription from "../components/Modal/ModalProfileDescription.jsx";
+import ModalProfileUsername from "../components/Modal/ModalProfileUsername.jsx";
 // FIREBASE
 import { storage } from "../firebase";
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
@@ -30,9 +32,10 @@ export const Profile = () => {
 	const [imageUrl, setImageUrl] = useState(null);
 	const [userProfileImage, setUserImageProfile] = useState(null);
 	const [userName, setUserName] = useState(null);
+	const [description, setDescription] = useState(null);
 	const [showUpdateProfileImageModal, setShowUpdateProfileImageModal] = useState(false);
 	const [activeModal, setActiveModal] = useState(null);
-
+	const userInfo = store.userInfo;
 	const handleCloseModal = () => {
 		setActiveModal(null);
 	};
@@ -104,8 +107,10 @@ export const Profile = () => {
 				// Obtener la imagen de perfil del usuario
 				const userProfileImg = await actions.getUserProfileImageById(user);
 				const userName = await actions.getUserNameById(user);
+				const description = userInfo.description
 				setUserImageProfile(userProfileImg);
 				setUserName(userName);
+				setDescription(description);
 				console.log("User Profile Image:", userProfileImg);
 
 				// setUserThreads([...userThreads]); // Esto deberías manejarlo si es necesario
@@ -172,7 +177,7 @@ export const Profile = () => {
 										</li>
 										<li className="list-group-item border-0 p-1 px-2 ps-2">
 											<div className="d-flex justify-content-between align-items-center">
-												<span>Descripción: <span className="text-primary">Me encanta ForoGeeks!</span></span>
+												<span>Descripción: <span className="text-primary">{userInfo.description}</span></span>
 												<button type="button" onClick={() => handleOpenModal("description")} className="btn bg-transparent p-0 pb-1"><IconPencil size={20} stroke={1.3} /></button>
 											</div>
 										</li>
@@ -259,7 +264,7 @@ export const Profile = () => {
 
 			{/* Modales */}
 			{/* Modal para cambiar el nombre de usuario */}
-			<ModalProfile
+			<ModalProfileUsername
 				show={activeModal === "username"}
 				handleClose={handleCloseModal}
 				title="Nombre de usuario"
@@ -268,7 +273,7 @@ export const Profile = () => {
 				description="InitialDescription"
 			/>
 			{/* Modal para cambiar la descripción */}
-			<ModalProfile
+			<ModalProfileDescription
 				show={activeModal === "description"}
 				handleClose={handleCloseModal}
 				title="Descripción"
@@ -277,7 +282,7 @@ export const Profile = () => {
 				description="InitialDescription"
 			/>
 			{/* Modal para cambiar el correo electrónico */}
-			<ModalProfile
+			<ModalProfileEmail
 				show={activeModal === "email"}
 				handleClose={handleCloseModal}
 				title="Email"

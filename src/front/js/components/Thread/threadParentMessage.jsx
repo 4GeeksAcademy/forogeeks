@@ -1,14 +1,19 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef  } from "react";
 import { Context } from "../../store/appContext";
 import moment from "moment";
 import { IconHeart, IconBookmark, IconArrowForward, IconHeartFilled, IconBookmarkFilled } from '@tabler/icons-react';
 
-export const ThreadParentMessage = ({ autor, content, date, user_profile_picture, description, title, thread_id }) => {
+export const ThreadParentMessage = ({ autor, content, date, user_profile_picture, description, title, thread_id, thread_likes }) => {
     const { store, actions } = useContext(Context);
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const [likesCount, setLikesCount] = useState(0);
+    const contentRef = useRef(null);
 
+    useEffect(() => {
+        contentRef.current = document.getElementById("contenido");
+      }, []);
 
     useEffect(() => {
         const favoriteThreads = store.favoriteThreads;
@@ -104,6 +109,17 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
         }
     };
 
+    const handleArrowClick = () => {
+        const scrollStep = window.scrollY / 5;
+        const scrollInterval = setInterval(() => {
+            if (window.scrollY + window.innerHeight < document.body.scrollHeight) {
+                window.scrollBy(0, scrollStep);
+            } else {
+                clearInterval(scrollInterval);
+            }
+        }, 0);
+    };
+
     return (
         <div className="row">
             <div className="col-md-12">
@@ -126,7 +142,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                             </div>
                         </div>
                         <hr className="hr" style={{ opacity: "10%" }}></hr>
-                        <div className="col-md-12">
+                        <div className="col-md-12" id="contenido">
                             <div className="">
                                 <div dangerouslySetInnerHTML={{ __html: content }} />
                             </div>
@@ -140,12 +156,12 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                         {store.isUserLogged && (
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
                                 <div className="d-flex align-items-center gap-1">
-                                    <span className="text-muted small">13</span>
+                                <span className="text-muted small">{thread_likes}</span>
                                     {isLiked ? <IconHeartFilled className="text-danger" size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} /> : <IconHeart size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} />}
                                 </div>
                                 <div className="d-flex align-items-center gap-3">
                                     {isFavorite ? <IconBookmarkFilled size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} /> : <IconBookmark size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} />}
-                                    <IconArrowForward size={20} stroke={1} />
+                                    <IconArrowForward size={20} stroke={1} onClick={handleArrowClick} />
                                 </div>
                             </div>
                         )}

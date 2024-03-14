@@ -54,6 +54,7 @@ export const Threads = ({ match }) => {
 										date={thread.date}
 										category={category}
 										number_of_comments={thread?.thread_comments?.length}
+										number_of_likes={thread?.thread_likes?.length}
 									/>
 								))
 							)

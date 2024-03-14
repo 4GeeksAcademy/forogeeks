@@ -511,6 +511,7 @@ def userlikedthreads():
     except Exception as e:
         # Manejar cualquier otro error que pueda ocurrir durante la ejecución de la función
         return jsonify({"error": str(e)}), 500
+    
 # 🟣 FAVORITE THREADS ENDPOINTS 🟣
 # Endpoint para manejar la solicitud POST en '/favorite-thread'
     
@@ -692,7 +693,6 @@ def user_liked_comments():
         # Manejar cualquier otro error que pueda ocurrir durante la ejecución de la función
         return jsonify({"error": str(e)}), 500
 
-
 # 🟢 MESSAGES ENDPOINTS 🟢
 # Endpoint para manejar la solicitud POST en '/send-message'
 
@@ -744,41 +744,77 @@ def getThreadsByTitle(query):
     return jsonify(serialized_threads), 200
 
 # 🟢 USER PROFILE 🟢
+
+
+# :círculo_verde_grande: USER PROFILE :círculo_verde_grande:
 # Endpoint para cambiar la contraseña
 @api.route("/changepassword", methods=["POST"])
 @jwt_required()
 def change_password():
     email = get_jwt_identity()
-    new_password = request.json.get("password", None)
-
+    password = request.json.get("password", None)
     user = User.query.filter_by(email=email).first()
     if user is None:
         return jsonify({"msg": "No existe este usuario"}), 401
-
-    # Hashear la nueva contraseña antes de actualizarla en la base de datos
-    hashed_password = hashlib.sha256(new_password.encode()).hexdigest()
-    user.password = hashed_password
+    user.password = password
     db.session.commit()
-
     return jsonify({"msg": "success"}), 200
-
 
 # Ruta para cambiar el correo electrónico
 @api.route("/changeemail", methods=["POST"])
 @jwt_required()
 def change_email():
     email = get_jwt_identity()
-
     user = User.query.filter_by(email=email).first()
     if user is None:
         return jsonify({"msg": "No existe este usuario"}), 401
-
     # Aquí deberías asignar newEmail al campo de correo electrónico del usuario
     user.email = request.json.get('email')
     db.session.commit()
+    return jsonify({"msg": "success"}), 200
+@api.route('/thread-likes/<int:thread_id>', methods=['GET'])
+def get_likes_by_thread_id(thread_id):
+    likes = ThreadLikes.query.filter_by(thread_id=thread_id).all()
+    serialized_likes = list(map(lambda like: like.serialize(), likes))
+    return jsonify(serialized_likes), 200
+from flask import jsonify
 
+@api.route('/api/comment-likes/<int:comment_id>', methods=['GET'])
+def get_comment_likes(comment_id):
+    try:
+        # Recupera los likes de comentarios correspondientes al comentario específico
+        comment_likes = CommentLikes.query.filter_by(comment_id=comment_id).all()
+        # Serializa los datos recuperados
+        serialized_comment_likes = [like.serialize() for like in comment_likes]
+        # Log para verificar los datos serializados
+        print("[Flask Route] Serialized Comment Likes:", serialized_comment_likes)
+        # Retorna los datos serializados en formato JSON
+        return jsonify(serialized_comment_likes), 200
+    except Exception as e:
+        # Maneja cualquier error que ocurra durante el proceso
+        print("[Flask Route] Error:", str(e))
+        return jsonify({'error': str(e)}), 500
+
+    
+@api.route("/change-description", methods=["POST"])
+@jwt_required()
+def change_description():
+    email = get_jwt_identity()
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        return jsonify({"msg": "No existe este usuario"}), 401
+    user.description = request.json.get('description')
+    db.session.commit()
     return jsonify({"msg": "success"}), 200
 
-
-
-
+# Ruta para cambiar el correo electrónico
+@api.route("/change-username", methods=["POST"])
+@jwt_required()
+def change_username():
+    email = get_jwt_identity()
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        return jsonify({"msg": "No existe este usuario"}), 401
+    user.user_name = request.json.get('user_name')
+    db.session.commit()
+    return jsonify({"msg": "success"}), 200

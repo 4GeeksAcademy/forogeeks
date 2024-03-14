@@ -9,23 +9,25 @@ import { TextEditor } from "../components/TextEditor/text-editor.jsx";
 
 // ICONS
 import { IconSquareRoundedPlus } from '@tabler/icons-react';
-import { IconFlag,IconArrowUp } from '@tabler/icons-react';
+import { IconFlag, IconArrowUp } from '@tabler/icons-react';
 
 export const InsideThread = () => {
     const { store, actions } = useContext(Context);
     const { id } = useParams();
     const thread = store.threads; // Detalles del hilo padre
     const comments = store.threadComments; // Comentarios del hilo
+    const likes = store.threadLikes; // Likes del hilo
     const content = store.textEditorContent; // Contenido del comentario que se esta escribiendo
     const userInfo = store.userInfo; // Informacion del usuario loggeado para comentar
 
     const reason = "Hilo reportado";
 
+
     const handleCreateComment = (e) => {
         e.preventDefault();
         actions.createNewComment(content, thread.id, userInfo.id).then(() => {
             actions.getCommentsByThread(id);
-
+            actions.clearTextEditorContent(); // Llamar al action clearTextEditorContent
         })
     }
 
@@ -35,16 +37,20 @@ export const InsideThread = () => {
         actions.reportThread(thread.id, userInfo.id, reason);
         console.log("handleReportThread" + thread.id, userInfo.id, reason)
     }
-
     useEffect(() => {
         if (store.isUserLogged) {
             actions.getUserInfo(); // Sirve para dar luego info al crear un comentario
         }
         actions.getThreadById(id); // Se agrega a store.thread el hilo con el id que se pasa por parametro
         actions.getCommentsByThread(id);
-    
-
+        actions.getUserLikedThreads()
+        actions.getUserFavoriteThreads()
+        actions.getUserLikedComments()
+        actions.getLikesByThread(id)
     }, []);
+
+
+
 
     return (
         <div className="container mt-3">
@@ -99,7 +105,7 @@ export const InsideThread = () => {
                                 <h3 className="d-flex align-items-center text-align-center m-0">{thread.title}</h3>
                             </div>
 
-                            <ThreadParentMessage autor={thread?.user?.user_name} content={thread.content} date={thread.date} description={thread.description} user_profile_picture={thread?.user?.profile_picture} thread_id={thread.id} />
+                            <ThreadParentMessage autor={thread?.user?.user_name} content={thread.content} date={thread.date} description={thread.description} user_profile_picture={thread?.user?.profile_picture} thread_id={thread.id} thread_likes={likes.length} />
 
                             {/* COMENTARIOS */}
                             {comments.map((comment, index) => {
@@ -119,7 +125,7 @@ export const InsideThread = () => {
                                     <form id="comentar" className="">
                                         <TextEditor />
                                         <div className="d-flex justify-content-end p-2">
-                                            <button onClick={handleCreateComment} type="submit" className="btn btn-primary rounded-circle px-2 text-white rounded-5"><IconArrowUp stroke={1.8} color="white"/></button>
+                                            <button onClick={handleCreateComment} type="submit" className="btn btn-primary rounded-circle px-2 text-white rounded-5"><IconArrowUp stroke={1.8} color="white" /></button>
                                         </div>
                                     </form>
                                 </div>
