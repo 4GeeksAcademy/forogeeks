@@ -802,6 +802,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const isLiked = store.likedComments.some(likedComment => likedComment.id === id);
 				return { isLiked };
 			},
+			
 			getAllTreadsByUserId: async (id) => {
                 const store = getStore();
                 try {
