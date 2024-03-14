@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext.js";
 import ModalProfile from "../components/Modal/ModalProfile.jsx";
-
+import ModalProfileEmail from "../components/Modal/ModalProfileEmail.jsx";
 // FIREBASE
 import { storage } from "../firebase";
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
@@ -312,7 +312,7 @@ export const Profile = () => {
 				description="InitialDescription"
 			/>
 			{/* Modal para cambiar el correo electrónico */}
-			<ModalProfile
+			<ModalProfileEmail
 				show={activeModal === "email"}
 				handleClose={handleCloseModal}
 				title="Email"
