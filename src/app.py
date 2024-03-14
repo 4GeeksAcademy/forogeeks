@@ -64,9 +64,7 @@ def sitemap():
 def serve_any_other_file(path):
     if not os.path.isfile(os.path.join(static_file_dir, path)):
         path = 'index.html'
-    response = send_from_directory(static_file_dir, path)
-    response.cache_control.max_age = 0  # avoid cache memory
-    return
+    return send_from_directory(static_file_dir, path)
 # @app.route("/restore-password/<token>", methods=["GET"])
 # def restore_password(token):
 #     try:
