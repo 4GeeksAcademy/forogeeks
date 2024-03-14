@@ -11,10 +11,10 @@ from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, T
 # Crear un blueprint llamado 'api'
 api = Blueprint('api', __name__)
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'
-CORS(app, resources={r"/api/*": {"origins": ["https://sample-service-name-bbqu.onrender.com"]}})
-#CORS(api)
+#app = Flask(__name__)
+#app.config['SECRET_KEY'] = 'your_secret_key'
+#CORS(app, resources={r"/api/*": {"origins": ["https://sample-service-name-bbqu.onrender.com"]}})
+CORS(api)
 
 
 # Agregar los endpoints de la API Flask
