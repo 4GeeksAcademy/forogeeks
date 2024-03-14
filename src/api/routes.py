@@ -26,11 +26,8 @@ def handle_hello():
     }
     return jsonify(response_body), 200
 
-from flask import request
 
 # 🟡 USER REGISTER 🟡
-# Endpoint para manejar la solicitud POST en '/register'
-import hashlib
 
 @api.route('/register', methods=['POST'])
 def register():
@@ -776,7 +773,7 @@ def get_likes_by_thread_id(thread_id):
     likes = ThreadLikes.query.filter_by(thread_id=thread_id).all()
     serialized_likes = list(map(lambda like: like.serialize(), likes))
     return jsonify(serialized_likes), 200
-from flask import jsonify
+
 
 @api.route('/api/comment-likes/<int:comment_id>', methods=['GET'])
 def get_comment_likes(comment_id):
