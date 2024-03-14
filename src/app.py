@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask import Flask, request, jsonify, url_for, send_from_directory
+from flask import Flask, request, jsonify, url_for, send_from_directory, redirect
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
@@ -11,7 +11,7 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity,decode_token
 from flask_mail import Mail, Message
 import urllib.parse
 # from models import Person
@@ -54,7 +54,6 @@ jwt = JWTManager(app)
 CORS(app)
 
 
-
 # add the admin
 setup_admin(app)
 
@@ -89,10 +88,23 @@ def serve_any_other_file(path):
         path = 'index.html'
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
-    return response
+    return 
 
-@app.route("/api/sendemail", methods=["POST"])
+# @app.route("/restore-password/<token>", methods=["GET"])
+# def restore_password(token):
+#     try:
+#         # Decodificar el token para obtener el email asociado
+#         decoded_token = decode_token(token)
+#         email = decoded_token['sub']
+
+#         # Redirigir a la página RestorePassword con el email como parámetro en la URL
+#         return redirect(url_for('restore_password_page', email=email))
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
+
+@app.route("/sendemail", methods=["POST"])
 def send_email():
+
     try:
         email = request.json.get("email", None)
         
@@ -108,7 +120,9 @@ def send_email():
         token = create_access_token(identity=email, expires_delta=False)
 
         # Construir el enlace para restablecer la contraseña con el token como parámetro de consulta
-        restore_password_link = f"https://ominous-guide-665q7xv5pjhr94g-3000.app.github.dev/restore-password?token={token}"
+        # restore_password_link = f"https://ominous-guide-665q7xv5pjhr94g-3000.app.github.dev/restore-password?token={token}"
+        restore_password_link = os.getenv("FRONT_END_URL") + f"/restore-password?token={token}"
+
 
         # HTML del correo electrónico
         html_content = f"""
@@ -187,6 +201,7 @@ def send_email():
     except Exception as e:
         response_data = { "msg": "error", "error": str(e) }
         return jsonify(response_data), 500
+
 
 
 # this only runs if `$ python src/main.py` is executed

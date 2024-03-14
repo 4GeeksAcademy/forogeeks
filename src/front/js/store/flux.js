@@ -395,7 +395,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify({ email: email })
 					};
 
-					const response = await fetch(process.env.BACKEND_URL + '/api/sendemail', options);
+					const response = await fetch(process.env.BACKEND_URL + '/sendemail', options);
 					const data = await response.json();
 
 					console.log("Respuesta del servidor:", data);
@@ -418,7 +418,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			resetPassword: async (token, newPassword) => {
 				try {
-					const response = await fetch(process.env.BACKEND_URL + "/api/resetpassword", {
+					const response = await fetch(process.env.BACKEND_URL + "/api/restore-password", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -438,7 +438,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error al restablecer la contraseña. Por favor, inténtalo de nuevo." };
 				}
 			},
-
 			changePassword: async (token, newPassword) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/changepassword" , {
