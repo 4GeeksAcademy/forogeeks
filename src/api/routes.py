@@ -501,11 +501,6 @@ def userlikedthreads():
         # Manejar cualquier otro error que pueda ocurrir durante la ejecución de la función
         return jsonify({"error": str(e)}), 500
     
-@api.route('/thread-likes/<int:thread_id>', methods=['GET'])
-def get_likes_by_thread_id(thread_id):
-    likes = ThreadLikes.query.filter_by(thread_id=thread_id).all()
-    serialized_likes = list(map(lambda like: like.serialize(), likes))
-    return jsonify(serialized_likes), 200
 # 🟣 FAVORITE THREADS ENDPOINTS 🟣
 # Endpoint para manejar la solicitud POST en '/favorite-thread'
     
@@ -775,3 +770,15 @@ def change_email():
     db.session.commit()
 
     return jsonify({"msg": "success"}), 200
+
+@api.route('/thread-likes/<int:thread_id>', methods=['GET'])
+def get_likes_by_thread_id(thread_id):
+    likes = ThreadLikes.query.filter_by(thread_id=thread_id).all()
+    serialized_likes = list(map(lambda like: like.serialize(), likes))
+    return jsonify(serialized_likes), 200
+
+@api.route('/comment-likes/<int:comment_id>', methods=['GET'])
+def get_likes_by_comment_id(comment_id):
+    likes = CommentLikes.query.filter_by(comment_id=comment_id).all()
+    serialized_comment_likes = list(map(lambda like: like.serialize(), likes))
+    return jsonify(serialized_comment_likes), 200
