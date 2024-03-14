@@ -119,6 +119,41 @@ export const Profile = () => {
 
 	}, []);
 
+	const handleSubmit = async (newPassword, confirmNewPassword) => {
+		// Validar que las contraseñas coincidan
+		if (newPassword !== confirmNewPassword) {
+		  setAlertMessage("Las contraseñas no coinciden.");
+		  setAlertType("danger");
+		  return;
+		}
+	
+		try {
+		  // Obtener el token del estado
+		  const token = store.token;
+	
+		  // Enviar la solicitud para cambiar la contraseña utilizando el token obtenido
+		  const { success, error } = await actions.changePassword(token, newPassword);
+	
+		  if (success) {
+			// Mostrar alerta de éxito
+			setAlertMessage("Tu contraseña se ha actualizado.");
+			setAlertType("success");
+			// Vaciar los campos de entrada después de un envío exitoso
+			setNewPassword("");
+			setConfirmNewPassword("");
+		  } else {
+			// Mostrar alerta de error
+			setAlertMessage(error || "Error al cambiar la contraseña. Por favor, inténtalo de nuevo.");
+			setAlertType("danger");
+		  }
+		} catch (error) {
+		  // Manejar cualquier error que ocurra al obtener el token del usuario
+		  console.error("Error al cambiar la contraseña:", error);
+		  setAlertMessage("Error al cambiar la contraseña. Por favor, inténtalo de nuevo.");
+		  setAlertType("danger");
+		}
+	  };
+
 	return (
 		<div className="container">
 			<div className="row p-2">

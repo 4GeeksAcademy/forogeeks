@@ -1,5 +1,6 @@
-import React from "react";
-
+// ModalProfile.jsx
+import React, { useState, useContext } from "react";
+import { Context } from "../../store/appContext";
 const ModalProfile = ({
   // Indica si el modal debe mostrarse o no
   show,
@@ -9,13 +10,52 @@ const ModalProfile = ({
   inputType,
   // Función para guardar los cambios
   handleSave,
-  // Valor del nombre de usuario
-  username,
-  // Valor de la descripción
-  description,
   // Título para modal
   title,
 }) => {
+  const { actions, store } = useContext(Context);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Validar que las contraseñas coincidan
+    if (newPassword !== confirmNewPassword) {
+        setAlertMessage("Las contraseñas no coinciden.");
+        setAlertType("danger");
+        return;
+    }
+
+    try {
+        // Obtener el token del estado
+        const token = store.token;
+  
+        // Enviar la solicitud para cambiar la contraseña utilizando el token obtenido
+        const { success, error } = await actions.changePassword(token, newPassword);
+        
+        if (success) {
+            // Mostrar alerta de éxito
+            setAlertMessage("Tu contraseña se ha actualizado.");
+            setAlertType("success");
+            // Vaciar los campos de entrada después de un envío exitoso
+            setNewPassword("");
+            setConfirmNewPassword("");
+        } else {
+            // Mostrar alerta de error
+            setAlertMessage(error || "Error al cambiar la contraseña. Por favor, inténtalo de nuevo.");
+            setAlertType("danger");
+        }
+    } catch (error) {
+        // Manejar cualquier error que ocurra al obtener el token del usuario
+        console.error("Error al cambiar la contraseña:", error);
+        setAlertMessage("Error al cambiar la contraseña. Por favor, inténtalo de nuevo.");
+        setAlertType("danger");
+    }
+};
+
+
   return (
     <div
       className={`modal fade ${show ? "show" : ""}`}
@@ -26,7 +66,7 @@ const ModalProfile = ({
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
-          <h5 className="modal-title">{title}</h5>
+            <h5 className="modal-title">{title}</h5>
             <button
               type="button"
               className="btn-close"
@@ -34,104 +74,40 @@ const ModalProfile = ({
               aria-label="Close"
             ></button>
           </div>
-          {/* Mostrar campos para cambiar el nombre de usuario si inputType es "username" */}
-          <div className="modal-body">
-            {inputType === "username" && (
-              <div className="mb-3">
-                <label htmlFor="newUsername" className="form-label">
-                  Nuevo nombre de usuario:
-                </label>
+          <div className="form-group mb-3 w-50">
+                <label htmlFor="newPassword">Nueva contraseña:</label>
                 <input
-                  type="text"
+                  type="password"
                   className="form-control"
-                  id="newUsername"
-                  defaultValue={username}
+                  id="newPassword"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                 />
               </div>
-            )}
-            {/* Mostrar campo para cambiar la descripción si inputType es "description" */}
-            {inputType === "description" && (
-              <div className="mb-3">
-                <label htmlFor="newDescription" className="form-label">
-                  Nueva descripción:
+              <div className="form-group mb-3 w-50">
+                <label htmlFor="confirmNewPassword">
+                  Confirmar nueva contraseña:
                 </label>
-                <textarea
+                <input
+                  type="password"
                   className="form-control"
-                  id="newDescription"
-                  rows="3"
-                  defaultValue={description}
-                ></textarea>
+                  id="confirmNewPassword"
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                />
               </div>
-            )}
-            {/* Mostrar campos para cambiar el correo electrónico si inputType es "email" */}
-            {inputType === "email" && (
-              <>
-                <div className="mb-3">
-                  <label htmlFor="currentEmail" className="form-label">
-                    Email actual:
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="currentEmail"
-                  />
+              <button className="btn btn-primary text-white" onClick={handleSubmit}>
+                Cambiar Contraseña
+              </button>
+              {/* Mostrar alerta si hay mensaje */}
+              {alertMessage && (
+                <div className={`alert alert-${alertType}`} role="alert">
+                  {alertMessage}
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="newEmail" className="form-label">
-                    Nuevo email:
-                  </label>
-                  <input type="email" className="form-control" id="newEmail" />
-                </div>
-              </>
-            )}
-            {/*Mostrar campos para cambiar la contraseña si inputType es "password" */}
-            {inputType === "password" && (
-              <>
-                <div className="mb-3">
-                  <label htmlFor="currentPassword" className="form-label">
-                    Contraseña actual:
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="currentPassword"
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="newPassword" className="form-label">
-                    Nueva contraseña:
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="newPassword"
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="confirmNewPassword" className="form-label">
-                    Confirmar nueva contraseña:
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="confirmNewPassword"
-                  />
-                </div>
-              </>
-            )}
-          </div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-primary text-white"
-              onClick={handleSave}
-            >
-              Guardar cambios
-            </button>
+              )}
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
