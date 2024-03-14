@@ -568,28 +568,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.error("[flux.getUserById] Error fetching threads:", error);
                 }
             },
-			deleteCategory : async (categoryId) => {
-				try {
-				  const token = localStorage.getItem("token");
-				  const response = await fetch(`${process.env.BACKEND_URL}/api/delete-category/${categoryId}`, {
-					method: "DELETE",
-					headers: {
-					  "Content-Type": "application/json",
-					  Authorization: `Bearer ${token}`,
-					},
-				  });
-				  if (response.ok) {
-					console.log("Category deleted successfully");
-					return true; // Devuelve true para indicar éxito
-				  } else {
-					throw new Error("Failed to delete category");
-				  }
-				} catch (error) {
-				  console.error("Error deleting category:", error);
-				  return false; // Devuelve false para indicar fallo
-				}
-			  },
-			  
+		
 			  
 
 		

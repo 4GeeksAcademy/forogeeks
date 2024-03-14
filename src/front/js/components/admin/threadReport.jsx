@@ -6,7 +6,7 @@ import { Context } from "../../store/appContext";
 // ICONS
 import { IconMessage, IconX, IconCheck, IconExclamationCircle } from "@tabler/icons-react";
 
-const ThreadReport = ({ thread_id, autor, onDelete ,title,report}) => {
+const ThreadReport = ({ thread_id-m  ,title,report}) => {
   const { store, actions } = useContext(Context);
   // Funciones para eliminar el hilo reportado o el reporte de hilo
   const handleDeleteThread = async () => {

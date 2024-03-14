@@ -536,23 +536,3 @@ def delete_threadreport(report_id):
     db.session.commit()
 
     return jsonify({"message": "Thread report deleted successfully"}), 200
-# 🛑 DELETE Category 🛑
-
-@api.route('/delete-category/<int:category_id>', methods=['DELETE'])
-@jwt_required()  # Requiere autenticación JWT
-def delete_category(category_id):
-    # Verificar si el usuario actual es administrador
-    email = get_jwt_identity()
-    user = User.query.filter_by(email=email).first()
-    if not user.admin:
-        return jsonify({"error": "Unauthorized"}), 403
-
-    category = Category.query.get(category_id)
-    if category is None:
-        return jsonify({"error": "Category not found"}), 404
-    
-    db.session.delete(category)
-    db.session.commit()
-
-    return jsonify({"message": "Category deleted successfully"}), 200
-
