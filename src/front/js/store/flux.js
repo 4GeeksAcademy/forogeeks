@@ -506,55 +506,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: error.message || "Failed to change password" };
 				}
 			},
-			getThreadsByTitle: async (query) => {
-				try {
-					console.log('Searching for:', query); // Verifica que se esté llamando correctamente
-					const response = await fetch(`${process.env.BACKEND_URL}/api/threads/search/${query}`);
-					if (response.ok) {
-						const data = await response.json();
-						console.log('Search results:', data); // Verifica los resultados de la búsqueda
-						setStore({ threads: data });
-					} else {
-						throw new Error('Failed to fetch search results');
-					}
-				} catch (error) {
-					console.error('Error searching threads:', error);
-				}
-			},
 			getUserNameById: async (id) => {
-				const store = getStore();
-				try {
-					const response = await fetch(process.env.BACKEND_URL + `/api/user/${id}`, {
-						method: "GET",
-					});
-					if (response.ok) {
-						const data = await response.json();
-						console.log("[flux.getUserNameById] data", data);
-						setStore({ ...store, user_name: String(data["username"]) });
-					} else {
-						throw new Error("[flux.getUserById] Failed to fetch threads");
-					}
-				} catch (error) {
-					console.error("[flux.getUserById] Error fetching threads:", error);
-				}
-			},
+                const store = getStore();
+                try {
+                    const response = await fetch(process.env.BACKEND_URL + `/api/user/${id}`, {
+                        method: "GET",
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log("[flux.getUserNameById] data", data);
+                        return String(data.username);
+                    } else {
+                        throw new Error("[flux.getUserById] Failed to fetch threads");
+                    }
+                } catch (error) {
+                    console.error("[flux.getUserById] Error fetching threads:", error);
+                }
+            },
 			getUserProfileImageById: async (id) => {
-				const store = getStore();
-				try {
-					const response = await fetch(process.env.BACKEND_URL + `/api/user/profile-picture/${id}`, {
-						method: "GET",
-					});
-					if (response.ok) {
-						const data = await response.json();
-						console.log("[flux.getUserProfileImageById] data", data);
-						setStore({ ...store, user_profile_image: String(data["profile_picture"]) });
-					} else {
-						throw new Error("[flux.getUserById] Failed to fetch threads");
-					}
-				} catch (error) {
-					console.error("[flux.getUserById] Error fetching threads:", error);
-				}
-			},
+                const store = getStore();
+                try {
+                    const response = await fetch(process.env.BACKEND_URL + `/api/user/profile-picture/${id}`, {
+                        method: "GET",
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log("[flux.getUserProfileImageById] data", data);
+                        return String(data.profile_picture);
+                    } else {
+                        throw new Error("[flux.getUserById] Failed to fetch threads");
+                    }
+                } catch (error) {
+                    console.error("[flux.getUserById] Error fetching threads:", error);
+                }
+            },
 			favoriteThread: async ({ user_id, thread_id }) => {
 				try {
 					const token = localStorage.getItem("token");
@@ -818,10 +803,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const isLiked = store.likedComments.some(likedComment => likedComment.id === id);
 				return { isLiked };
 			},
-
-
 		},
-
 	};
 };
 

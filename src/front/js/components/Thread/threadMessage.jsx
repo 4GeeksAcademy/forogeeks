@@ -4,7 +4,7 @@ import moment from "moment";
 import { IconHeart, IconArrowForward, IconHeartFilled } from '@tabler/icons-react';
 
 
-export const ThreadMessage = ({ content, date, id }) => {
+export const ThreadMessage = ({ content, date, id, authorId, profileImg}) => {
     const { store, actions } = useContext(Context);
     const [isLiked, setIsLiked] = useState(false);
     const user_name = store.user_name;
@@ -13,6 +13,23 @@ export const ThreadMessage = ({ content, date, id }) => {
     const userInfo = store.userInfo;
     const [showOptions, setShowoptions] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const [authorName, setAuthorName] = useState("");
+    const [authorProfileImage, setAuthorProfileImage] = useState("");
+    
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userName = await actions.getUserNameById(authorId);
+                const profileImage = await actions.getUserProfileImageById(authorId);
+                setAuthorName(userName);
+                setAuthorProfileImage(profileImage);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+        fetchData();
+    }, [authorId]);
 
     useEffect(() => {
         actions.getUserLikedComments()
@@ -83,9 +100,9 @@ export const ThreadMessage = ({ content, date, id }) => {
                                 {/* USERNAME */}
                                 <div className="">
                                     <div className="d-flex flex-row gap-3 align-items-center">
-                                        <img src={user_profile_image} alt="profile" className="rounded-circle" style={{ width: "40px", height: "40px" }} />
+                                    <img src={profileImg} alt="profile" className="rounded-circle" style={{ width: "40px", height: "40px" }} />
                                         <div className="d-flex flex-column">
-                                            <span className="m-0 p-0 d-flex align-items-center fw-bold text-primary">{"@" + user_name}</span>
+                                        <span className="m-0 p-0 d-flex align-items-center fw-bold text-primary">{"@" + authorName}</span>
                                             <span className="text-muted small p-0 m-0" >Estoy usando ForoGeeks</span>
                                         </div>
                                     </div>
