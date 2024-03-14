@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef  } from "react";
 import { Context } from "../../store/appContext";
 import moment from "moment";
 import { IconHeart, IconBookmark, IconArrowForward, IconHeartFilled, IconBookmarkFilled } from '@tabler/icons-react';
@@ -8,7 +8,11 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const contentRef = useRef(null);
 
+    useEffect(() => {
+        contentRef.current = document.getElementById("contenido");
+      }, []);
 
     useEffect(() => {
         const favoriteThreads = store.favoriteThreads;
@@ -104,6 +108,14 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
         }
     };
 
+    const handleArrowClick = () => {
+        // Scroll hasta el final de la página
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+        });
+    };
+
     return (
         <div className="row">
             <div className="col-md-12">
@@ -126,7 +138,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                             </div>
                         </div>
                         <hr className="hr" style={{ opacity: "10%" }}></hr>
-                        <div className="col-md-12">
+                        <div className="col-md-12" id="contenido">
                             <div className="">
                                 <div dangerouslySetInnerHTML={{ __html: content }} />
                             </div>
@@ -145,7 +157,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                                 </div>
                                 <div className="d-flex align-items-center gap-3">
                                     {isFavorite ? <IconBookmarkFilled size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} /> : <IconBookmark size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} />}
-                                    <IconArrowForward size={20} stroke={1} />
+                                    <IconArrowForward size={20} stroke={1} onClick={handleArrowClick} />
                                 </div>
                             </div>
                         )}
