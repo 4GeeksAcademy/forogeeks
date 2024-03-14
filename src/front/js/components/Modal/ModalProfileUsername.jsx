@@ -12,6 +12,7 @@ const ModalProfileUsername = ({
     handleSave,
     // Título para modal
     title,
+    updateChangesSaved,
 }) => {
     const { actions, store } = useContext(Context);
     const [newUsername, setNewUsername] = useState("");
@@ -31,6 +32,7 @@ const ModalProfileUsername = ({
             setAlertMessage("Tu nombre de usuario se ha actualizado.");
             setAlertType("success");
             // Vaciar los campos de entrada después de un envío exitoso
+            updateChangesSaved(true);
             setNewUsername("");
           } else {
             // Mostrar alerta de error

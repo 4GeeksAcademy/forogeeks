@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../../store/appContext.js";
 
-const ModalProfileEmail = ({ show, handleClose, title }) => {
+const ModalProfileDescription = ({ show, handleClose, title, updateChangesSaved }) => {
   const { actions, store } = useContext(Context);
   const [newDescription, setnewDescription] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -21,6 +21,7 @@ const ModalProfileEmail = ({ show, handleClose, title }) => {
         setAlertMessage("Tu descripción se ha actualizado.");
         setAlertType("success");
         // Vaciar los campos de entrada después de un envío exitoso
+        updateChangesSaved(true);
         setnewDescription("");
       } else {
         // Mostrar alerta de error
@@ -36,7 +37,7 @@ const ModalProfileEmail = ({ show, handleClose, title }) => {
   };
 
   return (
-    <div className={`modal fade ${show ? "show" : ""}`} tabIndex="-1" aria-labelledby="emailModalLabel" aria-hidden={!show}>
+    <div className={`modal fade ${show ? "show" : ""}`} tabIndex="-1" aria-hidden={!show}>
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
@@ -55,7 +56,7 @@ const ModalProfileEmail = ({ show, handleClose, title }) => {
               />
             </div>
             <button className="btn btn-primary text-white" onClick={handleSubmitDescription}>
-              Cambiar Email
+              Cambiar descripción
             </button>
             {/* Mostrar alerta si hay mensaje */}
             {alertMessage && (
@@ -70,4 +71,4 @@ const ModalProfileEmail = ({ show, handleClose, title }) => {
   );
 };
 
-export default ModalProfileEmail;
+export default ModalProfileDescription;

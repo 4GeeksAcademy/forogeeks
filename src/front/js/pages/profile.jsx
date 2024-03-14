@@ -35,6 +35,7 @@ export const Profile = () => {
 	const [description, setDescription] = useState(null);
 	const [showUpdateProfileImageModal, setShowUpdateProfileImageModal] = useState(false);
 	const [activeModal, setActiveModal] = useState(null);
+	const [changesSaved, setChangesSaved] = useState(false);
 	const userInfo = store.userInfo;
 	const handleCloseModal = () => {
 		setActiveModal(null);
@@ -124,11 +125,37 @@ export const Profile = () => {
 
 	}, []);
 
+	// Función para actualizar la información del usuario
+const updateUserInfo = async () => {
+	try {
+		const user = await actions.getUserInfo();
+		const userProfileImg = await actions.getUserProfileImageById(user);
+		const userName = await actions.getUserNameById(user);
+		const description = userInfo.description
+		setUserImageProfile(userProfileImg);
+		setUserName(userName);
+		setDescription(description);
+	} catch (error) {
+		console.error("Error fetching user data:", error);
+	}
+  };
+  
+  useEffect(() => {
+	// Llamar a la función para actualizar la información del usuario al cargar la página
+	updateUserInfo();
+  }, []);
+  
+  // useEffect para verificar si se guardaron los cambios y actualizar la información del usuario
+  useEffect(() => {
+	if (changesSaved) {
+		updateUserInfo();
+		setChangesSaved(false); // Restablecer el estado a false después de actualizar la información
+	}
+  }, [changesSaved]);
+
 	return (
 		<div className="container">
 			<div className="row p-2">
-
-
 				<div className="col-md-12 p-0">
 					{/* 1 BANNER */}
 					<div className="col-md-12 shadow-sm rounded-top-3 h-100 position-relative" style={{ background: 'rgb(0,41,167)', background: 'linear-gradient(90deg, rgba(0,41,167,1) 0%, rgba(0,123,255,1) 46%, rgba(0,161,255,1) 69%, rgba(0,212,255,1) 100%)' }}>
@@ -157,7 +184,6 @@ export const Profile = () => {
 					{/* NECESARIO PARA CENTRAR LA IMAGEN Y HEIGHT DEL BANNER*/}
 					<div className="mb-7"></div>
 				</div>
-
 
 				{/* TRES BLOQUES PRINCIPALES */}
 				<div className="col-md-12 shadow-sm bg-white rounded-bottom-3 pb-4">
@@ -214,11 +240,6 @@ export const Profile = () => {
 								</div>
 							</div>
 						</div>
-
-
-
-
-
 					</div>
 				</div>
 
@@ -237,30 +258,12 @@ export const Profile = () => {
 				</div>
 			</div>
 
-
-
-
-
-
-
-
-
-
-
 			<UpdateProfileImage
 				show={showUpdateProfileImageModal}
 				onClose={() => setShowUpdateProfileImageModal(false)}
 				onUpload={upLoadImg}
 				handleFileInputChange={handleFileInputChange}
 			/>
-
-
-
-
-
-
-
-
 
 			{/* Modales */}
 			{/* Modal para cambiar el nombre de usuario */}
@@ -270,7 +273,7 @@ export const Profile = () => {
 				title="Nombre de usuario"
 				inputType="username"
 				username="InitialUsername"
-				description="InitialDescription"
+				updateChangesSaved={setChangesSaved}
 			/>
 			{/* Modal para cambiar la descripción */}
 			<ModalProfileDescription
@@ -279,7 +282,7 @@ export const Profile = () => {
 				title="Descripción"
 				inputType="description"
 				username="InitialUsername"
-				description="InitialDescription"
+				updateChangesSaved={setChangesSaved}
 			/>
 			{/* Modal para cambiar el correo electrónico */}
 			<ModalProfileEmail
@@ -288,7 +291,7 @@ export const Profile = () => {
 				title="Email"
 				inputType="email"
 				username="InitialUsername"
-				description="InitialDescription"
+				updateChangesSaved={setChangesSaved}
 			/>
 			{/* Modal para cambiar la contraseña */}
 			<ModalProfile
@@ -297,7 +300,7 @@ export const Profile = () => {
 				title="Contraseña"
 				inputType="password"
 				username="InitialUsername"
-				description="InitialDescription"
+				updateChangesSaved={setChangesSaved}
 			/>
 		</div>
 

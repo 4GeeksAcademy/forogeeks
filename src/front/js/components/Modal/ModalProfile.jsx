@@ -1,5 +1,5 @@
 // ModalProfile.jsx
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
 const ModalProfile = ({
   // Indica si el modal debe mostrarse o no
@@ -11,6 +11,7 @@ const ModalProfile = ({
   // Función para guardar los cambios
   handleSave,
   // Título para modal
+  updateChangesSaved,
   title,
 }) => {
   const { actions, store } = useContext(Context);
@@ -40,6 +41,7 @@ const ModalProfile = ({
             setAlertMessage("Tu contraseña se ha actualizado.");
             setAlertType("success");
             // Vaciar los campos de entrada después de un envío exitoso
+            updateChangesSaved(true);
             setNewPassword("");
             setConfirmNewPassword("");
         } else {
