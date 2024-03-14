@@ -825,3 +825,18 @@ def change_description():
     db.session.commit()
 
     return jsonify({"msg": "success"}), 200
+
+# Ruta para cambiar el correo electrónico
+@api.route("/change-username", methods=["POST"])
+@jwt_required()
+def change_username():
+    email = get_jwt_identity()
+
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        return jsonify({"msg": "No existe este usuario"}), 401
+
+    user.user_name = request.json.get('user_name')
+    db.session.commit()
+
+    return jsonify({"msg": "success"}), 200

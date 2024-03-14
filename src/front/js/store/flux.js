@@ -896,6 +896,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error al cambiar la descripción. Por favor, inténtalo de nuevo." };
 				}
 			},
+			changeUsername: async (token, newUsername) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/change-username`, { 
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ user_name: newUsername }), 
+					});
+					const data = await response.json();
+
+					// Log de la respuesta JSON para depuración
+					console.log('Response data:', data);
+
+					if (response.ok) {
+						return { success: true };
+					} else {
+						return { success: false, error: data.msg || "Error al cambiar el nombre de usuario." };
+					}
+				} catch (error) {
+					console.error("Error al cambiar el nombre de usuario", error);
+					return { success: false, error: "Error al cambiar el nombre usuario. Por favor, inténtalo de nuevo." };
+				}
+			},
 			
 		},
 	};

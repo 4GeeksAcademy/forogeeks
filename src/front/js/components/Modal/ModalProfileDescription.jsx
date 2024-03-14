@@ -4,10 +4,11 @@ import { Context } from "../../store/appContext.js";
 const ModalProfileEmail = ({ show, handleClose, title }) => {
   const { actions, store } = useContext(Context);
   const [newDescription, setnewDescription] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
 
-  const handleSubmitEmail = async () => {
+  const handleSubmitDescription = async () => {
     try {
       // Obtener el token del estado
       const token = store.token;
@@ -53,7 +54,7 @@ const ModalProfileEmail = ({ show, handleClose, title }) => {
                 onChange={(e) => setnewDescription(e.target.value)}
               />
             </div>
-            <button className="btn btn-primary text-white" onClick={handleSubmitEmail}>
+            <button className="btn btn-primary text-white" onClick={handleSubmitDescription}>
               Cambiar Email
             </button>
             {/* Mostrar alerta si hay mensaje */}

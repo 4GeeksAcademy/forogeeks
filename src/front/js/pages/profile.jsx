@@ -3,6 +3,7 @@ import { Context } from "../store/appContext.js";
 import ModalProfile from "../components/Modal/ModalProfile.jsx";
 import ModalProfileEmail from "../components/Modal/ModalProfileEmail.jsx";
 import ModalProfileDescription from "../components/Modal/ModalProfileDescription.jsx";
+import ModalProfileUsername from "../components/Modal/ModalProfileUsername.jsx";
 // FIREBASE
 import { storage } from "../firebase";
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
@@ -263,7 +264,7 @@ export const Profile = () => {
 
 			{/* Modales */}
 			{/* Modal para cambiar el nombre de usuario */}
-			<ModalProfile
+			<ModalProfileUsername
 				show={activeModal === "username"}
 				handleClose={handleCloseModal}
 				title="Nombre de usuario"
