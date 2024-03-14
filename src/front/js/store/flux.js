@@ -461,36 +461,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			getThreadsByTitle: async (query) => {
-				try {
-					console.log('Searching for:', query); // Verifica que se esté llamando correctamente
-					const response = await fetch(`${process.env.BACKEND_URL}/api/threads/search/${query}`);
-					if (response.ok) {
-						const data = await response.json();
-						console.log('Search results:', data); // Verifica los resultados de la búsqueda
-						setStore({ threads: data });
-					} else {
-						throw new Error('Failed to fetch search results');
-					}
-				} catch (error) {
-					console.error("[flux.changePassword] Error durante la solicitud para cambiar contraseña:", error);
-					return { success: false, error: error.message || "Failed to change password" };
-				}
-			},
-			getThreadsByTitle: async (query) => {
-				try {
-					console.log('Searching for:', query); // Verifica que se esté llamando correctamente
-					const response = await fetch(`${process.env.BACKEND_URL}/api/threads/search/${query}`);
-					if (response.ok) {
-						const data = await response.json();
-						console.log('Search results:', data); // Verifica los resultados de la búsqueda
-						setStore({ threads: data });
-					} else {
-						throw new Error('Failed to fetch search results');
-					}
-				} catch (error) {
-					console.error('Error searching threads:', error);
-				}
-			},
+                try {
+                    console.log('Searching for:', query);
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/threads/search/${query}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('Search results:', data);
+                        setStore({ threads: data });
+                    } else {
+                        throw new Error('Failed to fetch search results');
+                    }
+                } catch (error) {
+                    console.error('Error searching threads:', error);
+                }
+            },
+		
+			
 			getUserNameById: async (id) => {
                 const store = getStore();
                 try {

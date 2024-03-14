@@ -6,15 +6,20 @@ import { Context } from "../../store/appContext";
 // ICONS
 import { IconMessage, IconX, IconCheck, IconExclamationCircle } from "@tabler/icons-react";
 
-const ThreadReport = ({ thread_id, autor, onDelete }) => {
+const ThreadReport = ({ thread_id, autor, onDelete ,title}) => {
   const { store, actions } = useContext(Context);
   const [loading, setLoading] = useState(true); 
 
+ {/* Thread 
   useEffect(() => {
-    actions.getThreadById(thread_id).then(() => setLoading(false));
-  }, []);
+    actions.getThreadById(thread_id)
+      .then(threadData => {
+        const { title } = threadData.thread;
+        setLoading(false);
+      });
+  }, ); */}
 
-
+  // Retorno dentro de la función del componente
   return (
     <tr>
       {/* Thread Title */}
@@ -26,8 +31,8 @@ const ThreadReport = ({ thread_id, autor, onDelete }) => {
             <IconExclamationCircle size={20} stroke={1.5} color="#FF0000" />
             <hr className="vr mx-3" />
             <div className="d-flex flex-column">
-              {loading ? <p className="m-0 p-0">Loading...</p> : <p className="m-0 p-0">{store.threads.title}</p>}
-              <p className="m-0 p-0">{store.reportedThreads.title}</p>
+              {loading ? <p className="m-0 p-0">Loading...</p> : <p className="m-0 p-0">{title}</p>}
+              <p className="m-0 p-0">{title}</p>
             </div>
           </div>
 

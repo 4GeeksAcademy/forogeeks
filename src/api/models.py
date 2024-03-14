@@ -181,6 +181,7 @@ class ReportThread(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     thread_id = db.Column(db.Integer, db.ForeignKey('threads.id'))
+    thread = db.relationship('Threads', backref='report_thread', lazy=True)
     reason = db.Column(db.String(120), unique=False, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -192,6 +193,7 @@ class ReportThread(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "thread_id": self.thread_id,
+            "thread": self.thread.serialize(),
             "reason": self.reason,
             "date": self.date,
             # do not serialize the password, its a security breach
