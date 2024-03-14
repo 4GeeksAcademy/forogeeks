@@ -797,12 +797,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error fetching liked comments. Please try again." };
 				}
 			},
+			
 			checkLikedComment: async (id) => {
 				const store = getStore();
 				const isLiked = store.likedComments.some(likedComment => likedComment.id === id);
 				return { isLiked };
 			},
-			
+
 			getAllTreadsByUserId: async (id) => {
                 const store = getStore();
                 try {
