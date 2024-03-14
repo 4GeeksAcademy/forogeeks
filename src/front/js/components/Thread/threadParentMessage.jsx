@@ -3,11 +3,12 @@ import { Context } from "../../store/appContext";
 import moment from "moment";
 import { IconHeart, IconBookmark, IconArrowForward, IconHeartFilled, IconBookmarkFilled } from '@tabler/icons-react';
 
-export const ThreadParentMessage = ({ autor, content, date, user_profile_picture, description, title, thread_id }) => {
+export const ThreadParentMessage = ({ autor, content, date, user_profile_picture, description, title, thread_id, thread_likes }) => {
     const { store, actions } = useContext(Context);
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const [likesCount, setLikesCount] = useState(0);
     const contentRef = useRef(null);
 
     useEffect(() => {
@@ -155,7 +156,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                         {store.isUserLogged && (
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
                                 <div className="d-flex align-items-center gap-1">
-                                    <span className="text-muted small">13</span>
+                                <span className="text-muted small">{thread_likes}</span>
                                     {isLiked ? <IconHeartFilled className="text-danger" size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} /> : <IconHeart size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} />}
                                 </div>
                                 <div className="d-flex align-items-center gap-3">

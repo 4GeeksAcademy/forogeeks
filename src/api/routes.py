@@ -500,6 +500,12 @@ def userlikedthreads():
     except Exception as e:
         # Manejar cualquier otro error que pueda ocurrir durante la ejecución de la función
         return jsonify({"error": str(e)}), 500
+    
+@api.route('/thread-likes/<int:thread_id>', methods=['GET'])
+def get_likes_by_thread_id(thread_id):
+    likes = ThreadLikes.query.filter_by(thread_id=thread_id).all()
+    serialized_likes = list(map(lambda like: like.serialize(), likes))
+    return jsonify(serialized_likes), 200
 # 🟣 FAVORITE THREADS ENDPOINTS 🟣
 # Endpoint para manejar la solicitud POST en '/favorite-thread'
     
@@ -680,7 +686,6 @@ def user_liked_comments():
     except Exception as e:
         # Manejar cualquier otro error que pueda ocurrir durante la ejecución de la función
         return jsonify({"error": str(e)}), 500
-
 
 # 🟢 MESSAGES ENDPOINTS 🟢
 # Endpoint para manejar la solicitud POST en '/send-message'

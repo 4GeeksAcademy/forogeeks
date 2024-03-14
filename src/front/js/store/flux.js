@@ -21,7 +21,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			likedComments: [],
 			isFavorite: false,
 			isLiked: false,
-			isCommentLiked: false
+			isCommentLiked: false,
+			threadLikes: []
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -844,7 +845,24 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.error("[flux.postProfilePictureByUserID] Error post profile img:", error);
                 }
-            }
+            },
+			getLikesByThread: async (id) => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/thread-likes/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						console.log("[flux.getLikesByThread] threadLikes", data);
+						setStore({ threadLikes: data });
+					} else {
+						throw new Error("[flux.getLikesByThread] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getLikesByThread] Error fetching threads:", error);
+				}
+			},
 		},
 	};
 };
