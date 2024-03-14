@@ -377,20 +377,23 @@ def get_comments():
 # ⚪️ ADMIN REPORTS ⚪️
 #Verify user is admin
 # Endpoint para manejar la solicitud Delete category  en '/admin-reports'
-@api.route('/admin-reports/<int:report_id>', methods=['DELETE'])
-def delete_report(report_id):
-    report = ReportThread.query.filter_by(id=report_id).first()
-    if report is None:
-        return jsonify({"message": "Report not found"}), 404
-    db.session.delete(report)
-    db.session.commit()
-    return jsonify({"message": "Report deleted"}), 200
+
+
 
 # Endpoint para manejar la solicitud GET en '/admin-reports'
 @api.route('/admin-reports', methods=['GET'])
+@jwt_required()
 def get_admin_reports():
     reports = ReportThread.query.all()
-    serialized_reports = list(map(lambda report: report.serialize(), reports))
+    serialized_reports = []
+
+    for report in reports:
+        thread = report.thread
+        if thread is not None:
+            serialized_report = report.serialize()
+            serialized_report["thread"] = thread.serialize()
+            serialized_reports.append(serialized_report)
+
     return jsonify(serialized_reports), 200
 
 # Endpoint para manejar la solicitud DELETE en '/admin-reports/<int:report_id>'
@@ -484,3 +487,54 @@ def change_password():
     db.session.commit()
 
     return jsonify({"msg": "success"}), 200
+
+###################Nain eliminar thread y threadReport
+#delete base de datos 
+# 🛑 DELETE THREAD 🛑
+# Endpoint para manejar la solicitud DELETE en '/delete-thread/<int:thread_id>'
+@api.route('/delete-thread/<int:thread_id>', methods=['DELETE'])
+@jwt_required()
+def delete_thread(thread_id):
+    # Obtener el usuario actual
+    email = get_jwt_identity()
+    user = User.query.filter_by(email=email).first()
+    # Verificar si el usuario es un administrador
+    # Esto es solo un ejemplo de verificación, debes implementar tu lógica de verificación de administrador
+    if not user.admin:
+        return jsonify({"error": "Unauthorized"}), 403
+    
+    # Buscar el thread por su ID
+    thread = Threads.query.get(thread_id)
+    if thread is None:
+        return jsonify({"error": "Thread not found"}), 404
+
+    # Eliminar el thread de la base de datos
+    db.session.delete(thread)
+    db.session.commit()
+
+    return jsonify({"message": "Thread deleted successfully"}), 200
+
+# 🛑 DELETE THREAD REPORT 🛑
+# Endpoint para manejar la solicitud DELETE en '/delete-threadreport/<int:report_id>'
+@api.route('/delete-threadreport/<int:report_id>', methods=['DELETE'])
+@jwt_required()
+def delete_threadreport(report_id):
+    # Obtener el usuario actual
+    email = get_jwt_identity()
+    user = User.query.filter_by(email=email).first()
+    # Verificar si el usuario es un administrador
+    # Esto es solo un ejemplo de verificación, debes implementar tu lógica de verificación de administrador
+    if not user.admin:
+        return jsonify({"error": "Unauthorized"}), 403
+    
+    # Buscar el reporte de thread por su ID
+    report = ReportThread.query.get(report_id)
+    if report is None:
+        return jsonify({"error": "Thread report not found"}), 404
+
+    # Eliminar el reporte de thread de la base de datos
+    db.session.delete(report)
+    db.session.commit()
+
+    return jsonify({"message": "Thread report deleted successfully"}), 200
+

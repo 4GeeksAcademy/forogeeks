@@ -69,7 +69,7 @@ const AdminReport = () => {
               </thead>
               <tbody>
               {reportedThreads.map((thread, index) => (
-                      <ThreadReport key={index} thread_id={thread.thread_id} title={thread?.thread?.title} />
+                      <ThreadReport key={index} report ={thread.id} thread_id={thread.thread.id}  title={thread?.thread?.title} />
                     ))}
               </tbody>
             </table>

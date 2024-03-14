@@ -1,13 +1,13 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-
+			threads: [],
 			logError: null,
 			token: "",
 			modalRegistersuccess: false,
 			isUserLogged: false,
 			userInfo: "",
-			threads: [],
+			
 			categories: [],
 			textEditorContent: "",
 			user_name: "",
@@ -60,6 +60,59 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message }; // Devuelve el error del servidor
 				}
 			},
+			/////////////////
+			deleteThread: async (threadId) => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/delete-thread/${threadId}`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+					});
+					if (response.ok) {
+						
+					
+					
+						getActions().getReportedThreads();
+						
+						console.log("Thread deleted successfully");
+						// Actualizar estado o realizar otras acciones si es necesario
+					} else {
+						throw new Error("Failed to delete thread");
+					}
+				} catch (error) {
+					console.error("Error deleting thread:", error);
+				}
+			},
+			// Eliminar un reporte de hilo
+			deleteThreadReport: async (reportId) => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/delete-threadreport/${reportId}`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+					});
+					if (response.ok) {
+						getActions().getReportedThreads()
+						console.log("Thread report deleted successfully");
+
+						// Actualizar estado o realizar otras acciones si es necesario
+					} else {
+						throw new Error("Failed to delete thread report");
+
+					}
+				} catch (error) {
+					console.error("Error deleting thread report:", error);
+				}
+			},
+
+
+			////////////
 
 
 			// Función para iniciar sesión de usuario
@@ -349,15 +402,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			getReportedThreads: async () => {
-				const store = getStore();
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/admin-reports", {
 						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${localStorage.getItem("token")}`
+						},
 					});
 					if (response.ok) {
 						const data = await response.json();
 						console.log("[flux.getReportedThreads] data", data);
 						setStore({ reportedThreads: data });
+						
 					} else {
 						throw new Error("[flux.getReportedThreads] Failed to fetch threads");
 					}
@@ -480,7 +537,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUserNameById: async (id) => {
                 const store = getStore();
                 try {
-                    const response = await fetch(process.env.BACKEND_URL + `/api/user/${id}`, {
+                    const response = await fetch(process.env.BACKEND_URL + `/user/${id}`, {
                         method: "GET",
                     });
                     if (response.ok) {
@@ -510,8 +567,11 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.error("[flux.getUserById] Error fetching threads:", error);
                 }
-            }
+            },
+
+		
 		},
+		
 	};
 };
 
