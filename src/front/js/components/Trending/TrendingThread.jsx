@@ -10,12 +10,9 @@ import { IconMessage } from "@tabler/icons-react";
 import { IconHeartFilled } from "@tabler/icons-react";
 import { IconMessages } from "@tabler/icons-react";
 
-const TrendingThreads = ({ title, number_of_comments, date, category, id, possition }) => {
+const TrendingThreads = ({ title, number_of_comments, date, category, id, possition, author }) => {
     const { store, actions } = useContext(Context);
 
-    useEffect(() => {
-
-    }, []);
 
     return (
         <div className="container">
@@ -46,7 +43,7 @@ const TrendingThreads = ({ title, number_of_comments, date, category, id, possit
                                 </div>
                                 {/* USERNAME */}
                                 <div>
-                                    <span className="text-muted small">{moment(date).fromNow()}</span>
+                                    <span className="text-muted small">{"@"+author}</span>
                                 </div>
                             </div>
                         </div>

@@ -180,7 +180,17 @@ def get_profile_picture(user_id):
     print(user)
     return jsonify({"profile_picture": user.profile_picture}), 200
 
-
+# Endpoint para POST la profile_picture a traves de user_id
+@api.route('/user/profile-picture/<int:user_id>', methods=['POST'])
+@jwt_required()
+def post_profile_picture(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    data = request.get_json()
+    if user is None:
+        return jsonify({"message": "User not found"}), 404
+    user.profile_picture = data.get("profile_picture")
+    db.session.commit()
+    return jsonify({"profile_picture": user.profile_picture}), 200
 
 # 🔵 THREADS ENDPOINTS 🔵
 # Endpoint para manejar la solicitud POST en '/create-thread'
@@ -281,6 +291,13 @@ def report_thread():
     }
 
     return jsonify(serialized_report), 201
+
+# Endpoint para manejar la solicitud GET threadhs by user_id
+@api.route('/threads/user/<int:user_id>', methods=['GET'])
+def get_threads_by_user_id(user_id):
+    threads = Threads.query.filter_by(user_id=user_id).all()
+    serialized_threads = list(map(lambda thread: thread.serialize(), threads))
+    return jsonify(serialized_threads), 200
 
 # 🔴 CATEGORIAS ENDPOINTS 🔴
 # Endpoint para manejar la solicitud GET de categorías en '/categories'

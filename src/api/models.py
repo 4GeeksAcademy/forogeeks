@@ -154,7 +154,6 @@ class FavoriteThreads(db.Model):
             "thread_id": self.thread_id,
         }
 
-
 # 7. Message
 class PrivateMessages(db.Model):
     __tablename__ = 'private_messages'

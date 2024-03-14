@@ -100,9 +100,9 @@ export const ThreadMessage = ({ content, date, id, authorId, profileImg}) => {
                                 {/* USERNAME */}
                                 <div className="">
                                     <div className="d-flex flex-row gap-3 align-items-center">
-                                    <img src={profileImg} alt="profile" className="rounded-circle" style={{ width: "40px", height: "40px" }} />
+                                        <img src={authorProfileImage} alt="profile" className="rounded-circle" style={{ width: "40px", height: "40px" }} />
                                         <div className="d-flex flex-column">
-                                        <span className="m-0 p-0 d-flex align-items-center fw-bold text-primary">{"@" + authorName}</span>
+                                            <span className="m-0 p-0 d-flex align-items-center fw-bold text-primary">{"@" + authorName}</span>
                                             <span className="text-muted small p-0 m-0" >Estoy usando ForoGeeks</span>
                                         </div>
                                     </div>

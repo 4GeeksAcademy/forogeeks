@@ -42,7 +42,8 @@ export const InsideThread = () => {
         }
         actions.getThreadById(id); // Se agrega a store.thread el hilo con el id que se pasa por parametro
         actions.getCommentsByThread(id);
-        // console.log("id del hilo: ", id);
+    
+
     }, []);
 
     return (
@@ -94,7 +95,7 @@ export const InsideThread = () => {
 
                         <div className="d-flex flex-column gap-1">
                             {/* TITULO DEL HILO */}
-                            <div className="d-flex align-items-center py-2 ps-3 bg-white rounded-3 shadow-sm">
+                            <div className="d-flex align-items-center py-3 ps-3 mb-2 bg-white rounded-3 shadow-sm">
                                 <h3 className="d-flex align-items-center text-align-center m-0">{thread.title}</h3>
                             </div>
 
@@ -104,7 +105,7 @@ export const InsideThread = () => {
                             {comments.map((comment, index) => {
                                 return (
                                     // Falta agregar likes en DB
-                                    <ThreadMessage key={index} id={comment.id} autor_id={comment.user_id} content={comment.content} date={comment.date} profileImg={comment.profile_picture} />
+                                    <ThreadMessage key={comment.id} id={comment.id} authorId={comment.user_id} content={comment.content} date={comment.date} profileImg={comment.profile_picture} />
                                 )
                             }
                             )}

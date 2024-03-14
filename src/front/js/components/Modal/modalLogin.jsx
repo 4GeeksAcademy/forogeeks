@@ -94,14 +94,14 @@ export const ModalLogin = ({ showLogin, handleCloseLogin }) => {
                                                             <IconMail stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
                                                             <input className="inputSignUpandRegister " type="email" placeholder="Correo electrónico" onChange={(e) => setEmail(e.target.value)} id="inputEmailLogin" aria-describedby="emailHelp" />
                                                         </div>
-                                                        {emailError.isError && <span className="small" style={{ color: "red" }}>{emailError.message}</span>}
+                                                        {emailError.isError && <span className="small" style={{ color: "red", fontSize:"11px", paddingLeft:"5px" }}>{emailError.message}</span>}
 
                                                         {/* INPUT PASSWORD */}
                                                         <div className="group mt-3 w-100">
                                                             <IconLock stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
                                                             <input className="inputSignUpandRegister" type="password" placeholder="Contraseña" onChange={(e) => setPassword(e.target.value)} id="inputPasswordLogin" />
                                                         </div>
-                                                        {passwordError.isError && <span className="small" style={{ color: "red" }}>{passwordError.message}</span>}
+                                                        {passwordError.isError && <span className="small" style={{ color: "red", fontSize:"11px", paddingLeft:"5px" }}>{passwordError.message}</span>}
 
                                         {/* FORGOT PASSWORD */}
                                         <div className="m-auto mt-2">

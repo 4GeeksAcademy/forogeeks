@@ -21,7 +21,7 @@ export const TextEditor = () => {
 			// 	{ indent: "+1" },
 			// ],
 			// ["link", "image", "video"],
-			["link", "image"],
+			// ["link", "image"],
 			// ["clean"],
 		],
 	};
