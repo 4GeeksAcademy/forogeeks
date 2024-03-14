@@ -6,6 +6,7 @@ import AsideFourGeeks from "../components/4geeks.jsx";
 import SuccessModal from "../components/Modal/ModalRegisterSuccessFull.jsx";
 import { Categories } from "../components/Thread/categories.jsx";
 import { Link } from "react-router-dom";
+import { ModalRegister } from "../components/Modal/modalRegister.jsx";
 
 // IMPORT ICONS
 import { LoaderCategory } from "../components/Loaders/loaderCategory.jsx";
@@ -16,6 +17,9 @@ export const Home = () => {
 	const { store, actions } = useContext(Context);
 	const showSuccessModal = store.modalRegistersuccess;
 	const category = store.categories;
+	const [showRegister, setShowRegister] = useState(false);
+	const handleCloseRegister = () => setShowRegister(false);
+    const handleShowRegister = () => setShowRegister(true);
 	const [loading, setLoading] = useState(true);
 
 
@@ -45,7 +49,7 @@ export const Home = () => {
 	return (
 		<div className="container">
 			<div className="row">
-				<div className="col-md-8 mb-3 mb-md-0">
+				<div className="col-md-8 mb-3 mb-md- ps-0">
 					{/* CATEGORIAS */}
 					<div className="shadow-sm rounded-3 p-3 bg-white">
 						<div className="">
@@ -102,7 +106,8 @@ export const Home = () => {
 										<strong>Desarrolla tus habilidades:</strong> Encuentra recursos para mejorar tus habilidades de programación.
 									</li>
 								</ul>
-								<a className="btn btn-primary text-white mt-4 rounded-5 align-self-start" href="https://4geeks.com/" target="_blank" rel="noopener noreferrer" data-bs-target="#modal1">¡Únete a la comunidad!</a>
+
+								<button className="btn btn-primary align-self-start rounded-5 text-white mt-4" onClick={handleShowRegister}>¡Únete a la comunidad!</button>
 
 							</div>
 						</div>
@@ -153,6 +158,8 @@ export const Home = () => {
 				</section>
 			</div>
 			<SuccessModal show={showSuccessModal} onClose={handleClose} />
+            < ModalRegister showRegister={showRegister} handleCloseRegister={handleCloseRegister} />
+
 		</div>
 	);
 };

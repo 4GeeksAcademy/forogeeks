@@ -49,7 +49,7 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			favicon: "",
+			favicon: "forogeeks.jpeg",
 			template: "template.html",
 		}),
 		new Dotenv({ safe: true, systemvars: true }),

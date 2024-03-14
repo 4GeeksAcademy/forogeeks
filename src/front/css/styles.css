@@ -13,6 +13,7 @@ body {
 .main-container {
   width: 65vw;
   margin: 0 auto;
+  min-height: 100vh;
 }
 
 @media (max-width: 768px) {

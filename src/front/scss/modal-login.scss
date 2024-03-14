@@ -214,6 +214,8 @@ button:hover .arrow:before {
     width: 3rem;
     height: 3rem;
     animation-delay: 1s;
+	z-index: 10;
+
 }
 
 
@@ -223,6 +225,8 @@ button:hover .arrow:before {
     height: 5rem;
     animation-delay: 0s;
     animation-duration: 4s;
+	z-index: 10;
+
 }
 
 .circles li:nth-child(3){
@@ -230,6 +234,8 @@ button:hover .arrow:before {
     width: 7rem;
     height: 7rem;
     animation-delay: 4s;
+	z-index: 10;
+
 }
 
 .circles li:nth-child(4){
@@ -238,6 +244,7 @@ button:hover .arrow:before {
     height: 60px;
     animation-delay: 0s;
     animation-duration: 3s;
+	z-index: 10;
 }
 
 .circles li:nth-child(5){
@@ -245,6 +252,8 @@ button:hover .arrow:before {
     width: 20px;
     height: 20px;
     animation-delay: 0s;
+	z-index: 10;
+
 }
 
 .circles li:nth-child(6){
@@ -252,6 +261,8 @@ button:hover .arrow:before {
     width: 110px;
     height: 110px;
     animation-delay: 3s;
+	z-index: 10;
+
 }
 
 .circles li:nth-child(7){
@@ -267,6 +278,8 @@ button:hover .arrow:before {
     height: 25px;
     animation-delay: 6s;
     animation-duration: 5s;
+	z-index: 10;
+
 }
 
 .circles li:nth-child(9){
@@ -275,6 +288,8 @@ button:hover .arrow:before {
     height: 15px;
     animation-delay: 2s;
     animation-duration: 5s;
+	z-index: 10;
+
 }
 
 .circles li:nth-child(10){
@@ -283,6 +298,8 @@ button:hover .arrow:before {
     height: 150px;
     animation-delay: 0s;
     animation-duration: 1s;
+	z-index: 10;
+
 }
 
 
