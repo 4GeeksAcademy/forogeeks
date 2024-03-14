@@ -133,7 +133,7 @@ export const ThreadMessage = ({ content, date, id, authorId}) => {
                             {store.isUserLogged && (
                                     <div className="d-flex align-items-center gap-1">
                                         <span className="text-muted small">{numLikes}</span>
-                                        {isLiked ? <IconHeartFilled size={20} stroke={1} className="text-danger" onClick={() => handleLikeComment(id)} /> : <IconHeart size={20} stroke={1} onClick={() => handleLikeComment(id)} />}
+                                        {isLiked ? <IconHeartFilled style={{ cursor: "pointer" }} size={25} stroke={1} className="text-danger" onClick={() => handleLikeComment(id)} /> : <IconHeart style={{ cursor: "pointer" }} size={25} stroke={1} onClick={() => handleLikeComment(id)} />}
                                     </div>
                                 )}
                             </div>

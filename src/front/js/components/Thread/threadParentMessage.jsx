@@ -157,11 +157,11 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
                                 <div className="d-flex align-items-center gap-1">
                                 <span className="text-muted small">{thread_likes}</span>
-                                    {isLiked ? <IconHeartFilled className="text-danger" size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} /> : <IconHeart size={20} stroke={1} onClick={() => handleLikeThread(thread_id)} />}
+                                    {isLiked ? <IconHeartFilled style={{ cursor: "pointer" }} className="text-danger" size={30} stroke={1} onClick={() => handleLikeThread(thread_id)} /> : <IconHeart style={{ cursor: "pointer" }} size={30} stroke={1} onClick={() => handleLikeThread(thread_id)} />}
                                 </div>
                                 <div className="d-flex align-items-center gap-3">
-                                    {isFavorite ? <IconBookmarkFilled size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} /> : <IconBookmark size={20} stroke={1} onClick={() => handleFavoriteThread(thread_id)} />}
-                                    <IconArrowForward size={20} stroke={1} onClick={handleArrowClick} />
+                                    {isFavorite ? <IconBookmarkFilled style={{ cursor: "pointer" }} size={30} stroke={1} onClick={() => handleFavoriteThread(thread_id)} /> : <IconBookmark style={{ cursor: "pointer" }} size={30} stroke={1} onClick={() => handleFavoriteThread(thread_id)} />}
+                                    <IconArrowForward style={{ cursor: "pointer" }} size={20} stroke={1} onClick={handleArrowClick} />
                                 </div>
                             </div>
                         )}
