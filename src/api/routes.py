@@ -15,7 +15,7 @@ api = Blueprint('api', __name__)
 # app = Flask(__name__)
 # app.config['SECRET_KEY'] = 'your_secret_key'
 # CORS(app, resources={r"/api/*": {"origins": ["https://ominous-guide-665q7xv5pjhr94g-3000.app.github.dev"]}})
-# CORS(api)
+CORS(api)
 
 
 # Agregar los endpoints de la API Flask
