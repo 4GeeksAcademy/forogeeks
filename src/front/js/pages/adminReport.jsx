@@ -120,7 +120,7 @@ const AdminReport = () => {
                   category.map((categoryItem, index) => (
                     <Categories key={index} title={categoryItem.title} icon={categoryItem.icon} id={categoryItem.id} />
                   ))
-                )}
+                )} 
               </div>
             </div>
           </div>

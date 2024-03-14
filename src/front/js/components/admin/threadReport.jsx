@@ -8,8 +8,6 @@ import { IconMessage, IconX, IconCheck, IconExclamationCircle } from "@tabler/ic
 
 const ThreadReport = ({ thread_id, autor, onDelete ,title,report}) => {
   const { store, actions } = useContext(Context);
-  const [loading, setLoading] = useState(true); 
-  
   // Funciones para eliminar el hilo reportado o el reporte de hilo
   const handleDeleteThread = async () => {
     try {
@@ -45,8 +43,7 @@ const ThreadReport = ({ thread_id, autor, onDelete ,title,report}) => {
             <hr className="vr mx-3" />
             <div className="d-flex flex-column">
               {/* Muestra un mensaje de carga mientras se está cargando el título */}
-              {loading ? <p className="m-0 p-0">Loading...</p> : <p className="m-0 p-0">{title}</p>}
-              {/* Muestra el título del hilo */}
+            
               <p className="m-0 p-0">{title}</p>
             </div>
           </div>
