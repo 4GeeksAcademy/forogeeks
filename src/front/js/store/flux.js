@@ -329,7 +329,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const token = localStorage.getItem("token");
 
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/create-category`, {
+					const response = await fetch(process.env.BACKEND_URL + "/api/create-category", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -418,7 +418,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			resetPassword: async (token, newPassword) => {
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/resetpassword`, {
+					const response = await fetch(process.env.BACKEND_URL + "/api/resetpassword", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -441,7 +441,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			changePassword: async (token, newPassword) => {
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/changepassword`, {
+					const response = await fetch(process.env.BACKEND_URL + "/api/changepassword" , {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -466,7 +466,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			changeEmail: async (token, newEmail) => {
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/changeemail`, { // Corrige la URL de la solicitud fetch
+					const response = await fetch(process.env.BACKEND_URL + "/api/changeemail", { // Corrige la URL de la solicitud fetch
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -492,7 +492,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getThreadsByTitle: async (query) => {
 				try {
 					console.log('Searching for:', query); // Verifica que se esté llamando correctamente
-					const response = await fetch(`${process.env.BACKEND_URL}/api/threads/search/${query}`);
+					const response = await fetch(process.env.BACKEND_URL + `/api/threads/search/${query}`);
 					if (response.ok) {
 						const data = await response.json();
 						console.log('Search results:', data); // Verifica los resultados de la búsqueda
@@ -542,7 +542,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			favoriteThread: async ({ user_id, thread_id }) => {
 				try {
 					const token = localStorage.getItem("token");
-					const response = await fetch(`${process.env.BACKEND_URL}/api/favorite-thread`, {
+					const response = await fetch(process.env.BACKEND_URL + "/api/favorite-thread", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -570,7 +570,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			unfavoriteThread: async ({ user_id, thread_id }) => {
 				try {
 					const token = localStorage.getItem("token");
-					const response = await fetch(`${process.env.BACKEND_URL}/api/unfavorite-thread`, {
+					const response = await fetch(process.env.BACKEND_URL + "/api/unfavorite-thread", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -600,7 +600,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUserFavoriteThreads: async (token) => {
 				try {
 					const token = localStorage.getItem("token");
-					const response = await fetch(`${process.env.BACKEND_URL}/api/userfavoritethreads`, {
+					const response = await fetch(process.env.BACKEND_URL + "/api/userfavoritethreads", {
 						method: "GET",
 						headers: {
 							Authorization: `Bearer ${token}`,
@@ -624,7 +624,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			likedThread: async ({ user_id, thread_id }) => {
 				try {
 					const token = localStorage.getItem("token");
-					const response = await fetch(`${process.env.BACKEND_URL}/api/liked-thread`, {
+					const response = await fetch(process.env.BACKEND_URL + "/api/liked-thread", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -652,7 +652,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			unlikedThread: async ({ user_id, thread_id }) => {
 				try {
 					const token = localStorage.getItem("token");
-					const response = await fetch(`${process.env.BACKEND_URL}/api/unliked-thread`, {
+					const response = await fetch(process.env.BACKEND_URL + "/api/unliked-thread", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -681,7 +681,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUserLikedThreads: async (token) => {
 				try {
 					const token = localStorage.getItem("token");
-					const response = await fetch(`${process.env.BACKEND_URL}/api/userlikedthreads`, {
+					const response = await fetch(process.env.BACKEND_URL + "/api/userlikedthreads", {
 						method: "GET",
 						headers: {
 							Authorization: `Bearer ${token}`,
@@ -718,7 +718,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			likedComment: async ({ user_id, comment_id }) => {
 				try {
 					const token = localStorage.getItem("token");
-					const response = await fetch(`${process.env.BACKEND_URL}/api/liked-comment`, {
+					const response = await fetch(process.env.BACKEND_URL + "/api/liked-comment", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -745,7 +745,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			unlikedComment: async ({ user_id, comment_id }) => {
 				try {
 					const token = localStorage.getItem("token");
-					const response = await fetch(`${process.env.BACKEND_URL}/api/unliked-comment`, {
+					const response = await fetch(process.env.BACKEND_URL + "/api/unliked-comment", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -776,7 +776,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUserLikedComments: async (token) => {
 				try {
 					const token = localStorage.getItem("token");
-					const response = await fetch(`${process.env.BACKEND_URL}/api/userlikedcomments`, {
+					const response = await fetch(process.env.BACKEND_URL + "/api/userlikedcomments", {
 						method: "GET",
 						headers: {
 							Authorization: `Bearer ${token}`,

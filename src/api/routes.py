@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, decode_token
 from datetime import datetime
 from flask import request, redirect, url_for
+import hashlib
 
 
 from .models import db, User, Threads, Category, FavoriteThreads, ThreadLikes, ThreadComments, ReportThread, CommentLikes
@@ -28,6 +29,8 @@ from flask import request
 
 # 🟡 USER REGISTER 🟡
 # Endpoint para manejar la solicitud POST en '/register'
+import hashlib
+
 @api.route('/register', methods=['POST'])
 def register():
     # Obtener los datos JSON de la solicitud
@@ -54,6 +57,9 @@ def register():
     if "confirm_password" in data and data["password"] != data["confirm_password"]:
         return jsonify({"[routes.py/register] message": "Passwords do not match"}), 400
 
+    # Hashear la contraseña
+    hashed_password = hashlib.sha256(data["password"].encode()).hexdigest()
+
     # Verificar si el usuario ya existe en la base de datos
     existing_username = User.query.filter_by(user_name=data["username"]).first()
     existing_email = User.query.filter_by(email=data["email"]).first()
@@ -64,10 +70,10 @@ def register():
     if existing_email:
         return jsonify({"message": "Email already exists"}), 409
 
-    # Crear un nuevo usuario con los datos proporcionados
+    # Crear un nuevo usuario con los datos proporcionados, usando la contraseña hasheada
     new_user = User(
         email=data["email"],
-        password=data["password"],
+        password=hashed_password,
         user_name=data["username"],
         profile_picture=data.get("profile_picture", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png")
     )
@@ -88,6 +94,7 @@ def register():
     }
     # Devolver una respuesta con un código de estado 201 (Created)
     return jsonify(response_body), 201
+
 
 # Endpoint para manejar la solicitud POST en '/check-user-exists'
 @api.route('/check-user-exists', methods=['POST'])
@@ -110,7 +117,6 @@ def check_user_exists():
     return jsonify(response), 200
 
 # 🟢 USER  🟢
-# Endpoint para manejar la solicitud POST en '/login'
 @api.route('/login', methods=['POST'])
 def login():
     # Obtener los datos JSON de la solicitud
@@ -122,8 +128,11 @@ def login():
         # Devolver un mensaje de error con un código de estado 403 (Forbidden)
         return jsonify({"message": "Invalid user"}), 403
     
+    # Hashear la contraseña proporcionada para compararla con la contraseña almacenada en la base de datos
+    hashed_password = hashlib.sha256(data["password"].encode()).hexdigest()
+    
     # Verificar la contraseña proporcionada
-    if user.password != data["password"]: 
+    if user.password != hashed_password: 
         # Devolver un mensaje de error con un código de estado 403 (Forbidden)
         return jsonify({"message": "Invalid password"}), 403
         
@@ -709,9 +718,8 @@ def restore_password(token):
         return redirect(url_for('restore_password_page', email=email))
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
+    
 @api.route("/resetpassword", methods=["POST"])
-@jwt_required()
 def reset_password():
     email = get_jwt_identity()
     print(email)
@@ -721,7 +729,9 @@ def reset_password():
     if user is None:
         return jsonify({"msg": "User with this email doesn't exist"}), 401
     
-    user.password = password
+    # Hashear la nueva contraseña antes de almacenarla en la base de datos
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+    user.password = hashed_password
     db.session.commit()
 
     return jsonify({ "msg": "success" }), 200
@@ -744,16 +754,19 @@ def getThreadsByTitle(query):
 @jwt_required()
 def change_password():
     email = get_jwt_identity()
-    password = request.json.get("password", None)
+    new_password = request.json.get("password", None)
 
     user = User.query.filter_by(email=email).first()
     if user is None:
         return jsonify({"msg": "No existe este usuario"}), 401
 
-    user.password = password
+    # Hashear la nueva contraseña antes de actualizarla en la base de datos
+    hashed_password = hashlib.sha256(new_password.encode()).hexdigest()
+    user.password = hashed_password
     db.session.commit()
 
     return jsonify({"msg": "success"}), 200
+
 
 # Ruta para cambiar el correo electrónico
 @api.route("/changeemail", methods=["POST"])
