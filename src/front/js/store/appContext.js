@@ -23,9 +23,9 @@ const injectContext = (PassedComponent) => {
 
 		useEffect(() => {
 			state.actions.syncTokenFromSessionStore()
-			state.actions.getUserLikedThreads()
-			state.actions.getUserFavoriteThreads()
-			state.actions.getUserLikedComments()
+			// state.actions.getUserLikedThreads()
+			// state.actions.getUserFavoriteThreads()
+			// state.actions.getUserLikedComments()
 		}, []);
 
 		// The initial value for the context is not null anymore, but the current state of this component,
