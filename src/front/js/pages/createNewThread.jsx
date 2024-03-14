@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useContext, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useContext } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from 'react-router-dom';
 
@@ -22,6 +22,74 @@ export const CreateNewThread = () => {
     const [categoryError, setCategoryError] = useState({ error: false, message: "" });
 
     const navigate = useNavigate();
+    const confettiCanvasRef = useRef(null);
+    const [showConfetti, setShowConfetti] = useState(false);
+
+    useEffect(() => {
+        actions.getAllCategories()
+    }, [])
+
+    useEffect(() => {
+        if (showConfetti) {
+            shootConfetti();
+            const timeoutId = setTimeout(() => {
+                setShowConfetti(false);
+                navigate("/"); // Navega al home después de 3 segundos
+            }, 3000);
+
+            return () => clearTimeout(timeoutId);
+        }
+    }, [showConfetti]);
+
+    const shootConfetti = () => {
+        const canvas = confettiCanvasRef.current;
+        if (!canvas) return; // Verificar si el canvas está disponible
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const pieces = [];
+        const numberOfPieces = 200;
+
+        for (let i = 0; i < numberOfPieces; i++) {
+            pieces.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 4 + 1, // tamaño
+                d: Math.random() * numberOfPieces // densidad
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'gold';
+            pieces.forEach(piece => {
+                ctx.beginPath();
+                ctx.moveTo(piece.x, piece.y);
+                ctx.arc(piece.x, piece.y, piece.r, 0, Math.PI * 2, false);
+                ctx.fill();
+            });
+            update();
+        }
+
+        function update() {
+            pieces.forEach(piece => {
+                piece.y += Math.cos(piece.d) + 1 + piece.r / 2; // Velocidad y dirección de caída
+                piece.x += Math.sin(piece.d) * 2; // Movimiento en X basado en la dirección
+                if (piece.y > canvas.height) {
+                    piece.y = 0 - piece.r;
+                    piece.x = Math.random() * canvas.width;
+                }
+            });
+        }
+
+        function loop() {
+            requestAnimationFrame(loop);
+            draw();
+        }
+
+        loop();
+    };
 
     const handleCreateThread = (e) => {
         e.preventDefault();
@@ -48,16 +116,13 @@ export const CreateNewThread = () => {
         if (!hasErrors) {
             console.log("[createNewThread] Create new thread", title, content, category);
             actions.createNewThread(title, content, category);
-            actions.getTrendingThreads()
-            navigate('/');
-
+            actions.getTrendingThreads();
+            // Establece el estado para mostrar el confeti después de crear el hilo
+            setShowConfetti(true);
+            
         }
-    }
+    };
 
-
-    useEffect(() => {
-        actions.getAllCategories()
-    }, [])
     return (
         <>
             <div className="container">
@@ -94,6 +159,15 @@ export const CreateNewThread = () => {
                     </div>
                 </div>
             </div>
+            {showConfetti && ( // Mostrar el confeti si showConfetti es true
+                <canvas ref={confettiCanvasRef} id="confetti-canvas" style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    zIndex: 9999, // Asegúrate de que esté por encima de otros elementos
+                    pointerEvents: "none" // Para que no interfiera con los eventos del usuario
+                }}></canvas>
+            )}
         </>
     )
 }
