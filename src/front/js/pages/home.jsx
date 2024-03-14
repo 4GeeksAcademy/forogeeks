@@ -19,7 +19,7 @@ export const Home = () => {
 	const category = store.categories;
 	const [showRegister, setShowRegister] = useState(false);
 	const handleCloseRegister = () => setShowRegister(false);
-    const handleShowRegister = () => setShowRegister(true);
+	const handleShowRegister = () => setShowRegister(true);
 	const [loading, setLoading] = useState(true);
 
 
@@ -129,36 +129,36 @@ export const Home = () => {
 					</div>
 					<div className="row m-auto w-100 p-3">
 						{/* RAUL */}
-						<div className="col-md-4 text-center p-2">
+						<a href="https://www.linkedin.com/in/raulcano-in/" style={{ textDecoration: "none", color: "currentColor" }} target="_blank" rel="noopener noreferrer" className="col-md-4 text-center p-2">
 							<img className="rounded-circle mb-3" src="https://www.raulcano.dev/me.webp" style={{ width: "130px", height: "130px" }} alt="" />
 							<p className="text-align-center fst-italic p-2">
-
 								"It's incredible the dopamine that comes from solving bugs and errors, it's what I've liked the most during the development of this project, and how more is learned without a doubt."
-
 							</p>
 							<p className="fw-bold">Raúl Marco - Lisbon</p>
-						</div>
+						</a>
+
 						{/* DIEGO */}
-						<div className="col-md-4 text-center p-2">
+						<a href="https://www.linkedin.com/in/diego-g%C3%B3mez-gonz%C3%A1lez-372017199/" style={{ textDecoration: "none", color: "currentColor" }} target="_blank" rel="noopener noreferrer" className="col-md-4 text-center p-2">
 							<img className="rounded-circle mb-3" src="https://avatars.githubusercontent.com/u/93382813?v=4" style={{ width: "130px", height: "130px" }} alt="" />
-							<p className="text-align-center fst-italic p-2">"Tengo la suerte de formar parte de ForoGeeks, cada uno de nosotros está demostrando cariño y dedicación. Me siento orgulloso de mí trabajo y del de mis compañeros."
+							<p className="text-align-center fst-italic p-2">
+								"Tengo la suerte de formar parte de ForoGeeks, cada uno de nosotros está demostrando cariño y dedicación. Me siento orgulloso de mí trabajo y del de mis compañeros."
 							</p>
 							<p className="fw-bold">Diego Gomez - Madrid</p>
-						</div>
+						</a>
+
 						{/* NAIN */}
-						<div className="col-md-4 text-center p-2">
+						<a href="https://www.linkedin.com/in/tu-linkedin" style={{ textDecoration: "none", color: "currentColor" }} target="_blank" rel="noopener noreferrer" className="col-md-4 text-center p-2">
 							<img className="rounded-circle mb-3" src="https://avatars.githubusercontent.com/u/141765188?v=4" style={{ width: "130px", height: "130px" }} alt="" />
-							<p className="text-align-center fst-italic p-2">"This ebook completely transformed my blogging journey. The
-								practical strategies and valuable insights helped me take my blog
-								to new heights. I highly recommend it!"
+							<p className="text-align-center fst-italic p-2">
+								Después de invertir tiempo y esfuerzo, nuestro primer proyecto ha cobrado vida con un toque de personalización nuestra. Cada línea de código refleja nuestra dedicación y pasión. 
 							</p>
 							<p className="fw-bold">Nain Linse - Madrid</p>
-						</div>
+						</a>
 					</div>
 				</section>
 			</div>
 			<SuccessModal show={showSuccessModal} onClose={handleClose} />
-            < ModalRegister showRegister={showRegister} handleCloseRegister={handleCloseRegister} />
+			< ModalRegister showRegister={showRegister} handleCloseRegister={handleCloseRegister} />
 
 		</div>
 	);
