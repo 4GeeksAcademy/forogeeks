@@ -109,11 +109,14 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
     };
 
     const handleArrowClick = () => {
-        // Scroll hasta el final de la página
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth'
-        });
+        const scrollStep = window.scrollY / 5;
+        const scrollInterval = setInterval(() => {
+            if (window.scrollY + window.innerHeight < document.body.scrollHeight) {
+                window.scrollBy(0, scrollStep);
+            } else {
+                clearInterval(scrollInterval);
+            }
+        }, 0);
     };
 
     return (
