@@ -57,6 +57,7 @@ export const TextEditor = () => {
 					theme="snow"
 					modules={modules}
 					formats={formats}
+					value={store.textEditorContent}
 					placeholder="Escribe aquí..."
 					onChange={handleProcedureContentChange}
 					style={{

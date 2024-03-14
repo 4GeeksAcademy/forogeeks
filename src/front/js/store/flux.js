@@ -248,6 +248,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setTextEditorStore: (content) => {
 				setStore({ textEditorContent: content });
 			},
+			clearTextEditorContent: () => {
+				setStore({ textEditorContent: "" });
+			},
 			getThreadById: async (id) => {
 				const store = getStore();
 				try {

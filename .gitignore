@@ -82,3 +82,4 @@ diagram.png
 __pycache__/
 
 migrations/
+src/api/modules.py/
