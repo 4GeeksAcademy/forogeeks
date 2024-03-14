@@ -55,7 +55,6 @@ const ModalProfile = ({
     }
 };
 
-
   return (
     <div
       className={`modal fade ${show ? "show" : ""}`}

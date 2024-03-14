@@ -24,6 +24,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			isCommentLiked: false,
 			threadLikes: [],
 			commentLikes: [],
+			description: "",
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -868,6 +869,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				} catch (error) {
 					console.error("[flux.getLikesByComment] Error fetching likes for comment:", id, error);
+				}
+			},
+			changeDescription: async (token, newDescription) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/change-description`, { // Corrige la URL de la solicitud fetch
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ description: newDescription }), // Asegúrate de enviar el nuevo correo electrónico en el cuerpo de la solicitud
+					});
+					const data = await response.json();
+
+					// Log de la respuesta JSON para depuración
+					console.log('Response data:', data);
+
+					if (response.ok) {
+						return { success: true };
+					} else {
+						return { success: false, error: data.msg || "Error al cambiar la descripcion." };
+					}
+				} catch (error) {
+					console.error("Error al cambiar la descripción", error);
+					return { success: false, error: "Error al cambiar la descripción. Por favor, inténtalo de nuevo." };
 				}
 			},
 			

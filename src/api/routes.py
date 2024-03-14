@@ -794,3 +794,34 @@ def get_comment_likes(comment_id):
         # Maneja cualquier error que ocurra durante el proceso
         print("[Flask Route] Error:", str(e))
         return jsonify({'error': str(e)}), 500
+@app.route('/api/change-description', methods=['POST'])
+def change_description():
+    data = request.json
+    user_id = data.get('user_id')
+    new_description = data.get('new_description')
+
+    # Encuentra al usuario en la base de datos
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'message': 'Usuario no encontrado'}), 404
+
+    # Actualiza la descripción del usuario
+    user.description = new_description
+    db.session.commit()
+
+    return jsonify({'message': 'Descripción actualizada exitosamente'}), 200
+
+# Ruta para cambiar el correo electrónico
+@api.route("/change-description", methods=["POST"])
+@jwt_required()
+def change_description():
+    email = get_jwt_identity()
+
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        return jsonify({"msg": "No existe este usuario"}), 401
+
+    user.description = request.json.get('description')
+    db.session.commit()
+
+    return jsonify({"msg": "success"}), 200
