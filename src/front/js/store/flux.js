@@ -137,8 +137,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					);
 					if (response.ok) {
 						const data = await response.json();
-						console.log("getUserInfo")
-						console.log("[flux.getUserInfo] respuesta de routes.py userinfo]\n", data);
 						setStore({ userInfo: data, profilePicture: data.profile_picture })
 						setStore({ isUserLogged: true })
 						return String(data.id);
@@ -278,7 +276,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 					if (response.ok) {
 						const data = await response.json();
-						console.log("[flux.getCommentsByThread] threadComments", data);
 						setStore({ threadComments: data });
 					} else {
 						throw new Error("[flux.getCommentsByThread] Failed to fetch threads");
@@ -382,7 +379,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 					if (response.ok) {
 						const data = await response.json();
-						console.log("[flux.getThreadById] data", data);
 						setStore({ threads: data });
 					} else {
 						throw new Error("[flux.getThreadById] Failed to fetch threads");
@@ -518,7 +514,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 					if (response.ok) {
 						const data = await response.json();
-						console.log("[flux.getUserNameById] data", data);
 						return String(data.username);
 					} else {
 						throw new Error("[flux.getUserById] Failed to fetch threads");
@@ -535,7 +530,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 					if (response.ok) {
 						const data = await response.json();
-						console.log("[flux.getUserProfileImageById] data", data);
 						return String(data.profile_picture);
 					} else {
 						throw new Error("[flux.getUserById] Failed to fetch threads");
@@ -591,7 +585,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({ favoriteThreads: updatedFavoriteThreads });
 
 						const data = await response.json();
-						console.log("[flux.unfavoriteThread] Thread removed from favorites successfully:", data);
 						return { success: true };
 					} else {
 						throw new Error("Failed to remove thread from favorites");
@@ -614,7 +607,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
-						console.log("[flux.getUserFavoriteThreads] Favorite threads fetched successfully:", data);
 						setStore({ favoriteThreads: data?.favorite_threads });
 						return { success: true };
 					} else {
@@ -695,7 +687,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
-						console.log("[flux.getUserLikedThreads] Liked threads fetched successfully:", data);
 						setStore({ likedThreads: data?.liked_threads });
 						return { success: true };
 					} else {
@@ -766,7 +757,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({ likedComments: updatedLikedComments });
 
 						const data = await response.json();
-						console.log("[flux.unlikedComment] This comment is no longer liked:", data);
 						return { success: true };
 					} else {
 						throw new Error("Failed to remove comment from liked comments");
@@ -790,7 +780,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
-						console.log("[flux.getUserLikedComments] Liked comments fetched successfully:", data);
 						setStore({ likedComments: data?.comment_likes });
 						return { success: true };
 					} else {
@@ -815,7 +804,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                     });
                     if (response.ok) {
                         const data = await response.json();
-                        console.log("[flux.getAllTreadsByUserId] data", data);
                         return data;
                     } else {
                         throw new Error("[flux.getAllTreadsByUserId] Failed to fetch threads");
@@ -838,7 +826,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                     });
                     if (response.ok) {
                         const data = await response.json();
-                        console.log("[flux.postProfilePictureByUserID] data", data);
                         return data;
                     } else {
                         throw new Error("[flux.postProfilePictureByUserID] Failed to post profile img");
@@ -855,7 +842,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 					if (response.ok) {
 						const data = await response.json();
-						console.log("[flux.getLikesByThread] threadLikes", data);
 						setStore({ threadLikes: data });
 					} else {
 						throw new Error("[flux.getLikesByThread] Failed to fetch threads");
@@ -867,20 +853,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getLikesByComment: async (id) => {
 				const store = getStore();
 				try {
+					console.log("[flux.getLikesByComment] Fetching likes for comment:", id);
 					const response = await fetch(process.env.BACKEND_URL + `/api/comment-likes/${id}`, {
 						method: "GET",
 					});
 					if (response.ok) {
 						const data = await response.json();
-						console.log("[flux.getLikesByComment] threadLikes", data);
+						console.log("[flux.getLikesByComment] Likes for comment", id, ":", data);
+						// Log para verificar los datos recibidos del servidor
+						console.log("[flux.getLikesByComment] Data from server:", data);
 						setStore({ commentLikes: data });
 					} else {
-						throw new Error("[flux.getLikesByComment] Failed to fetch threads");
+						throw new Error("[flux.getLikesByComment] Failed to fetch likes for comment:", id);
 					}
 				} catch (error) {
-					console.error("[flux.getLikesByComment] Error fetching threads:", error);
+					console.error("[flux.getLikesByComment] Error fetching likes for comment:", id, error);
 				}
 			},
+			
 		},
 	};
 };

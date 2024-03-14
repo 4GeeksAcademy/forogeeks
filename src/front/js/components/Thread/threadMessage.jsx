@@ -4,7 +4,7 @@ import moment from "moment";
 import { IconHeart, IconArrowForward, IconHeartFilled } from '@tabler/icons-react';
 
 
-export const ThreadMessage = ({ content, date, id, authorId, profileImg}) => {
+export const ThreadMessage = ({ content, date, id, authorId}) => {
     const { store, actions } = useContext(Context);
     const [isLiked, setIsLiked] = useState(false);
     const user_name = store.user_name;
@@ -15,7 +15,7 @@ export const ThreadMessage = ({ content, date, id, authorId, profileImg}) => {
     const [showAlert, setShowAlert] = useState(false);
     const [authorName, setAuthorName] = useState("");
     const [authorProfileImage, setAuthorProfileImage] = useState("");
-    
+    const [numLikes, setNumLikes] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,6 +24,9 @@ export const ThreadMessage = ({ content, date, id, authorId, profileImg}) => {
                 const profileImage = await actions.getUserProfileImageById(authorId);
                 setAuthorName(userName);
                 setAuthorProfileImage(profileImage);
+                // Llamar a la función para obtener los likes del comentario
+                await actions.getLikesByComment(id); // Llamada a la acción para obtener los likes
+                setNumLikes(store.commentLikes.length); // Actualizar la cantidad de likes
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
@@ -31,10 +34,6 @@ export const ThreadMessage = ({ content, date, id, authorId, profileImg}) => {
         fetchData();
     }, [authorId]);
 
-    useEffect(() => {
-        actions.getUserLikedComments()
-        console.log(store.likedComments)
-    }, []);
 
     useEffect(() => {
         const likedComments = store.likedComments;
@@ -133,7 +132,7 @@ export const ThreadMessage = ({ content, date, id, authorId, profileImg}) => {
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
                             {store.isUserLogged && (
                                     <div className="d-flex align-items-center gap-1">
-                                        <span className="text-muted small">12</span>
+                                        <span className="text-muted small">{numLikes}</span>
                                         {isLiked ? <IconHeartFilled size={20} stroke={1} className="text-danger" onClick={() => handleLikeComment(id)} /> : <IconHeart size={20} stroke={1} onClick={() => handleLikeComment(id)} />}
                                     </div>
                                 )}

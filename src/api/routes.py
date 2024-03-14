@@ -777,8 +777,20 @@ def get_likes_by_thread_id(thread_id):
     serialized_likes = list(map(lambda like: like.serialize(), likes))
     return jsonify(serialized_likes), 200
 
-@api.route('/comment-likes/<int:comment_id>', methods=['GET'])
-def get_likes_by_comment_id(comment_id):
-    likes = CommentLikes.query.filter_by(comment_id=comment_id).all()
-    serialized_comment_likes = list(map(lambda like: like.serialize(), likes))
-    return jsonify(serialized_comment_likes), 200
+from flask import jsonify
+
+@app.route('/api/comment-likes/<int:comment_id>', methods=['GET'])
+def get_comment_likes(comment_id):
+    try:
+        # Recupera los likes de comentarios correspondientes al comentario específico
+        comment_likes = CommentLikes.query.filter_by(comment_id=comment_id).all()
+        # Serializa los datos recuperados
+        serialized_comment_likes = [like.serialize() for like in comment_likes]
+        # Log para verificar los datos serializados
+        print("[Flask Route] Serialized Comment Likes:", serialized_comment_likes)
+        # Retorna los datos serializados en formato JSON
+        return jsonify(serialized_comment_likes), 200
+    except Exception as e:
+        # Maneja cualquier error que ocurra durante el proceso
+        print("[Flask Route] Error:", str(e))
+        return jsonify({'error': str(e)}), 500

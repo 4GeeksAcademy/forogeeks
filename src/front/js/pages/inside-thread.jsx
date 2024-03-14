@@ -48,8 +48,8 @@ export const InsideThread = () => {
         actions.getUserFavoriteThreads()
         actions.getUserLikedComments()
         actions.getLikesByThread(id)
-
     }, []);
+
 
 
 
