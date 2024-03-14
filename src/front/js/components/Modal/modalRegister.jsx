@@ -97,7 +97,7 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
         <>
             {showRegister && (
                 <React.Fragment>
-                    <div className="  area">
+                    <div className="area">
                         <ul className="circles">
                             <li></li>
                             <li></li>
@@ -122,21 +122,21 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
                                                             <IconUser stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
                                                             <input className="inputSignUpandRegister" type="text" placeholder="Nombre de usuario" onChange={(e) => setUsername(e.target.value)} />
                                                         </div>
-                                                        {usernameError.isError && <span className="small" style={{ color: "red" }}>{usernameError.message}</span>}
+                                                        {usernameError.isError && <span className="small" style={{ color: "red", fontSize:"11px", paddingLeft:"5px" }}>{usernameError.message}</span>}
 
                                                         {/* INPUT EMAIL */}
                                                         <div className="group mt-3 ">
                                                             <IconMail stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
                                                             <input className="inputSignUpandRegister" type="email" placeholder="Correo electrónico" onChange={(e) => setEmail(e.target.value)} />
                                                         </div>
-                                                        {emailError.isError && <span className="small" style={{ color: "red" }}>{emailError.message}</span>}
+                                                        {emailError.isError && <span className="small" style={{ color: "red", fontSize:"11px", paddingLeft:"5px" }}>{emailError.message}</span>}
 
                                                         {/* INPUT PASSWORD */}
                                                         <div className="group mt-3 w-100">
                                                             <IconLock stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
                                                             <input className="inputSignUpandRegister" type="password" placeholder="Contraseña" onChange={(e) => setPassword(e.target.value)} />
                                                         </div>
-                                                        {passwordError.isError && <span className="small" style={{ color: "red" }}>{passwordError.message}</span>}
+                                                        {passwordError.isError && <span className="small" style={{ color: "red", fontSize:"11px", paddingLeft:"5px" }}>{passwordError.message}</span>}
 
 
                                                         {/* CONFIRM PASSWORD */}
@@ -144,7 +144,7 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
                                                             <IconLock stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" className="icon" strokeLinejoin="round" strokeLinecap="round" />
                                                             <input className="inputSignUpandRegister" type="password" placeholder="Confirmar contraseña" onChange={(e) => setConfirmPassword(e.target.value)} />
                                                         </div>
-                                                        {passwordError.isError && <span className="small" style={{ color: "red" }}>{passwordError.message}</span>}
+                                                        {passwordError.isError && <span className="small" style={{ color: "red", fontSize:"11px", paddingLeft:"5px" }}>{passwordError.message}</span>}
 
                                                         {/* BUTTON REGISTER */}
                                                         <button type="button" onClick={handleSignup} className="buttonModal w-100 m-auto mt-4" >

@@ -157,19 +157,20 @@ export const Profile = () => {
 				{/* TRES BLOQUES PRINCIPALES */}
 				<div className="col-md-12 shadow-sm bg-white rounded-bottom-3 pb-4">
 					<div className="mt-5 pt-4 px-4">
+
 						<div className="row d-flex align-items-start justify-content-around">
 							{/* Bloque izquierdo con nombre de usuario y descripción */}
 							<div className="col-md-4">
 								<div className="d-flex justify-content-start flex-column align-items-start mb-3 gap-2 w-100">
 									<ul className="list-group rounded w-100">
 										<li className="list-group-item bg-primary rounded-5 fw-bold text-white">Información de usuario</li>
-										<li className="list-group-item border-0">
+										<li className="list-group-item border-0 p-1 px-2 ps-2">
 											<div className="d-flex justify-content-between align-items-center">
 												<span>Usuario: <span className="text-primary">{userName && "@" + userName}</span></span>
 												<button type="button" onClick={() => handleOpenModal("username")} className="btn bg-transparent p-0 pb-1"><IconPencil size={20} stroke={1.3} /></button>
 											</div>
 										</li>
-										<li className="list-group-item border-0">
+										<li className="list-group-item border-0 p-1 px-2 ps-2">
 											<div className="d-flex justify-content-between align-items-center">
 												<span>Descripción: <span className="text-primary">Me encanta ForoGeeks!</span></span>
 												<button type="button" onClick={() => handleOpenModal("description")} className="btn bg-transparent p-0 pb-1"><IconPencil size={20} stroke={1.3} /></button>
@@ -184,11 +185,11 @@ export const Profile = () => {
 								<div className="d-flex justify-content-start flex-column align-items-start mb-3 gap-2 w-100">
 									<ul className="list-group rounded w-100">
 										<li className="list-group-item bg-primary rounded-5 fw-bold text-white">Opciones de cuenta</li>
-										<li className="list-group-item border-0 d-flex justify-content-between align-items-center">
+										<li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">
 											<span>Cambiar email</span>
 											<button type="button" onClick={() => handleOpenModal("email")} className="btn bg-transparent p-0 pb-1"><IconPencil size={20} stroke={1.3} /></button>
 										</li>
-										<li className="list-group-item border-0 d-flex justify-content-between align-items-center">
+										<li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">
 											<span>Cambiar contraseña</span>
 											<button type="button" onClick={() => handleOpenModal("password")} className="btn bg-transparent p-0 pb-1"><IconPencil size={20} stroke={1.3} /></button>
 										</li>
@@ -201,13 +202,17 @@ export const Profile = () => {
 								<div className="d-flex justify-content-start flex-column align-items-start mb-3 gap-2 w-100">
 									<ul className="list-group rounded w-100">
 										<li className="list-group-item bg-primary rounded-5 fw-bold text-white">Estadísticas</li>
-										<li className="list-group-item border-0 d-flex justify-content-between align-items-center">Total de hilos: <span className="text-primary fw-bold">20</span></li>
-										<li className="list-group-item border-0 d-flex justify-content-between align-items-center">Total de comentarios: <span className="text-primary fw-bold">15</span></li>
-										<li className="list-group-item border-0 d-flex justify-content-between align-items-center">Total de likes: <span className="text-primary fw-bold">5</span></li>
+										<li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de hilos: <span className="text-primary fw-bold">20</span></li>
+										<li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de comentarios: <span className="text-primary fw-bold">15</span></li>
+										<li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de likes: <span className="text-primary fw-bold">5</span></li>
 									</ul>
 								</div>
 							</div>
 						</div>
+
+
+
+
 
 					</div>
 				</div>
@@ -216,7 +221,7 @@ export const Profile = () => {
 					<div className="row d-flex justify-content-between">
 						<div className="col-md-6">
 							<div className="shadow-sm bg-white rounded-bottom-3 mt-2 p-0">
-								
+
 							</div>
 						</div>
 

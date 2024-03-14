@@ -22,7 +22,7 @@ export const Navbar = () => {
 	//Register
 	const [showRegister, setShowRegister] = useState(false); const handleCloseRegister = () => setShowRegister(false); const handleShowRegister = () => setShowRegister(true);
 	//Resize movile
-	const [isMovileSize, setIsMobileSize] = useState(false);
+	const [isMobileSize, setIsMobileSize] = useState(window.innerWidth < 768);
 	// Searchbar
 	const [query, setQuery] = useState('');
 	const [filteredThreads, setFilteredThreads] = useState([]);
@@ -71,7 +71,7 @@ export const Navbar = () => {
 					</Link>
 
 					<button
-						className="navbar-toggler d-lg-none d-flex flex-column justify-content-around border-0"
+						className="navbar-toggler collapsed d-lg-none d-flex flex-column justify-content-around border-0"
 						type="button"
 						data-bs-toggle="collapse"
 						data-bs-target="#collapsibleNavId"
@@ -90,7 +90,7 @@ export const Navbar = () => {
 
 						<ul
 							className={
-								isMovileSize
+								isMobileSize
 									? "navbar-nav w-100 m-auto mt-3 mb-2"
 									: "navbar-nav w-50 m-auto"
 							}>
@@ -122,7 +122,7 @@ export const Navbar = () => {
 
 						{!store.isUserLogged && (
 							<>
-								{isMovileSize && (
+								{isMobileSize && (
 									<div className="d-flex justify-content-center m-3 mt-3">
 										<button
 											type="button"
@@ -133,7 +133,7 @@ export const Navbar = () => {
 									</div>
 								)}
 
-								{!isMovileSize && (
+								{!isMobileSize && (
 									<div className="d-flex justify-content-center ">
 										<button
 											type="button"
@@ -155,7 +155,7 @@ export const Navbar = () => {
 									<Link to="/nuevo-hilo" style={{ textDecoration: "none", color: "currentColor" }}>
 										<div className="nav-link d-flex align-items-center" href="#">
 											<IconPencilPlus size={27} stroke={1.2} color="white" />
-											{isMovileSize && (
+											{isMobileSize && (
 												<span className="ms-2 text-white">Nuevo hilo</span>)
 											}
 										</div>
@@ -167,14 +167,14 @@ export const Navbar = () => {
 										<div className="d-flex align-items-center">
 											<IconBell size={27} stroke={1.2} color="white" />
 										</div>
-										{isMovileSize && (
+										{isMobileSize && (
 											<span className="ms-2 text-white">Notificaciones</span>
 										)}
 									</div>
 
 									<div
 										className="dropdown-menu dropdown-menu-start rounded-3 shadow-sm border-0 rounded-4 mb-3"
-										style={{ left: "-50px" }}>
+										style={{ left: "-70px" }}>
 										<a className="dropdown-item" href="#">
 											<div className="d-flex gap-3 align-items-center">
 												<IconMessageCircle2Filled
@@ -216,13 +216,13 @@ export const Navbar = () => {
 										href="#"
 										id="dropdownId"
 										data-bs-toggle="dropdown">
-										<IconUserCircle
-											width={30}
-											height={30}
-											stroke={1}
-											color="white"
+										<img
+											src={userInfo.profile_picture}
+											alt="avatar"
+											className="rounded-circle"
+											style={{ width: "30px", height: "30px", objectFit: "cover", objectPosition: "center" }}
 										/>
-										<span className="ms-2 text-white">Hey! {userInfo.email}</span>
+										<span className="ms-2 text-white">Hey! {userInfo.user_name}</span>
 									</a>
 
 									<div

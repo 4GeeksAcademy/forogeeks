@@ -172,7 +172,7 @@ def get_username(user_id):
         return jsonify({"message": "User not found"}), 404
     return jsonify({"username": user.user_name}), 200
 
-# Endpoint para obtener la profile_picture a traves de user_id
+# Endpoint GET para obtener la profile_picture a traves de user_id
 @api.route('/user/profile-picture/<int:user_id>', methods=['GET'])
 def get_profile_picture(user_id):
     user = User.query.filter_by(id=user_id).first()

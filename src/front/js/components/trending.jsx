@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link, useParams } from "react-router-dom";
 import TrendingThreads from "./Trending/TrendingThread.jsx";
 
 // ICONS
 import Icon from "./icons/icon.jsx";
-import FLAME from "./icons/flame.jsx";
 
 const AsideTrending = () => {
 	const { store, actions } = useContext(Context);
@@ -31,7 +29,7 @@ const AsideTrending = () => {
 					<h4 className="p-0 m-0">Trending</h4>
 				</div>
 				<div>
-					<span className="text-muted small ps-1">Los hilos del momento</span>
+					<span className="text-muted small ps-2">Los hilos del momento</span>
 				</div>
 			</div>
 

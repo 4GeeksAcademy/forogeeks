@@ -23,42 +23,48 @@ const IndividualThreadExternalView = ({ title, likes, number_of_comments, autor,
 	return (
 		<div className="container">
 			<div className="row">
-				<div className="col-md-12">
+				<div className="col-md-12 p-0">
 					<Link to={`/threads/${category}/${id}`} style={{ textDecoration: "none", color: "currentColor" }}>
-						{/* TITULO */}
-						<div className="shadow-sm rounded-3 mb-4 py-1 px-3">
-							<div className="row align-items-center">
-								<div className="col-sm-6 d-flex align-items-center">
-									{/* Icono */}
-									<IconMessage size={20} stroke={1.5} color="#007bff" />
-									{/* Separador */}
-									<hr className="vr mx-3"></hr>
-									<div className="d-flex flex-column">
-										{/* TITULO DEL HILO */}
-										<p className="m-0 p-0">{title}</p>
-										{/* NOMBRE DE USUARIO Y FECHA */}
-										<div className="d-flex gap-2">
-											<span className="text-muted small p-0 m-0">@{autor}</span>
-											<span className="text-muted small p-0 m-0">{moment(date).fromNow()}</span>
+						{/* CONTAINER */}
+						<div className="row d-flex align-items-center py-2 px-2">
+
+							{/* POSITION */}
+							<div className="col-1 ">
+								<div className="d-flex align-items-center justify-content-center h-100">
+									<span className="text-primary fw-bold fs-4"><IconMessage stroke={1.3}/></span>
+								</div>
+							</div>
+							{/* TITLE, COMMENTS, USER OR DATE */}
+							<div className="col-11">
+								<div className="row">
+									{/* TITULO */}
+									<div className="col-md-12">
+										<p className="m-0 p-0 fw-bold">{title}</p>
+									</div>
+
+									{/* NUMERO DE COMENTS Y USERNAME */}
+									<div className="col-md-12 d-flex justify-content-between">
+										{/* NUMERO DE COMENTS */}
+										
+											<span className="text-muted small">{"@"+autor}</span>
+										{/* USERNAME */}
+										<div className="d-flex gap-4">
+
+										<div className="d-flex align-items-center">
+											<IconMessages size={15} stroke={1} />
+											<span className="ms-2 text-muted small">{number_of_comments}</span>
+										</div>
+											<span className="text-muted small">{moment(date).fromNow()}</span>
 										</div>
 									</div>
 								</div>
-								{/* NUMERO DE LIKES Y COMENTS */}
-								<div className="col-sm-6 d-flex justify-content-end gap-3 text-muted small">
-									<hr className="vr mx-3"></hr>
-
-									<div className="d-flex align-items-center">
-										<IconHeartFilled size={20} stroke={1} />
-										<span className="ms-2">{likes}</span>
-									</div>
-									<div className="d-flex align-items-center">
-										<IconMessages size={20} stroke={1} />
-										<span className="ms-2">{number_of_comments}</span>
-									</div>
-								</div>
 							</div>
+
 						</div>
+						<hr className="hr m-0 p-0" style={{ opacity: "10%" }}></hr>
+
 					</Link>
+
 				</div>
 			</div>
 		</div>
