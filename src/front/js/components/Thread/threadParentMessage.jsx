@@ -3,17 +3,16 @@ import { Context } from "../../store/appContext";
 import moment from "moment";
 import { IconHeart, IconBookmark, IconArrowForward, IconHeartFilled, IconBookmarkFilled } from '@tabler/icons-react';
 
-export const ThreadParentMessage = ({ autor, content, date, user_profile_picture, description, title, thread_id, thread_likes }) => {
+export const ThreadParentMessage = ({ autor, content, date, user_profile_picture, description, title, thread_id }) => {
     const { store, actions } = useContext(Context);
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
-    const [likesCount, setLikesCount] = useState(0);
     const contentRef = useRef(null);
 
     useEffect(() => {
         contentRef.current = document.getElementById("contenido");
-      }, []);
+    }, []);
 
     useEffect(() => {
         const favoriteThreads = store.favoriteThreads;
@@ -38,7 +37,6 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
             setIsFavorite(isThreadFavorite);
         }
 
-        // Llama a la acción para comprobar si el hilo está marcado como favorito
         actions.checkFavoriteThread(thread_id, setIsFavorite)
             .then(response => {
                 setIsFavorite(response.isFavorite);
@@ -47,7 +45,6 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                 console.error('Error checking favorite thread:', error);
             });
 
-        // Llama a la acción para comprobar si el hilo está marcado como gustado
         actions.checkLikedThread(thread_id, setIsLiked)
             .then(response => {
                 setIsLiked(response.isLiked);
@@ -62,8 +59,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
             if (isFavorite) {
                 actions.unfavoriteThread({ user_id: store.userInfo.id, thread_id })
                     .then(response => {
-                        console.log(response.message);
-                        setIsFavorite(false); // Actualizar el estado directamente
+                        setIsFavorite(false);
                     })
                     .catch(error => {
                         console.error('Error unfavoriting thread:', error);
@@ -71,15 +67,13 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
             } else {
                 actions.favoriteThread({ user_id: store.userInfo.id, thread_id })
                     .then(response => {
-                        console.log(response.message);
-                        setIsFavorite(true); // Actualizar el estado directamente
+                        setIsFavorite(true);
                     })
                     .catch(error => {
                         console.error('Error favoriting thread:', error);
                     });
             }
         } else {
-            // Mostrar la alerta si el usuario no está autenticado
             setShowAlert(true);
         }
     };
@@ -90,6 +84,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                 actions.unlikedThread({ user_id: store.userInfo.id, thread_id })
                     .then(response => {
                         setIsLiked(false);
+                        actions.getLikesByThread(thread_id); // Actualizar los likes
                     })
                     .catch(error => {
                         console.error('Error unliking thread:', error);
@@ -98,26 +93,15 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                 actions.likedThread({ user_id: store.userInfo.id, thread_id })
                     .then(response => {
                         setIsLiked(true);
+                        actions.getLikesByThread(thread_id); // Actualizar los likes
                     })
                     .catch(error => {
                         console.error('Error liking thread:', error);
                     });
             }
         } else {
-            // Mostrar la alerta si el usuario no está autenticado
             setShowAlert(true);
         }
-    };
-
-    const handleArrowClick = () => {
-        const scrollStep = window.scrollY / 5;
-        const scrollInterval = setInterval(() => {
-            if (window.scrollY + window.innerHeight < document.body.scrollHeight) {
-                window.scrollBy(0, scrollStep);
-            } else {
-                clearInterval(scrollInterval);
-            }
-        }, 0);
     };
 
     return (
@@ -147,7 +131,6 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                                 <div dangerouslySetInnerHTML={{ __html: content }} />
                             </div>
                         </div>
-                        {/* Alerta Bootstrap para mostrar cuando el usuario no está autenticado */}
                         {showAlert && (
                             <div className="alert alert-warning" role="alert">
                                 Por favor, inicia sesión para marcar este hilo como favorito o darle like.
@@ -156,12 +139,11 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                         {store.isUserLogged && (
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
                                 <div className="d-flex align-items-center gap-1">
-                                <span className="text-muted small">{thread_likes}</span>
+                                    <span className="text-muted small">{store.likedThreads.length}</span>
                                     {isLiked ? <IconHeartFilled style={{ cursor: "pointer" }} className="text-danger" size={25} stroke={1} onClick={() => handleLikeThread(thread_id)} /> : <IconHeart style={{ cursor: "pointer" }} size={25} stroke={1} onClick={() => handleLikeThread(thread_id)} />}
                                 </div>
                                 <div className="d-flex align-items-center gap-3">
                                     {isFavorite ? <IconBookmarkFilled style={{ cursor: "pointer" }} size={25} stroke={1} onClick={() => handleFavoriteThread(thread_id)} /> : <IconBookmark style={{ cursor: "pointer" }} size={25} stroke={1} onClick={() => handleFavoriteThread(thread_id)} />}
-                                    {/* <IconArrowForward style={{ cursor: "pointer" }} size={20} stroke={1} onClick={handleArrowClick} /> */}
                                 </div>
                             </div>
                         )}
