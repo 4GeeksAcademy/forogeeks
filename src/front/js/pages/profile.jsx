@@ -108,10 +108,9 @@ export const Profile = () => {
 				// Obtener la imagen de perfil del usuario
 				const userProfileImg = await actions.getUserProfileImageById(user);
 				const userName = await actions.getUserNameById(user);
-				const description = userInfo.description
 				setUserImageProfile(userProfileImg);
 				setUserName(userName);
-				setDescription(description);
+				
 				console.log("User Profile Image:", userProfileImg);
 
 				// setUserThreads([...userThreads]); // Esto deberías manejarlo si es necesario
@@ -124,6 +123,26 @@ export const Profile = () => {
 		fetchData();
 
 	}, []);
+	useEffect(() => {
+		const fetchDescription = async () => {
+			try {
+				const user = await actions.getUserInfo();
+				setUserId(user);
+	
+				// Obtener la descripción del usuario y esperar a que se resuelva la promesa
+				const description = await actions.getDescriptionById(user);
+			
+				setDescription(description);
+			} catch (error) {
+				console.error("Error fetching user data:", error);
+			}
+		};
+	
+		fetchDescription();
+	
+	}, []);
+	
+ 
 
 	// Función para actualizar la información del usuario
 const updateUserInfo = async () => {
@@ -131,7 +150,7 @@ const updateUserInfo = async () => {
 		const user = await actions.getUserInfo();
 		const userProfileImg = await actions.getUserProfileImageById(user);
 		const userName = await actions.getUserNameById(user);
-		const description = userInfo ? userInfo.description : null;
+		const description = await actions.getDescriptionById(user);
 		setUserImageProfile(userProfileImg);
 		setUserName(userName);
 		setDescription(description);

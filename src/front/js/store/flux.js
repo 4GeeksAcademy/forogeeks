@@ -920,6 +920,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { success: false, error: "Error al cambiar el nombre usuario. Por favor, inténtalo de nuevo." };
 				}
 			},
+			getDescriptionById: async (id) => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/description/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						return String(data.description);
+					} else {
+						throw new Error("[flux.getDescriptionById] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getDescriptionById] Error fetching threads:", error);
+				}
+			},
 			
 		},
 	};
