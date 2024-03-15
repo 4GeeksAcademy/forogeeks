@@ -737,17 +737,20 @@ def getThreadsByTitle(query):
 
 # 🟢 USER PROFILE 🟢
 # :círculo_verde_grande: USER PROFILE :círculo_verde_grande:
-# Endpoint para cambiar la contraseña
 @api.route("/changepassword", methods=["POST"])
 @jwt_required()
 def change_password():
     email = get_jwt_identity()
-    password = request.json.get("password", None)
+    data = request.json  # Asegúrate de obtener los datos del JSON de la solicitud
+    password_hashed = hashlib.sha256(data["password"].encode()).hexdigest()  # Hashea la contraseña
+    
     user = User.query.filter_by(email=email).first()
     if user is None:
         return jsonify({"msg": "No existe este usuario"}), 401
-    user.password = password
+    
+    user.password = password_hashed  # Almacena la contraseña hasheada en el usuario
     db.session.commit()
+    
     return jsonify({"msg": "success"}), 200
 
 # Ruta para cambiar el correo electrónico
