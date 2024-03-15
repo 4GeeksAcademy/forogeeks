@@ -4,6 +4,7 @@ import ModalProfile from "../components/Modal/ModalProfile.jsx";
 import ModalProfileEmail from "../components/Modal/ModalProfileEmail.jsx";
 import ModalProfileDescription from "../components/Modal/ModalProfileDescription.jsx";
 import ModalProfileUsername from "../components/Modal/ModalProfileUsername.jsx";
+import ProfileStats from "../components/Profile/ProfileStats.jsx";
 // FIREBASE
 import { storage } from "../firebase";
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
@@ -249,14 +250,7 @@ const updateUserInfo = async () => {
 
 							{/* Bloque derecho con estadísticas sobre número de hilos creados */}
 							<div className="col-md-4">
-								<div className="d-flex justify-content-start flex-column align-items-start mb-3 gap-2 w-100">
-									<ul className="list-group rounded w-100">
-										<li className="list-group-item bg-primary rounded-5 fw-bold text-white">Estadísticas</li>
-										<li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de hilos: <span className="text-primary fw-bold">20</span></li>
-										<li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de comentarios: <span className="text-primary fw-bold">15</span></li>
-										<li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de likes: <span className="text-primary fw-bold">5</span></li>
-									</ul>
-								</div>
+								<ProfileStats />
 							</div>
 						</div>
 					</div>

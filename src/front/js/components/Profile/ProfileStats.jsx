@@ -3,14 +3,31 @@ import { useEffect, useState, useContext } from 'react';
 import { Context } from '../../store/appContext';
 
 
-const ProfileStats = ({ userId }) => {
+const ProfileStats = () => {
     //UseEffect para obtener todos los hilos de cada usuario
+
     const { store, actions } = useContext(Context);
-    const numberThreadByUser = store.threads.filter(thread => thread.user_id === userId).length;
+    const [numberThreadByUser, setNumberThreadByUser] = useState(0);
+    const [userId, setUserId] = useState(null);
     useEffect(() => {
-        actions.getNumberOfThreadsByUser(userId);
-    }
-        , []);
+		const fetchThreads = async () => {
+			try {
+				const user = await actions.getUserInfo();
+				setUserId(user);
+	
+				// Obtener la descripción del usuario y esperar a que se resuelva la promesa
+				const numberThreadByUser = await actions.getNumberOfThreadsByUser(user);
+			
+				setNumberThreadByUser(numberThreadByUser);
+			} catch (error) {
+				console.error("Error fetching user data:", error);
+			}
+		};
+	
+		fetchThreads();
+	
+	}, []);
+        
     return (
 
         <div className="d-flex justify-content-start flex-column align-items-start mb-3 gap-2 w-100">

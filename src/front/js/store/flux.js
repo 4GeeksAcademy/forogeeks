@@ -25,6 +25,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			threadLikes: [],
 			commentLikes: [],
 			description: "",
+			threadsByUser : [],
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -937,14 +938,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			getNumberOfThreadsByUser: async (id) => {
-				const store = getStore();
 				try {
 					const response = await fetch(process.env.BACKEND_URL + `/api/user-threads-count/${id}`, {
 						method: "GET",
 					});
 					if (response.ok) {
 						const data = await response.json();
-						return data;
+						// Actualizar el estado del store con el número total de hilos
+						setStore({
+							...getStore(),
+							threadsByUser: data.threads_count
+						});
+						return data.threads_count;
 					} else {
 						throw new Error("[flux.getAllThreadsByUserId] Failed to fetch threads");
 					}
