@@ -10,6 +10,23 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
     const [showAlert, setShowAlert] = useState(false);
     const contentRef = useRef(null);
 
+    const threadId = store.threads.id;
+
+    const deleteThreadIfUserIsOwner = (threadId) => {
+        console.log("Thread", threadId)
+        if (store.isUserLogged) {
+            if (store.userInfo.id === store.threads.user_id) {
+                actions.deleteThreadIfUserIsOwner(thread_id)
+                    .then(response => {
+                        console.log('Thread deleted:', response);
+                    })
+                    .catch(error => {
+                        console.error('Error deleting thread:', error);
+                    });
+            }
+        }
+    }
+
     useEffect(() => {
         contentRef.current = document.getElementById("contenido");
     }, []);
@@ -119,11 +136,19 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                                     </div>
                                 </div>
                             </div>
+                            {/* HORA Y DELETE THREAD */}
                             <div className="text-muted small">
-                                <div className="d-flex align-items-center">
+                                <div className="d-flex align-items-center gap-2">
+                                    
+                                    {store.isUserLogged && store.userInfo.id === store.threads.user_id && (
+                                        <span onClick={deleteThreadIfUserIsOwner} className="text-muted small p-0 m-0">Eliminar</span>
+                                    )
+                                    }
+
                                     <span className="text-muted small p-0 m-0">{moment(date).fromNow()}</span>
                                 </div>
                             </div>
+
                         </div>
                         <hr className="hr" style={{ opacity: "10%" }}></hr>
                         <div className="col-md-12" id="contenido">

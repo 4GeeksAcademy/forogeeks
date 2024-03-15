@@ -4,6 +4,7 @@ import ModalProfile from "../components/Modal/ModalProfile.jsx";
 import ModalProfileEmail from "../components/Modal/ModalProfileEmail.jsx";
 import ModalProfileDescription from "../components/Modal/ModalProfileDescription.jsx";
 import ModalProfileUsername from "../components/Modal/ModalProfileUsername.jsx";
+import ProfileStats from "../components/Profile/ProfileStats.jsx";
 // FIREBASE
 import { storage } from "../firebase";
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
@@ -21,22 +22,15 @@ import { IconUpload, IconPencil, IconChartPie, IconUserCircle } from '@tabler/ic
 
 export const Profile = () => {
 	const { store, actions } = useContext(Context);
-	const [isMobile, setIsMobile] = useState(false);
-	const [showPasswordModal, setShowPasswordModal] = useState(false);
-	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-	const [showEmail, setshowEmail] = useState(false);
-	const [showPassword, setshowPassword] = useState(false);
-	const [userThreads, setUserThreads] = useState([]);
 	const [imageUpload, setImageUpload] = useState(null);
 	const [userId, setUserId] = useState(null);
-	const [imageUrl, setImageUrl] = useState(null);
 	const [userProfileImage, setUserImageProfile] = useState(null);
 	const [userName, setUserName] = useState(null);
-	const [description, setDescription] = useState(null);
+	const [description, setDescription] = useState("");
 	const [showUpdateProfileImageModal, setShowUpdateProfileImageModal] = useState(false);
 	const [activeModal, setActiveModal] = useState(null);
 	const [changesSaved, setChangesSaved] = useState(false);
-	const userInfo = store.userInfo;
+
 	const handleCloseModal = () => {
 		setActiveModal(null);
 	};
@@ -131,20 +125,23 @@ export const Profile = () => {
 	
 				// Obtener la descripción del usuario y esperar a que se resuelva la promesa
 				const description = await actions.getDescriptionById(user);
-			
-				setDescription(description);
+				console.log("User Description:", description);
+				setDescription(description || "No hay descripción");
+
+				// setDescription("No hay descripción");
+
+				
 			} catch (error) {
 				console.error("Error fetching user data:", error);
 			}
 		};
 	
 		fetchDescription();
-	
 	}, []);
 	
  
 
-	// Función para actualizar la información del usuario
+// Función para actualizar la información del usuario
 const updateUserInfo = async () => {
 	try {
 		const user = await actions.getUserInfo();
@@ -249,14 +246,7 @@ const updateUserInfo = async () => {
 
 							{/* Bloque derecho con estadísticas sobre número de hilos creados */}
 							<div className="col-md-4">
-								<div className="d-flex justify-content-start flex-column align-items-start mb-3 gap-2 w-100">
-									<ul className="list-group rounded w-100">
-										<li className="list-group-item bg-primary rounded-5 fw-bold text-white">Estadísticas</li>
-										<li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de hilos: <span className="text-primary fw-bold">20</span></li>
-										<li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de comentarios: <span className="text-primary fw-bold">15</span></li>
-										<li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de likes: <span className="text-primary fw-bold">5</span></li>
-									</ul>
-								</div>
+								<ProfileStats />
 							</div>
 						</div>
 					</div>
@@ -320,40 +310,3 @@ const updateUserInfo = async () => {
 
 	);
 };
-
-
-// IMPORTAR COMPONENTES
-// import ProfileCardPc from "../components/Profile/ProfileCardPc.jsx";
-// import ProfileConfigurationPc from "../components/Profile/ProfileConfigurationPc.jsx";
-// import ProfileCardMobile from "../components/Profile/ProfileCardMobile.jsx";
-
-// <div className="container mt-3">
-// <div className="row">
-//   {isMobile ? (
-//     <ProfileCardMobile />
-//   ) : (
-//     <>
-//       <ProfileCardPc
-//         handleShowEmail={handleShowEmail}
-//         handleShowPassword={handleShowPassword}
-//       />
-//       <ProfileConfigurationPc
-//         showEmail={showEmail}
-//         showPassword={showPassword}
-//       />
-//     </>
-//   )}
-// </div>
-// </div>
-
-
-// useEffect(() => {
-// 	const handleResize = () => {
-// 		setIsMobile(window.innerWidth <= 768);
-// 	};
-// 	window.addEventListener("resize", handleResize);
-
-// 	return () => {
-// 		window.removeEventListener("resize", handleResize);
-// 	};
-// }, []);

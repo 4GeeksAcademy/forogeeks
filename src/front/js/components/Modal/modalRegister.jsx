@@ -174,7 +174,7 @@ export const ModalRegister = ({ showRegister, handleCloseRegister }) => {
                                                         {/* SIGN IN LINK */}
                                                         <div className="text-center mt-2 mb-4">
                                                             <span>¿Ya tienes una cuenta? </span>
-                                                            <a className="" style={{ textDecoration: "none" }} href="#" onClick={() => { handleShowLogin(); handleCloseRegister(); }} >
+                                                            <a className="" style={{ textDecoration: "none" }} href="#" onClick={() => {  handleCloseRegister(); }} >
                                                                 Iniciar sesión
                                                             </a>
                                                         </div>

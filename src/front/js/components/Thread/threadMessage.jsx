@@ -9,12 +9,15 @@ export const ThreadMessage = ({ content, date, id, authorId }) => {
     const [showAlert, setShowAlert] = useState(false);
     const [authorName, setAuthorName] = useState("");
     const [authorProfileImage, setAuthorProfileImage] = useState("");
+    const [description, setDescription] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const userName = await actions.getUserNameById(authorId);
                 const profileImage = await actions.getUserProfileImageById(authorId);
+                const description = await actions.getDescriptionById(authorId);
+                setDescription(description);
                 setAuthorName(userName);
                 setAuthorProfileImage(profileImage);
                 await actions.getLikesByComment(id);
@@ -89,7 +92,7 @@ export const ThreadMessage = ({ content, date, id, authorId }) => {
                                         <img src={authorProfileImage} alt="profile" className="rounded-circle" style={{ width: "40px", height: "40px", objectFit: "cover" }} />
                                         <div className="d-flex flex-column">
                                             <span className="m-0 p-0 d-flex align-items-center fw-bold text-primary">{"@" + authorName}</span>
-                                            <span className="text-muted small p-0 m-0" >Estoy usando ForoGeeks</span>
+                                            <span className="text-muted small p-0 m-0" >{description}</span>
                                         </div>
                                     </div>
                                 </div>

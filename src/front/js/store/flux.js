@@ -25,6 +25,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			threadLikes: [],
 			commentLikes: [],
 			description: "",
+			threadsByUser: [],
+			commentsByUser: [],
+			likesByUser: [],
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -442,7 +445,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			changePassword: async (token, newPassword) => {
 				try {
-					const response = await fetch(process.env.BACKEND_URL + "/api/changepassword" , {
+					const response = await fetch(process.env.BACKEND_URL + "/api/changepassword", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -797,43 +800,43 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return { isLiked };
 			},
 			getAllTreadsByUserId: async (id) => {
-                const store = getStore();
-                try {
-                    const response = await fetch(process.env.BACKEND_URL + `/api/threads/user/${id}`, {
-                        method: "GET",
-                    });
-                    if (response.ok) {
-                        const data = await response.json();
-                        return data;
-                    } else {
-                        throw new Error("[flux.getAllTreadsByUserId] Failed to fetch threads");
-                    }
-                } catch (error) {
-                    console.error("[flux.getAllTreadsByUserId] Error fetching threads:", error);
-                }
-            },
-            postProfilePictureByUserID: async (id, profile_picture) => {
-                const store = getStore();
-                const token = localStorage.getItem("token");
-                try {
-                    const response = await fetch(process.env.BACKEND_URL + `/api/user/profile-picture/${id}`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                        body: JSON.stringify({ profile_picture }),
-                    });
-                    if (response.ok) {
-                        const data = await response.json();
-                        return data;
-                    } else {
-                        throw new Error("[flux.postProfilePictureByUserID] Failed to post profile img");
-                    }
-                } catch (error) {
-                    console.error("[flux.postProfilePictureByUserID] Error post profile img:", error);
-                }
-            },
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/threads/user/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						return data;
+					} else {
+						throw new Error("[flux.getAllTreadsByUserId] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getAllTreadsByUserId] Error fetching threads:", error);
+				}
+			},
+			postProfilePictureByUserID: async (id, profile_picture) => {
+				const store = getStore();
+				const token = localStorage.getItem("token");
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/user/profile-picture/${id}`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ profile_picture }),
+					});
+					if (response.ok) {
+						const data = await response.json();
+						return data;
+					} else {
+						throw new Error("[flux.postProfilePictureByUserID] Failed to post profile img");
+					}
+				} catch (error) {
+					console.error("[flux.postProfilePictureByUserID] Error post profile img:", error);
+				}
+			},
 			getLikesByThread: async (id) => {
 				const store = getStore();
 				try {
@@ -897,13 +900,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			changeUsername: async (token, newUsername) => {
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/change-username`, { 
+					const response = await fetch(`${process.env.BACKEND_URL}/api/change-username`, {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
 							Authorization: `Bearer ${token}`,
 						},
-						body: JSON.stringify({ user_name: newUsername }), 
+						body: JSON.stringify({ user_name: newUsername }),
 					});
 					const data = await response.json();
 
@@ -936,7 +939,88 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("[flux.getDescriptionById] Error fetching threads:", error);
 				}
 			},
-			
+			getNumberOfThreadsByUser: async (id) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/user-threads-count/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						// Actualizar el estado del store con el número total de hilos
+						setStore({
+							...getStore(),
+							threadsByUser: data.threads_count
+						});
+						return data.threads_count;
+					} else {
+						throw new Error("[flux.getAllThreadsByUserId] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getAllThreadsByUserId] Error fetching threads:", error);
+				}
+			},
+			getNumberOfCommentsByUser: async (id) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/user-comments-count/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						// Actualizar el estado del store con el número total de comentarios
+						setStore({
+							...getStore(),
+							commentsByUser: data.comments_count
+						});
+						return data.comments_count;
+					} else {
+						throw new Error("[flux.getAllThreadsByUserId] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getAllThreadsByUserId] Error fetching threads:", error);
+				}
+			},
+			getNumberOfLikesByUser: async (id) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/user-likes-count/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						// Actualizar el estado del store con el número total de likes
+						setStore({
+							...getStore(),
+							likesByUser: data.likes_count
+						});
+						return data.likes_count;
+					} else {
+						throw new Error("[flux.getNumberOfLikesByUser] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getNumberOfLikesByUser] Error fetching threads:", error);
+				}
+			},
+			deleteThreadIfUserIsOwner: async (id) => {
+				const store = getStore();
+				const token = localStorage.getItem("token");
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/delete-thread/${id}`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+					});
+					if (response.ok) {
+						const data = await response.json();
+						return data;
+					} else {
+						throw new Error("[flux.deleteThreadIfUserIsOwner] Failed to delete thread");
+					}
+				} catch (error) {
+					console.error("[flux.deleteThreadIfUserIsOwner] Error deleting thread:", error);
+				}
+			}
+
 		},
 	};
 };

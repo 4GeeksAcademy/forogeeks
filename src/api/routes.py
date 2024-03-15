@@ -73,6 +73,7 @@ def register():
         email=data["email"],
         password=hashed_password,
         user_name=data["username"],
+        description="Estoy usando ForoGeeks!",
         profile_picture=data.get("profile_picture", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png")
     )
 
@@ -741,12 +742,15 @@ def getThreadsByTitle(query):
 @jwt_required()
 def change_password():
     email = get_jwt_identity()
-    password = request.json.get("password", None)
+    data = request.json  # Asegúrate de obtener los datos del JSON de la solicitud
+    password_hashed = hashlib.sha256(data["password"].encode()).hexdigest()  # Hashea la contraseña
+    
     user = User.query.filter_by(email=email).first()
     if user is None:
         return jsonify({"msg": "No existe este usuario"}), 401
-    user.password = password
-    db.session.commit()
+
+    user.password = password_hashed  # Almacena la contraseña hasheada en el usuario
+    db.session.commit()    
     return jsonify({"msg": "success"}), 200
 
 # Ruta para cambiar el correo electrónico
@@ -813,3 +817,38 @@ def get_description(user_id):
     if user is None:
         return jsonify({"message": "User not found"}), 404
     return jsonify({"description": user.description}), 200
+
+# Endpoint para obtener la cantidad de hilos por usuario
+@api.route('/user-threads-count/<int:user_id>', methods=['GET'])
+def get_user_threads_count(user_id):
+    threads = Threads.query.filter_by(user_id=user_id).all()
+    return jsonify({"threads_count": len(threads)}), 200
+
+# Endpoint para obtener la cantidad de comentarios por usuario
+@api.route('/user-comments-count/<int:user_id>', methods=['GET'])
+def get_user_comments_count(user_id):
+    comments = ThreadComments.query.filter_by(user_id=user_id).all()
+    return jsonify({"comments_count": len(comments)}), 200
+
+# Endpoint para obtener la cantidad de likes recibidos en hilos por usuario
+# Endpoint para obtener la cantidad de comentarios por usuario
+@api.route('/user-likes-count/<int:user_id>', methods=['GET'])
+def get_user_likes_count(user_id):
+    likes = ThreadLikes.query.filter_by(user_id=user_id).all()
+    return jsonify({"likes_count": len(likes)}), 200
+
+# Endpoitn para eliminar el thread si el id del thread es igual a id del usuario
+@api.route('/delete-thread/<int:thread_id>', methods=['DELETE'])
+@jwt_required()
+def delete_thread(thread_id):
+    current_user = get_jwt_identity()
+    current_user_id = User.query.filter_by(email=current_user).first().id
+    print("USER ID", current_user_id)
+    thread = Threads.query.filter_by(id=thread_id).first()
+    if thread is None:
+        return jsonify({"message": "Thread not found"}), 404
+    if thread.user_id != current_user_id:
+        return jsonify({"message": "You can't delete this thread"}), 403
+    db.session.delete(thread)
+    db.session.commit()
+    return jsonify({"message": "Thread deleted"}), 200

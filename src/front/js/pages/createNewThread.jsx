@@ -122,6 +122,7 @@ export const CreateNewThread = () => {
             // Establece el estado para mostrar el confeti después de crear el hilo
             setShowConfetti(true);
             setShowAlert(true);
+            actions.clearTextEditorContent();
         }
     };
 

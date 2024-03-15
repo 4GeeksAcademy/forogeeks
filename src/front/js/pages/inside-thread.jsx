@@ -18,6 +18,8 @@ export const InsideThread = () => {
     const userInfo = store.userInfo; // Informacion del usuario loggeado para comentar
     const [showReportAlert, setShowReportAlert] = useState(false);
     const reason = "Hilo reportado";
+    const [description, setDescription] = useState(null);
+
     const handleCreateComment = (e) => {
         e.preventDefault();
         actions.createNewComment(content, thread.id, userInfo.id).then(() => {
@@ -32,7 +34,12 @@ export const InsideThread = () => {
         setTimeout(() => {
             setShowReportAlert(false);
         }, 3000);
+        setShowReportAlert(true);
+        setTimeout(() => {
+            setShowReportAlert(false);
+        }, 3000);
     }
+
     useEffect(() => {
         if (store.isUserLogged) {
             actions.getUserInfo(); // Sirve para dar luego info al crear un comentario
@@ -43,9 +50,37 @@ export const InsideThread = () => {
         actions.getUserFavoriteThreads();
         actions.getUserLikedComments();
         actions.getLikesByThread(id);
+        actions.getUserLikedThreads();
+        actions.getUserFavoriteThreads();
+        actions.getUserLikedComments();
+        actions.getLikesByThread(id);
     }, []);
+
+    useEffect(() => {
+		const fetchDescription = async () => {
+			try {
+				const user = await actions.getUserInfo();
+				setUserId(user);
+	
+				// Obtener la descripción del usuario y esperar a que se resuelva la promesa
+				const description = await actions.getDescriptionById(user);
+			
+				setDescription(description);
+			} catch (error) {
+				console.error("Error fetching user data:", error);
+			}
+		};
+	
+		fetchDescription();
+	
+	}, []);
     return (
         <div className="container mt-3">
+            {showReportAlert && (
+                <div className="alert alert-success" role="alert">
+                    Hilo reportado
+                </div>
+            )}
             {showReportAlert && (
                 <div className="alert alert-success" role="alert">
                     Hilo reportado
@@ -96,12 +131,12 @@ export const InsideThread = () => {
                             <div className="d-flex align-items-center py-3 ps-3 mb-2 bg-white rounded-3 shadow-sm">
                                 <h3 className="d-flex align-items-center text-align-center m-0">{thread.title}</h3>
                             </div>
-                            <ThreadParentMessage autor={thread?.user?.user_name} content={thread.content} date={thread.date} description={thread.description} user_profile_picture={thread?.user?.profile_picture} thread_id={thread.id} thread_likes={likes.length} />
+                            <ThreadParentMessage autor={thread?.user?.user_name} content={thread.content} date={thread.date} description={thread.user?.description} user_profile_picture={thread?.user?.profile_picture} thread_id={thread.id} thread_likes={likes.length} />
                             {/* COMENTARIOS */}
                             {comments.map((comment, index) => {
                                 return (
                                     // Falta agregar likes en DB
-                                    <ThreadMessage key={comment.id} id={comment.id} authorId={comment.user_id} content={comment.content} date={comment.date} profileImg={comment.profile_picture} />
+                                    <ThreadMessage key={comment.id} id={comment.id} authorId={comment.user_id} content={comment.content} date={comment.date}  profileImg={comment.profile_picture} />
                                 )
                             }
                             )}
