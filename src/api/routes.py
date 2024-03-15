@@ -311,7 +311,7 @@ def get_threads_by_user_id(user_id):
 @api.route('/categories', methods=['GET'])
 def get_categories():
     categories = Category.query.all()
-    serialized_categories = list(map(lambda category: category.serialize(), categories))
+    serialized_categories = [category.serialize() for category in categories]
     return jsonify(serialized_categories), 200
 
 #Endpoints para manejar la solicitud POST en '/categories'
@@ -689,18 +689,13 @@ def user_liked_comments():
         # Manejar cualquier otro error que pueda ocurrir durante la ejecución de la función
         return jsonify({"error": str(e)}), 500
 
-# 🟢 MESSAGES ENDPOINTS 🟢
-# Endpoint para manejar la solicitud POST en '/send-message'
-
-# Endpoint para manejar la solicitud GET en '/messages'
-
 # 🟣 TRENDING 🟣
 # Endpoint GET para los thread con mas comentarios
 @api.route('/trending', methods=['GET'])
 def get_trending():
     threads = Threads.query.all()
     threads.sort(key=lambda thread: len(thread.thread_comments), reverse=True)
-    serialized_threads = list(map(lambda thread: thread.serialize(), threads))
+    serialized_threads = [thread.serialize() for thread in threads]
     return jsonify(serialized_threads), 200
 
 # # 🟢 RESTORE PASSWORD 🟢
@@ -739,9 +734,9 @@ def getThreadsByTitle(query):
     serialized_threads = [thread.serialize() for thread in threads]
     return jsonify(serialized_threads), 200
 
+
+
 # 🟢 USER PROFILE 🟢
-
-
 # :círculo_verde_grande: USER PROFILE :círculo_verde_grande:
 # Endpoint para cambiar la contraseña
 @api.route("/changepassword", methods=["POST"])
@@ -775,7 +770,7 @@ def get_likes_by_thread_id(thread_id):
     return jsonify(serialized_likes), 200
 
 
-@api.route('/api/comment-likes/<int:comment_id>', methods=['GET'])
+@api.route('/comment-likes/<int:comment_id>', methods=['GET'])
 def get_comment_likes(comment_id):
     try:
         # Recupera los likes de comentarios correspondientes al comentario específico
