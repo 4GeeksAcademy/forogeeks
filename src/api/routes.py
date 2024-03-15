@@ -825,3 +825,8 @@ def get_description(user_id):
     if user is None:
         return jsonify({"message": "User not found"}), 404
     return jsonify({"description": user.description}), 200
+# Endpoint para obtener la cantidad de hilos por usuario
+@api.route('/user-threads-count/<int:user_id>', methods=['GET'])
+def get_user_threads_count(user_id):
+    threads = Threads.query.filter_by(user_id=user_id).all()
+    return jsonify({"threads_count": len(threads)}), 200

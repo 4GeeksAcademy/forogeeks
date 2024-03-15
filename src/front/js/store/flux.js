@@ -936,6 +936,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("[flux.getDescriptionById] Error fetching threads:", error);
 				}
 			},
+			getNumberOfThreadsByUser: async (id) => {
+				const store = getStore();
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/user-threads-count/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						return data;
+					} else {
+						throw new Error("[flux.getAllThreadsByUserId] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getAllThreadsByUserId] Error fetching threads:", error);
+				}
+			}
 			
 		},
 	};
