@@ -55,8 +55,10 @@ class Threads(db.Model):
     content = db.Column(db.Text, nullable=False)
     thread_comments = db.relationship('ThreadComments', backref='thread', lazy=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
+
     def __repr__(self):
         return f'<Thread {self.title}>'
+    
     def serialize(self):
         return {
             "id": self.id,

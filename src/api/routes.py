@@ -602,17 +602,7 @@ def userfavoritethreads():
     except Exception as e:
         # Manejar cualquier otro error que pueda ocurrir durante la ejecución de la función
         return jsonify({"error": str(e)}), 500
-# 🟤 THREAD COMMENTS ENDPOINTS 🟤
-# Endpoint para manejar la solicitud POST en '/create-comment'
 
-# Endpoint para manejar la solicitud GET en '/comments'
-
-# Endpoint para manejar la solicitud GET en '/comments/<int:thread_id>'
-
-# Endpoint para manejar la solicitud GET en '/comments/<int:comment_id>'
-
-# Endpoint para manejar la solicitud DELETE en '/comments/<int:comment_id>'
-# Endpoint para manejar la solicitud DELETE en '/comments/<int:comment_id>'
 @api.route('/liked-comment', methods=['POST'])
 @jwt_required()
 def liked_comment():
@@ -794,7 +784,6 @@ def get_comment_likes(comment_id):
         print("[Flask Route] Error:", str(e))
         return jsonify({'error': str(e)}), 500
 
-    
 @api.route("/change-description", methods=["POST"])
 @jwt_required()
 def change_description():
