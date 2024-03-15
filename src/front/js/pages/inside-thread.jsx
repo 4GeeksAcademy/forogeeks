@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../store/appContext";
@@ -20,8 +20,9 @@ export const InsideThread = () => {
     const content = store.textEditorContent; // Contenido del comentario que se esta escribiendo
     const userInfo = store.userInfo; // Informacion del usuario loggeado para comentar
 
-    const reason = "Hilo reportado";
+    const [showReportAlert, setShowReportAlert] = useState(false);
 
+    const reason = "Hilo reportado";
 
     const handleCreateComment = (e) => {
         e.preventDefault();
@@ -31,29 +32,34 @@ export const InsideThread = () => {
         })
     }
 
-
     const handleReportThread = (e) => {
         e.preventDefault();
         actions.reportThread(thread.id, userInfo.id, reason);
-        console.log("handleReportThread" + thread.id, userInfo.id, reason)
+        setShowReportAlert(true);
+        setTimeout(() => {
+            setShowReportAlert(false);
+        }, 3000);
     }
+
     useEffect(() => {
         if (store.isUserLogged) {
             actions.getUserInfo(); // Sirve para dar luego info al crear un comentario
         }
         actions.getThreadById(id); // Se agrega a store.thread el hilo con el id que se pasa por parametro
         actions.getCommentsByThread(id);
-        actions.getUserLikedThreads()
-        actions.getUserFavoriteThreads()
-        actions.getUserLikedComments()
-        actions.getLikesByThread(id)
+        actions.getUserLikedThreads();
+        actions.getUserFavoriteThreads();
+        actions.getUserLikedComments();
+        actions.getLikesByThread(id);
     }, []);
-
-
-
 
     return (
         <div className="container mt-3">
+            {showReportAlert && (
+                <div className="alert alert-success" role="alert">
+                    Hilo reportado
+                </div>
+            )}
             <div className="row">
                 <div className="col-md-12">
                     {/* CONTENEDOR DEL HILO */}
@@ -155,5 +161,3 @@ export const InsideThread = () => {
         </div>
     )
 }
-
-
