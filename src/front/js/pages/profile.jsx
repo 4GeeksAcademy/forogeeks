@@ -131,7 +131,7 @@ const updateUserInfo = async () => {
 		const user = await actions.getUserInfo();
 		const userProfileImg = await actions.getUserProfileImageById(user);
 		const userName = await actions.getUserNameById(user);
-		const description = userInfo.description
+		const description = userInfo ? userInfo.description : null;
 		setUserImageProfile(userProfileImg);
 		setUserName(userName);
 		setDescription(description);
@@ -203,7 +203,7 @@ const updateUserInfo = async () => {
 										</li>
 										<li className="list-group-item border-0 p-1 px-2 ps-2">
 											<div className="d-flex justify-content-between align-items-center">
-												<span>Descripción: <span className="text-primary">{userInfo.description}</span></span>
+												<span>Descripción: <span className="text-primary">{description}</span></span>
 												<button type="button" onClick={() => handleOpenModal("description")} className="btn bg-transparent p-0 pb-1"><IconPencil size={20} stroke={1.3} /></button>
 											</div>
 										</li>
@@ -287,7 +287,6 @@ const updateUserInfo = async () => {
 				title="Email"
 				inputType="email"
 				username="InitialUsername"
-				updateChangesSaved={setChangesSaved}
 			/>
 			{/* Modal para cambiar la contraseña */}
 			<ModalProfile

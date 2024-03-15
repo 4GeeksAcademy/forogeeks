@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../../store/appContext.js";
 
-const ModalProfileEmail = ({ show, handleClose, title, updateChangesSaved }) => {
+const ModalProfileEmail = ({ show, handleClose, title }) => {
   const { actions, store } = useContext(Context);
   const [newEmail, setNewEmail] = useState("");
   const [confirmNewEmail, setConfirmNewEmail] = useState("");
@@ -31,7 +31,6 @@ const ModalProfileEmail = ({ show, handleClose, title, updateChangesSaved }) => 
             // Vaciar los campos de entrada después de un envío exitoso
             setNewEmail("");
             setConfirmNewEmail("");
-            updateChangesSaved(true);
             actions.logout();
         } else {
             // Mostrar alerta de error
@@ -76,7 +75,7 @@ const ModalProfileEmail = ({ show, handleClose, title, updateChangesSaved }) => 
               />
             </div>
             <button className="btn btn-primary text-white" onClick={handleSubmitEmail}>
-              Cambiar contraseña
+              Cambiar Email
             </button>
             {/* Mostrar alerta si hay mensaje */}
             {alertMessage && (
