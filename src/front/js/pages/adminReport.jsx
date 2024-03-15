@@ -5,7 +5,8 @@ import { Context } from "../store/appContext";
 import { Categories } from "../components/Thread/categories.jsx";
 
 
-const AdminReport = () => {
+const AdminReport = (props) => {
+  const { categoryId } = props; // Asegúrate de que estás pasando categoryId como prop
   const { store, actions } = useContext(Context);
   const content = store.CreateCategory;
 
@@ -13,11 +14,7 @@ const AdminReport = () => {
   const category = store.categories
   const reportedThreads = store.reportedThreads;
   const [loading, setLoading] = useState(false);
-  // ESYO AHI QUE QUITARLO NO FUNCIONA
-  const handleDelete = (title) => {
-    const updatedThreads = threads.filter((thread) => thread.title !== title);
-    setThreads(updatedThreads);
-  };
+
   //AGREGAR CATEGORIA
   const [title, setTitle] = useState('');
   const [icon, setIcon] = useState('');
@@ -28,12 +25,10 @@ const AdminReport = () => {
     e.preventDefault();
 
     try {
-
       setTitleError({ isError: false, message: "" });
       setIconError({ isError: false, message: "" });
       // Flag para verificar si hay errores
       console.log('Category created successfully!');
-
     } catch (error) {
       setError(error.message);
       console.error('[CreateCategoryForm] Error creating category:', error);
@@ -43,15 +38,23 @@ const AdminReport = () => {
   const handleTest = (e) => {
     e.preventDefault();
     actions.createCategory(title, icon).then(() => { actions.getAllCategories() })
-
     console.log(title, icon)
   }
 
   useEffect(() => {
+    if (categoryId) {
+      // Aquí puedes realizar operaciones basadas en categoryId, como obtener datos específicos de la categoría
+      console.log(`Categoría seleccionada: ${categoryId}`);
+    } else {
+      console.log('No se proporcionó categoryId');
+    }
     actions.getAllCategories();
     console.log("reported list: ", reportedThreads)
     actions.getReportedThreads()
-  }, []);
+  }, [categoryId]); // Asegúrate de que categoryId está en la lista de dependencias
+  
+  
+
 
   return (
     <div className="container">
@@ -68,9 +71,9 @@ const AdminReport = () => {
                 </tr>
               </thead>
               <tbody>
-              {reportedThreads.map((thread, index) => (
-                      <ThreadReport key={index} report ={thread.id} thread_id={thread.thread.id}  title={thread?.thread?.title} />
-                    ))}
+                {reportedThreads.map((thread, index) => (
+                  <ThreadReport key={index} report={thread.id} thread_id={thread.thread.id} title={thread?.thread?.title} />
+                ))}
               </tbody>
             </table>
           </div>
@@ -118,10 +121,12 @@ const AdminReport = () => {
                   <p>No hay categorías disponibles</p>
                 ) : (
                   category.map((categoryItem, index) => (
-                    <Categories key={index} title={categoryItem.title} icon={categoryItem.icon} id={categoryItem.id} />
+                    <Categories key={index} title={categoryItem.title} icon={categoryItem.icon} categoryId={categoryItem.id} />
                   ))
-                )} 
+                  
+                )}
               </div>
+
             </div>
           </div>
         </div>

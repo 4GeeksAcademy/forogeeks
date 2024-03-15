@@ -72,9 +72,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 					});
 					if (response.ok) {
-						
-					
-					
 						getActions().getReportedThreads();
 						
 						console.log("Thread deleted successfully");
@@ -568,6 +565,30 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.error("[flux.getUserById] Error fetching threads:", error);
                 }
             },
+			deleteCategory: async (categoryId) => {
+				try {
+					const token = localStorage.getItem("token");
+					console.log('Deleting category:', categoryId);
+					const response = await fetch(`${process.env.BACKEND_URL}/api/categories/${categoryId}`, {
+						method: 'DELETE',
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						}
+					});
+					if (response.ok) {
+						getActions().getAllCategories()
+						console.log('Category deleted successfully');
+						return true; // La categoría se eliminó exitosamente
+					} else {
+						console.error('Error deleting category:', response.statusText);
+						return false; // Hubo un error al eliminar la categoría
+					}
+				} catch (error) {
+					console.error('Error deleting category:', error);
+					return false; // Hubo un error en la solicitud
+				}
+			},
 		
 			  
 

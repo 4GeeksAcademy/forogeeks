@@ -536,3 +536,23 @@ def delete_threadreport(report_id):
     db.session.commit()
 
     return jsonify({"message": "Thread report deleted successfully"}), 200
+
+@app.route('/categories/<int:category_id>', methods=['DELETE'])
+@jwt_required()
+def delete_category(category_id):
+    # Obtener el usuario actual
+    email = get_jwt_identity()
+    user = User.query.filter_by(email=email).first()
+    # Verificar si el usuario es un administrador
+    if not user.admin:
+        return jsonify({"error": "Unauthorized"}), 403
+    # Buscar la categoría por su ID
+    category_to_delete = Category.query.get(category_id)
+    if category_to_delete is None:
+         return jsonify({"error": "Thread not found"}), 404
+     
+    db.session.delete(category_to_delete)
+    db.session.commit()
+    print("Category deleted successfully")
+    return jsonify({"message": "Thread deleted successfully"}), 200
+ 

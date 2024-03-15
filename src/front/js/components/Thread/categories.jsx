@@ -3,8 +3,10 @@ import { Context } from "../../store/appContext";
 import { Link } from "react-router-dom";
 import Icon from "../icons/icon.jsx"
 
-export const Categories = ({ title, icon, id, iconDefault = "LOGO" }) => {
-    const { sotre, actions } = useContext(Context);
+export const Categories = ({ title, icon, id, iconDefault = "LOGO" ,categoryId,delcategory}) => {
+    console.log('categoryId:', categoryId);
+    const { store, actions } = useContext(Context);
+ 
     useEffect(() => {
         // actions.getAllCategories();
     }, []);
@@ -27,7 +29,17 @@ export const Categories = ({ title, icon, id, iconDefault = "LOGO" }) => {
                     </div>
                 </Link>
                 <hr className="hr"></hr>
+                
             </div>
+            <div>
+            <button onClick={() => {
+  if (categoryId) {
+    actions.deleteCategory(categoryId)
+  } else {
+    console.error('Error: categoryId is undefined');
+  }
+}}>Eliminar categoría</button>
+                </div>
         </div>
     );
 };
