@@ -24,7 +24,8 @@ export const CreateNewThread = () => {
     const navigate = useNavigate();
     const confettiCanvasRef = useRef(null);
     const [showConfetti, setShowConfetti] = useState(false);
-
+    const [showThreadCreated, setShowThreadCreated] = useState(false); // Estado para mostrar el título del hilo creado
+    const [showAlert, setShowAlert] = useState(false);
     useEffect(() => {
         actions.getAllCategories()
     }, [])
@@ -34,8 +35,9 @@ export const CreateNewThread = () => {
             shootConfetti();
             const timeoutId = setTimeout(() => {
                 setShowConfetti(false);
-                navigate("/"); // Navega al home después de 3 segundos
-            }, 3000);
+                setShowThreadCreated(true); // Cambiar el estado para mostrar el título del hilo creado
+                navigate("/");
+            }, 1500);
 
             return () => clearTimeout(timeoutId);
         }
@@ -62,7 +64,7 @@ export const CreateNewThread = () => {
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'gold';
+            ctx.fillStyle = 'rgba(0, 123, 255, 0.3)'
             pieces.forEach(piece => {
                 ctx.beginPath();
                 ctx.moveTo(piece.x, piece.y);
@@ -119,7 +121,7 @@ export const CreateNewThread = () => {
             actions.getTrendingThreads();
             // Establece el estado para mostrar el confeti después de crear el hilo
             setShowConfetti(true);
-            
+            setShowAlert(true);
         }
     };
 
@@ -128,6 +130,11 @@ export const CreateNewThread = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
+                        {showAlert && (
+                            <div className="alert alert-info" role="alert">
+                                Hilo creado. Redirigiendo a la página principal...
+                            </div>
+                        )}
                         <div className="shadow-sm rounded-3 mb-4 py-1 px-3 bg-white">
                             <form>
                                 <div className="d-flex justify-content-end mb-3 mt-3">
@@ -164,8 +171,8 @@ export const CreateNewThread = () => {
                     position: "fixed",
                     top: 0,
                     left: 0,
-                    zIndex: 9999, // Asegúrate de que esté por encima de otros elementos
-                    pointerEvents: "none" // Para que no interfiera con los eventos del usuario
+                    zIndex: 9999,
+                    pointerEvents: "none"
                 }}></canvas>
             )}
         </>

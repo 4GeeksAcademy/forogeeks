@@ -1,16 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../store/appContext";
-
 import { ThreadMessage } from "../components/Thread/threadMessage.jsx";
 import { ThreadParentMessage } from "../components/Thread/threadParentMessage.jsx";
 import { TextEditor } from "../components/TextEditor/text-editor.jsx";
-
 // ICONS
 import { IconSquareRoundedPlus } from '@tabler/icons-react';
 import { IconFlag, IconArrowUp } from '@tabler/icons-react';
-
 export const InsideThread = () => {
     const { store, actions } = useContext(Context);
     const { id } = useParams();
@@ -19,10 +16,8 @@ export const InsideThread = () => {
     const likes = store.threadLikes; // Likes del hilo
     const content = store.textEditorContent; // Contenido del comentario que se esta escribiendo
     const userInfo = store.userInfo; // Informacion del usuario loggeado para comentar
-
+    const [showReportAlert, setShowReportAlert] = useState(false);
     const reason = "Hilo reportado";
-
-
     const handleCreateComment = (e) => {
         e.preventDefault();
         actions.createNewComment(content, thread.id, userInfo.id).then(() => {
@@ -30,12 +25,13 @@ export const InsideThread = () => {
             actions.clearTextEditorContent(); // Llamar al action clearTextEditorContent
         })
     }
-
-
     const handleReportThread = (e) => {
         e.preventDefault();
         actions.reportThread(thread.id, userInfo.id, reason);
-        console.log("handleReportThread" + thread.id, userInfo.id, reason)
+        setShowReportAlert(true);
+        setTimeout(() => {
+            setShowReportAlert(false);
+        }, 3000);
     }
     useEffect(() => {
         if (store.isUserLogged) {
@@ -43,23 +39,23 @@ export const InsideThread = () => {
         }
         actions.getThreadById(id); // Se agrega a store.thread el hilo con el id que se pasa por parametro
         actions.getCommentsByThread(id);
-        actions.getUserLikedThreads()
-        actions.getUserFavoriteThreads()
-        actions.getUserLikedComments()
-        actions.getLikesByThread(id)
+        actions.getUserLikedThreads();
+        actions.getUserFavoriteThreads();
+        actions.getUserLikedComments();
+        actions.getLikesByThread(id);
     }, []);
-
-
-
-
     return (
         <div className="container mt-3">
+            {showReportAlert && (
+                <div className="alert alert-success" role="alert">
+                    Hilo reportado
+                </div>
+            )}
             <div className="row">
                 <div className="col-md-12">
                     {/* CONTENEDOR DEL HILO */}
                     <div className=" rounded-3 mb-4 py-1 px-2">
                         {/* ISLOGGED REPORTAR Y COMENTAR */}
-
                         <div className="col-md-12">
                             <div className="d-flex justify-content-end text-muted mb-2">
                                 {store.isUserLogged ? (
@@ -78,10 +74,7 @@ export const InsideThread = () => {
                                 )}
                             </div>
                         </div>
-
-
                         {/* HILO */}
-
                         {/* PAGINATION */}
                         <ul className="pagination mb-2 border-0">
                             <li className="page-item">
@@ -98,15 +91,12 @@ export const InsideThread = () => {
                                 </a>
                             </li>
                         </ul>
-
                         <div className="d-flex flex-column gap-1">
                             {/* TITULO DEL HILO */}
                             <div className="d-flex align-items-center py-3 ps-3 mb-2 bg-white rounded-3 shadow-sm">
                                 <h3 className="d-flex align-items-center text-align-center m-0">{thread.title}</h3>
                             </div>
-
                             <ThreadParentMessage autor={thread?.user?.user_name} content={thread.content} date={thread.date} description={thread.description} user_profile_picture={thread?.user?.profile_picture} thread_id={thread.id} thread_likes={likes.length} />
-
                             {/* COMENTARIOS */}
                             {comments.map((comment, index) => {
                                 return (
@@ -116,12 +106,10 @@ export const InsideThread = () => {
                             }
                             )}
                         </div>
-
                         {/* EDITOR PARA COMENTAR */}
                         {store.isUserLogged &&
                             <div className="col-md-12">
                                 <div className="mt-2 bg-white shadow-sm rounded-3">
-
                                     <form id="comentar" className="">
                                         <TextEditor />
                                         <div className="d-flex justify-content-end p-2">
@@ -129,10 +117,8 @@ export const InsideThread = () => {
                                         </div>
                                     </form>
                                 </div>
-
                             </div>
                         }
-
                         {/* PAGINATION */}
                         <ul className="pagination mt-2 border-0">
                             <li className="page-item">
@@ -155,5 +141,3 @@ export const InsideThread = () => {
         </div>
     )
 }
-
-

@@ -108,10 +108,9 @@ export const Profile = () => {
 				// Obtener la imagen de perfil del usuario
 				const userProfileImg = await actions.getUserProfileImageById(user);
 				const userName = await actions.getUserNameById(user);
-				const description = userInfo.description
 				setUserImageProfile(userProfileImg);
 				setUserName(userName);
-				setDescription(description);
+				
 				console.log("User Profile Image:", userProfileImg);
 
 				// setUserThreads([...userThreads]); // Esto deberías manejarlo si es necesario
@@ -124,6 +123,26 @@ export const Profile = () => {
 		fetchData();
 
 	}, []);
+	useEffect(() => {
+		const fetchDescription = async () => {
+			try {
+				const user = await actions.getUserInfo();
+				setUserId(user);
+	
+				// Obtener la descripción del usuario y esperar a que se resuelva la promesa
+				const description = await actions.getDescriptionById(user);
+			
+				setDescription(description);
+			} catch (error) {
+				console.error("Error fetching user data:", error);
+			}
+		};
+	
+		fetchDescription();
+	
+	}, []);
+	
+ 
 
 	// Función para actualizar la información del usuario
 const updateUserInfo = async () => {
@@ -131,7 +150,7 @@ const updateUserInfo = async () => {
 		const user = await actions.getUserInfo();
 		const userProfileImg = await actions.getUserProfileImageById(user);
 		const userName = await actions.getUserNameById(user);
-		const description = userInfo.description
+		const description = await actions.getDescriptionById(user);
 		setUserImageProfile(userProfileImg);
 		setUserName(userName);
 		setDescription(description);
@@ -203,7 +222,7 @@ const updateUserInfo = async () => {
 										</li>
 										<li className="list-group-item border-0 p-1 px-2 ps-2">
 											<div className="d-flex justify-content-between align-items-center">
-												<span>Descripción: <span className="text-primary">{userInfo.description}</span></span>
+												<span>Descripción: <span className="text-primary">{description}</span></span>
 												<button type="button" onClick={() => handleOpenModal("description")} className="btn bg-transparent p-0 pb-1"><IconPencil size={20} stroke={1.3} /></button>
 											</div>
 										</li>
@@ -250,10 +269,6 @@ const updateUserInfo = async () => {
 
 							</div>
 						</div>
-
-						<div className="col-md-6">
-							<div className="shadow-sm bg-white rounded-bottom-3 mt-2 p-0">Hola</div>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -291,7 +306,6 @@ const updateUserInfo = async () => {
 				title="Email"
 				inputType="email"
 				username="InitialUsername"
-				updateChangesSaved={setChangesSaved}
 			/>
 			{/* Modal para cambiar la contraseña */}
 			<ModalProfile

@@ -38,26 +38,40 @@ const ModalProfileDescription = ({ show, handleClose, title, updateChangesSaved 
 
   return (
     <div className={`modal fade ${show ? "show" : ""}`} tabIndex="-1" aria-hidden={!show}>
-      <div className="modal-dialog modal-dialog-centered">
+      {/* Modal */}
+      <div className="modal-dialog m-auto  p-3 modal-dialog-centered">
+        {/* Modal Content */}
         <div className="modal-content">
+          {/* Modal Header */}
           <div className="modal-header">
-            <h5 className="modal-title">{title}</h5>
             <button type="button" className="btn-close" onClick={handleClose} aria-label="Close"></button>
           </div>
-          <div className="modal-body">
-            <div className="form-group mb-3">
-              <label htmlFor="newDescription">Nueva descripción:</label>
-              <textarea
-                className="form-control"
-                id="newDescription"
-                rows="3"
-                value={newDescription}
-                onChange={(e) => setnewDescription(e.target.value)}
-              />
+          {/* Modal Body */}
+          <div className="modal-body m-auto">
+            <div className=" m-auto ">
+              <p className=" fw-bold  text-center pt-2  w-100" htmlFor="descripción">
+                Descripción
+              </p>
             </div>
-            <button className="btn btn-primary text-white" onClick={handleSubmitDescription}>
-              Cambiar descripción
-            </button>
+            <div className=" mt-2 ">
+              <div className="form group  m-auto mt-3">
+                <textarea
+                  placeholder="Información:"
+                  className="form-control m-auto inputSignUpandRegister "
+                  id="newDescription"
+                  rows="3"
+                  value={newDescription}
+                  onChange={(e) => setnewDescription(e.target.value)} style={{ height: "5rem", width: "20rem" }}
+                />
+              </div>
+              <div className="mt-4 mb-2 ">
+                <button className="btn  btn-primary text-white  buttonModal m-auto  text-center" onClick={handleSubmitDescription}>
+                  Confirmar  <div className="arrow-wrapper">
+                    <div className="arrow"></div>
+                  </div>
+                </button>
+              </div>
+            </div>
             {/* Mostrar alerta si hay mensaje */}
             {alertMessage && (
               <div className={`alert alert-${alertType}`} role="alert">

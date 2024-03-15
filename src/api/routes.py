@@ -806,3 +806,10 @@ def change_username():
     user.user_name = request.json.get('user_name')
     db.session.commit()
     return jsonify({"msg": "success"}), 200
+
+@api.route('/description/<int:user_id>', methods=['GET'])
+def get_description(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    if user is None:
+        return jsonify({"message": "User not found"}), 404
+    return jsonify({"description": user.description}), 200
