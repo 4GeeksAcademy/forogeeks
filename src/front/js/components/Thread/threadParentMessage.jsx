@@ -10,10 +10,8 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
     const [showAlert, setShowAlert] = useState(false);
     const contentRef = useRef(null);
 
-    const threadId = store.threads.id;
+    const deleteThreadIfUserIsOwner = () => {
 
-    const deleteThreadIfUserIsOwner = (threadId) => {
-        console.log("Thread", threadId)
         if (store.isUserLogged) {
             if (store.userInfo.id === store.threads.user_id) {
                 actions.deleteThreadIfUserIsOwner(thread_id)
