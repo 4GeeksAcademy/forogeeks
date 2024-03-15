@@ -18,7 +18,7 @@ export const InsideThread = () => {
     const userInfo = store.userInfo; // Informacion del usuario loggeado para comentar
     const [showReportAlert, setShowReportAlert] = useState(false);
     const reason = "Hilo reportado";
-
+    const [description, setDescription] = useState(null);
 
     const handleCreateComment = (e) => {
         e.preventDefault();
@@ -55,6 +55,25 @@ export const InsideThread = () => {
         actions.getUserLikedComments();
         actions.getLikesByThread(id);
     }, []);
+
+    useEffect(() => {
+		const fetchDescription = async () => {
+			try {
+				const user = await actions.getUserInfo();
+				setUserId(user);
+	
+				// Obtener la descripción del usuario y esperar a que se resuelva la promesa
+				const description = await actions.getDescriptionById(user);
+			
+				setDescription(description);
+			} catch (error) {
+				console.error("Error fetching user data:", error);
+			}
+		};
+	
+		fetchDescription();
+	
+	}, []);
     return (
         <div className="container mt-3">
             {showReportAlert && (
@@ -112,7 +131,7 @@ export const InsideThread = () => {
                             <div className="d-flex align-items-center py-3 ps-3 mb-2 bg-white rounded-3 shadow-sm">
                                 <h3 className="d-flex align-items-center text-align-center m-0">{thread.title}</h3>
                             </div>
-                            <ThreadParentMessage autor={thread?.user?.user_name} content={thread.content} date={thread.date} description={thread.description} user_profile_picture={thread?.user?.profile_picture} thread_id={thread.id} thread_likes={likes.length} />
+                            <ThreadParentMessage autor={thread?.user?.user_name} content={thread.content} date={thread.date} description={thread.user?.description} user_profile_picture={thread?.user?.profile_picture} thread_id={thread.id} thread_likes={likes.length} />
                             {/* COMENTARIOS */}
                             {comments.map((comment, index) => {
                                 return (
