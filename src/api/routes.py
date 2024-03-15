@@ -268,6 +268,7 @@ def get_thread_by_id(thread_id):
     serialized_thread = thread.serialize()
     return jsonify(serialized_thread), 200
 
+
 # Endpoint para manejar la solicitud POST de un threadId en ReportThread
 @api.route('/report-thread', methods=['POST'])
 @jwt_required()
