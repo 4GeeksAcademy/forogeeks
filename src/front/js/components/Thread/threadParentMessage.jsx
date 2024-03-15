@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Context } from "../../store/appContext";
 import moment from "moment";
 import { IconHeart, IconBookmark, IconHeartFilled, IconBookmarkFilled } from '@tabler/icons-react';
@@ -9,7 +11,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
     const { store, actions } = useContext(Context);
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
-
+    const navigate = useNavigate()
 
     const [showAlert, setShowAlert] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -35,12 +37,13 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
         if (store.isUserLogged) {
             if (store.userInfo.id === store.threads.user_id) {
                 actions.deleteThreadIfUserIsOwner(thread_id)
-                    .then(response => {
-                        console.log('Thread deleted:', response);
-                    })
-                    .catch(error => {
-                        console.error('Error deleting thread:', error);
-                    });
+                .then(response => {
+                    navigate('/');
+                    console.log('Thread deleted:', response);
+                })
+                .catch(error => {
+                    console.error('Error deleting thread:', error);
+                });
             }
         }
     }
@@ -203,4 +206,4 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
 
         </div>
     );
-};
+}

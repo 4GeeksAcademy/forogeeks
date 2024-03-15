@@ -1022,7 +1022,51 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			clearLikedThreads: () => {
 				setStore({ likedThreads: [] });
-			}
+			},
+			deleteThread: async (threadId) => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/delete-thread/${threadId}`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+					});
+					if (response.ok) {
+						getActions().getReportedThreads();
+						
+						console.log("Thread deleted successfully");
+						// Actualizar estado o realizar otras acciones si es necesario
+					} else {
+						throw new Error("Failed to delete thread");
+					}
+				} catch (error) {
+					console.error("Error deleting thread:", error);
+				}
+			},
+			// Eliminar un reporte de hilo
+			deleteThreadReport: async (reportId) => {
+				try {
+					const token = localStorage.getItem("token");
+					const response = await fetch(`${process.env.BACKEND_URL}/api/admin-delete-threadreport/${reportId}`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+					});
+					if (response.ok) {
+						getActions().getReportedThreads()
+						console.log("Thread report deleted successfully");
+						// Actualizar estado o realizar otras acciones si es necesario
+					} else {
+						throw new Error("Failed to delete thread report");
+					}
+				} catch (error) {
+					console.error("Error deleting thread report:", error);
+				}
+			},
 
 		},
 	};

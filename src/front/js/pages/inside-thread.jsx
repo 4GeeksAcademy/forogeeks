@@ -34,10 +34,6 @@ export const InsideThread = () => {
         setTimeout(() => {
             setShowReportAlert(false);
         }, 3000);
-        setShowReportAlert(true);
-        setTimeout(() => {
-            setShowReportAlert(false);
-        }, 3000);
     }
 
     useEffect(() => {
@@ -46,10 +42,6 @@ export const InsideThread = () => {
         }
         actions.getThreadById(id); // Se agrega a store.thread el hilo con el id que se pasa por parametro
         actions.getCommentsByThread(id);
-        actions.getUserLikedThreads();
-        actions.getUserFavoriteThreads();
-        actions.getUserLikedComments();
-        actions.getLikesByThread(id);
         actions.getUserLikedThreads();
         actions.getUserFavoriteThreads();
         actions.getUserLikedComments();
@@ -75,11 +67,6 @@ export const InsideThread = () => {
 	}, []);
     return (
         <div className="container mt-3">
-            {showReportAlert && (
-                <div className="alert alert-success" role="alert">
-                    Hilo reportado
-                </div>
-            )}
             {showReportAlert && (
                 <div className="alert alert-success" role="alert">
                     Hilo reportado

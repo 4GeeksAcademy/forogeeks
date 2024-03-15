@@ -120,6 +120,34 @@ export const Navbar = () => {
 
 						{/* NButton Modal */}
 
+						{userInfo.admin && (
+							<>
+								{isMobileSize ? (
+									<div className="d-flex justify-content-center m-3 mt-3">
+										<Link to="/admin-report" style={{ textDecoration: "none", color: "currentColor" }}>
+											<button
+												type="button"
+												className="btn btn-secondary rounded-5 p-1 px-3 m-0">
+												Consola de admin
+											</button>
+										</Link>
+									</div>
+								) : (
+									<div className="d-flex justify-content-center ">
+										<Link to="/admin-report" style={{ textDecoration: "none", color: "currentColor" }}>
+
+											<button
+												type="button"
+												className="btn btn-secondary rounded-5 px-3 m-0" style={{ padding: "3px" }}>
+												Consola de admin
+											</button>
+										</Link>
+
+									</div>
+								)}
+							</>
+						)}
+
 						{!store.isUserLogged && (
 							<>
 								{isMobileSize && (

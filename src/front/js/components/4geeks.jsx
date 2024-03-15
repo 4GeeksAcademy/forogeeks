@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Icon from "./icons/icon.jsx";
 
 const AsideFourGeeks = () => {
-    const bgImage = "https://firebasestorage.googleapis.com/v0/b/forogeeks.appspot.com/o/profile-img%2Fforogeeks%2F4geeksacademy.png?alt=media&token=126dab83-e7eb-4b14-9a4c-4a9f6008efd4";
-    const bgWhiteImage = "https://firebasestorage.googleapis.com/v0/b/forogeeks.appspot.com/o/profile-img%2Fforogeeks%2Fwhite-4geeksacademy.png?alt=media&token=ea50f669-b507-41fc-bd71-6d74255cf32b";
+    const bgWhiteImage = "https://firebasestorage.googleapis.com/v0/b/forogeeks.appspot.com/o/profile-img%2Fforogeeks%2Fwhite-4geeksacademy.png?alt=media&token=ef8a1337-3a2d-438f-8a6a-b23bca1b9498"
+    const bgImage = "https://firebasestorage.googleapis.com/v0/b/forogeeks.appspot.com/o/profile-img%2Fforogeeks%2Fwhite-4geeksacademy.png?alt=media&token=ef8a1337-3a2d-438f-8a6a-b23bca1b9498"
 
 
     const [imageHeight, setImageHeight] = useState(0);
