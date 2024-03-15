@@ -37,7 +37,7 @@ export const CreateNewThread = () => {
                 setShowConfetti(false);
                 setShowThreadCreated(true); // Cambiar el estado para mostrar el título del hilo creado
                 navigate("/");
-            }, 2000);
+            }, 1500);
 
             return () => clearTimeout(timeoutId);
         }
@@ -64,7 +64,7 @@ export const CreateNewThread = () => {
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'blue';
+            ctx.fillStyle = 'rgba(0, 123, 255, 0.3)'
             pieces.forEach(piece => {
                 ctx.beginPath();
                 ctx.moveTo(piece.x, piece.y);
