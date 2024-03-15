@@ -311,8 +311,12 @@ def get_threads_by_user_id(user_id):
 @api.route('/categories', methods=['GET'])
 def get_categories():
     categories = Category.query.all()
+    if not categories:
+        return jsonify({"message": "No hay categorías disponibles"}), 404
+    
     serialized_categories = [category.serialize() for category in categories]
     return jsonify(serialized_categories), 200
+
 
 #Endpoints para manejar la solicitud POST en '/categories'
 @api.route('/create-category', methods=['POST'])
@@ -694,9 +698,13 @@ def user_liked_comments():
 @api.route('/trending', methods=['GET'])
 def get_trending():
     threads = Threads.query.all()
+    if not threads:
+        return jsonify({"message": "No hay hilos disponibles"}), 404
+
     threads.sort(key=lambda thread: len(thread.thread_comments), reverse=True)
     serialized_threads = [thread.serialize() for thread in threads]
     return jsonify(serialized_threads), 200
+
 
 # # 🟢 RESTORE PASSWORD 🟢
 @api.route("/restore-password", methods=["POST"])
