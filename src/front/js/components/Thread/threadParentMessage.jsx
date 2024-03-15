@@ -156,10 +156,10 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                             </div>
                             {/* HORA Y DELETE THREAD */}
                             <div className="text-muted small">
-                                <div className="d-flex align-items-center gap-2">
+                                <div className="d-flex align-items-center gap-3">
 
                                     {store.isUserLogged && store.userInfo.id === store.threads.user_id && (
-                                        <span onClick={handleShowModal} className="text-muted small p-0 m-0">Eliminar</span>
+                                        <span onClick={handleShowModal} className="text-danger small p-0 m-0">Eliminar hilo</span>
 
                                         // <span onClick={deleteThreadIfUserIsOwner} className="text-muted small p-0 m-0">Eliminar</span>
                                     )
