@@ -162,7 +162,7 @@ export const Navbar = () => {
 									</Link>
 								</li>
 								{/* NOTIFICACIONES */}
-								<li className="nav-item dropdown text-white ">
+								{/* <li className="nav-item dropdown text-white ">
 									<div className="nav-link d-flex align-items-center" href="#" data-bs-toggle="dropdown">
 										<div className="d-flex align-items-center">
 											<IconBell size={27} stroke={1.2} color="white" />
@@ -207,7 +207,7 @@ export const Navbar = () => {
 											</div>
 										</a>
 									</div>
-								</li>
+								</li> */}
 
 								{/* USER PROFILE */}
 								<li className="nav-item dropdown">

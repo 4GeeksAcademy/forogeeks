@@ -78,16 +78,7 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
-# @app.route("/restore-password/<token>", methods=["GET"])
-# def restore_password(token):
-#     try:
-#         # Decodificar el token para obtener el email asociado
-#         decoded_token = decode_token(token)
-#         email = decoded_token['sub']
-#         # Redirigir a la página RestorePassword con el email como parámetro en la URL
-#         return redirect(url_for('restore_password_page', email=email))
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
+
 @app.route("/sendemail", methods=["POST"])
 def send_email():
     try:

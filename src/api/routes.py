@@ -314,8 +314,10 @@ def get_categories():
     categories = Category.query.all()
     if not categories:
         return jsonify({"message": "No hay categorías disponibles"}), 404
+    
     serialized_categories = [category.serialize() for category in categories]
     return jsonify(serialized_categories), 200
+
 
 #Endpoints para manejar la solicitud POST en '/categories'
 @api.route('/create-category', methods=['POST'])
@@ -601,17 +603,7 @@ def userfavoritethreads():
     except Exception as e:
         # Manejar cualquier otro error que pueda ocurrir durante la ejecución de la función
         return jsonify({"error": str(e)}), 500
-# 🟤 THREAD COMMENTS ENDPOINTS 🟤
-# Endpoint para manejar la solicitud POST en '/create-comment'
 
-# Endpoint para manejar la solicitud GET en '/comments'
-
-# Endpoint para manejar la solicitud GET en '/comments/<int:thread_id>'
-
-# Endpoint para manejar la solicitud GET en '/comments/<int:comment_id>'
-
-# Endpoint para manejar la solicitud DELETE en '/comments/<int:comment_id>'
-# Endpoint para manejar la solicitud DELETE en '/comments/<int:comment_id>'
 @api.route('/liked-comment', methods=['POST'])
 @jwt_required()
 def liked_comment():
@@ -692,11 +684,6 @@ def user_liked_comments():
         # Manejar cualquier otro error que pueda ocurrir durante la ejecución de la función
         return jsonify({"error": str(e)}), 500
 
-# 🟢 MESSAGES ENDPOINTS 🟢
-# Endpoint para manejar la solicitud POST en '/send-message'
-
-# Endpoint para manejar la solicitud GET en '/messages'
-
 # 🟣 TRENDING 🟣
 # Endpoint GET para los thread con mas comentarios
 @api.route('/trending', methods=['GET'])
@@ -704,9 +691,12 @@ def get_trending():
     threads = Threads.query.all()
     if not threads:
         return jsonify({"message": "No hay hilos disponibles"}), 404
+
     threads.sort(key=lambda thread: len(thread.thread_comments), reverse=True)
     serialized_threads = [thread.serialize() for thread in threads]
     return jsonify(serialized_threads), 200
+
+
 # # 🟢 RESTORE PASSWORD 🟢
 @api.route("/restore-password", methods=["POST"])
 def reset_password():
@@ -743,9 +733,9 @@ def getThreadsByTitle(query):
     serialized_threads = [thread.serialize() for thread in threads]
     return jsonify(serialized_threads), 200
 
+
+
 # 🟢 USER PROFILE 🟢
-
-
 # :círculo_verde_grande: USER PROFILE :círculo_verde_grande:
 # Endpoint para cambiar la contraseña
 @api.route("/changepassword", methods=["POST"])
@@ -795,7 +785,6 @@ def get_comment_likes(comment_id):
         print("[Flask Route] Error:", str(e))
         return jsonify({'error': str(e)}), 500
 
-    
 @api.route("/change-description", methods=["POST"])
 @jwt_required()
 def change_description():
