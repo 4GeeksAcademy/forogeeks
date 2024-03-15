@@ -1019,6 +1019,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("[flux.deleteThreadIfUserIsOwner] Error deleting thread:", error);
 				}
+			},
+			clearLikedThreads: () => {
+				setStore({ likedThreads: [] });
 			}
 
 		},

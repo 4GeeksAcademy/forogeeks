@@ -9,6 +9,8 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
     const { store, actions } = useContext(Context);
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
+
+    
     const [showAlert, setShowAlert] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const contentRef = useRef(null);
@@ -182,7 +184,9 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                         {store.isUserLogged && (
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
                                 <div className="d-flex align-items-center gap-1">
-                                    <span className="text-muted small">{store.likedThreads.length}</span>
+
+                                <span className="text-muted small">{store.likedThreads.length}</span>
+
                                     {isLiked ? <IconHeartFilled style={{ cursor: "pointer" }} className="text-danger" size={25} stroke={1} onClick={() => handleLikeThread(thread_id)} /> : <IconHeart style={{ cursor: "pointer" }} size={25} stroke={1} onClick={() => handleLikeThread(thread_id)} />}
                                 </div>
                                 <div className="d-flex align-items-center gap-3">
