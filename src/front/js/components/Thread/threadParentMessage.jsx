@@ -128,7 +128,7 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                         <div className="d-flex justify-content-between mb-3">
                             <div className="">
                                 <div className="d-flex flex-row gap-3 ">
-                                    <img src={user_profile_picture} alt="profile" className="rounded-circle" style={{ width: "50px", height: "50px" }} />
+                                    <img src={user_profile_picture} alt="profile" className="rounded-circle" style={{ width: "50px", height: "50px", objectFit: "cover" }} />
                                     <div className="d-flex flex-column">
                                         <span className="m-0 p-0 d-flex align-items-center fw-bold text-primary">{"@" + autor}</span>
                                         <span className="text-muted small p-0 m-0">{description ? description : "Estoy usando ForoGeeks"}</span>
