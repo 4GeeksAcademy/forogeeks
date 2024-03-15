@@ -775,7 +775,7 @@ def get_likes_by_thread_id(thread_id):
     return jsonify(serialized_likes), 200
 
 
-@api.route('/api/comment-likes/<int:comment_id>', methods=['GET'])
+@api.route('/comment-likes/<int:comment_id>', methods=['GET'])
 def get_comment_likes(comment_id):
     try:
         # Recupera los likes de comentarios correspondientes al comentario específico

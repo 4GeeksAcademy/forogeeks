@@ -45,6 +45,10 @@ export const Home = () => {
 		actions.setModalRegistersuccess(false);
 	};
 
+	const handleShowLogin = () => {
+		// Define aquí la lógica para mostrar el modal de inicio de sesión
+	};
+
 
 	return (
 		<div className="container">

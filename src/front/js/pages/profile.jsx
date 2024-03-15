@@ -250,10 +250,6 @@ const updateUserInfo = async () => {
 
 							</div>
 						</div>
-
-						<div className="col-md-6">
-							<div className="shadow-sm bg-white rounded-bottom-3 mt-2 p-0">Hola</div>
-						</div>
 					</div>
 				</div>
 			</div>
