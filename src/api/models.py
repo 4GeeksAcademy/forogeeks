@@ -20,7 +20,7 @@ class Category(db.Model):
         }
 # 1. User
 class User(db.Model):
-    __tablename__ = 'user'
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(120), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -35,6 +35,7 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User {self.user_name}>'
+    
     def serialize(self):
         return {
             "id": self.id,
@@ -49,7 +50,7 @@ class User(db.Model):
 class Threads(db.Model):
     __tablename__ = 'threads'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     title = db.Column(db.String(120), unique=False, nullable=False)
     content = db.Column(db.Text, nullable=False)
@@ -75,7 +76,7 @@ class Threads(db.Model):
 class ThreadComments(db.Model):
     __tablename__ = 'thread_comments'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     thread_id = db.Column(db.Integer, db.ForeignKey('threads.id'))
     content = db.Column(db.Text, nullable=False)
     reply_to = db.Column(db.Integer, db.ForeignKey('thread_comments.id'), nullable=True)
@@ -94,7 +95,7 @@ class ThreadComments(db.Model):
         }
 class CommentLikes(db.Model):
     __tablename__ = 'comment_likes'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     comment_id = db.Column(db.Integer, db.ForeignKey('thread_comments.id'), primary_key=True)
     def __repr__(self):
         return f'<CommentLikes {self.user_id} {self.comment_id}>'
@@ -107,7 +108,7 @@ class CommentLikes(db.Model):
 # 5. ThreadLikes
 class ThreadLikes(db.Model):
     __tablename__ = 'thread_likes'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     thread_id = db.Column(db.Integer, db.ForeignKey('threads.id'), primary_key=True)
 
     def __repr__(self):
@@ -121,7 +122,7 @@ class ThreadLikes(db.Model):
 # 4. FavoriteThreads
 class FavoriteThreads(db.Model):
     __tablename__ = 'favorite_threads'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     thread_id = db.Column(db.Integer, db.ForeignKey('threads.id'), primary_key=True)
     def __repr__(self):
         return f'<FavoriteThreads {self.user_id} {self.thread_id}>'
@@ -135,8 +136,8 @@ class FavoriteThreads(db.Model):
 class PrivateMessages(db.Model):
     __tablename__ = 'private_messages'
     id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    receiver_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     content = db.Column(db.String(5000), unique=False, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     def __repr__(self):
@@ -153,7 +154,7 @@ class PrivateMessages(db.Model):
 class ReportThread(db.Model):
     __tablename__ = 'report_thread'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     thread_id = db.Column(db.Integer, db.ForeignKey('threads.id'))
     reason = db.Column(db.String(120), unique=False, nullable=False)
     thread = db.relationship('Threads', backref='report', lazy=True)
