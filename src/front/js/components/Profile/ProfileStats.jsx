@@ -8,6 +8,8 @@ const ProfileStats = () => {
 
     const { store, actions } = useContext(Context);
     const [numberThreadByUser, setNumberThreadByUser] = useState(0);
+    const [numberCommentByUser, setNumberCommentByUser] = useState(0);
+    const [numberLikesbyUser, setNumberLikesbyUser] = useState(0);
     const [userId, setUserId] = useState(null);
     useEffect(() => {
 		const fetchThreads = async () => {
@@ -17,8 +19,11 @@ const ProfileStats = () => {
 	
 				// Obtener la descripción del usuario y esperar a que se resuelva la promesa
 				const numberThreadByUser = await actions.getNumberOfThreadsByUser(user);
-			
+                const numberCommentByUser = await actions.getNumberOfCommentsByUser(user);
+                const numberLikesbyUser = await actions.getNumberOfLikesByUser(user);
 				setNumberThreadByUser(numberThreadByUser);
+                setNumberCommentByUser(numberCommentByUser);
+                setNumberLikesbyUser(numberLikesbyUser);
 			} catch (error) {
 				console.error("Error fetching user data:", error);
 			}
@@ -34,8 +39,8 @@ const ProfileStats = () => {
             <ul className="list-group rounded w-100">
                 <li className="list-group-item bg-primary rounded-5 fw-bold text-white">Estadísticas</li>
                 <li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de hilos: <span className="text-primary fw-bold">{numberThreadByUser}</span></li>
-                <li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de comentarios: <span className="text-primary fw-bold">15</span></li>
-                <li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de likes: <span className="text-primary fw-bold">5</span></li>
+                <li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de comentarios: <span className="text-primary fw-bold">{numberCommentByUser}</span></li>
+                <li className="list-group-item border-0 p-1 px-2 ps-2 d-flex justify-content-between align-items-center">Total de likes: <span className="text-primary fw-bold">{numberLikesbyUser}</span></li>
             </ul>
         </div>
     );

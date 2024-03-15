@@ -26,6 +26,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			commentLikes: [],
 			description: "",
 			threadsByUser : [],
+			commentsByUser : [],
+			likesByUser : [],
 		},
 		actions: {
 			//Acción para mostrar modal succesfull
@@ -955,6 +957,46 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				} catch (error) {
 					console.error("[flux.getAllThreadsByUserId] Error fetching threads:", error);
+				}
+			},
+			getNumberOfCommentsByUser: async (id) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/user-comments-count/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						// Actualizar el estado del store con el número total de comentarios
+						setStore({
+							...getStore(),
+							commentsByUser: data.comments_count
+						});
+						return data.comments_count;
+					} else {
+						throw new Error("[flux.getAllThreadsByUserId] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getAllThreadsByUserId] Error fetching threads:", error);
+				}
+			},
+			getNumberOfLikesByUser: async (id) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/user-likes-count/${id}`, {
+						method: "GET",
+					});
+					if (response.ok) {
+						const data = await response.json();
+						// Actualizar el estado del store con el número total de likes
+						setStore({
+							...getStore(),
+							likesByUser: data.likes_count
+						});
+						return data.likes_count;
+					} else {
+						throw new Error("[flux.getNumberOfLikesByUser] Failed to fetch threads");
+					}
+				} catch (error) {
+					console.error("[flux.getNumberOfLikesByUser] Error fetching threads:", error);
 				}
 			}
 			
