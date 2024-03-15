@@ -1,17 +1,35 @@
-import React, { useEffect, useState, useContext, useRef  } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { Context } from "../../store/appContext";
 import moment from "moment";
-import { IconHeart, IconBookmark, IconArrowForward, IconHeartFilled, IconBookmarkFilled } from '@tabler/icons-react';
+import { IconHeart, IconBookmark, IconHeartFilled, IconBookmarkFilled } from '@tabler/icons-react';
 
-export const ThreadParentMessage = ({ autor, content, date, user_profile_picture, description, title, thread_id }) => {
+import { ModalConfirmarDeleteThread } from "../Modal/modalConfirmarDeleteThread.jsx";
+
+export const ThreadParentMessage = ({ autor, content, date, user_profile_picture, description, thread_id }) => {
     const { store, actions } = useContext(Context);
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const contentRef = useRef(null);
 
-    const deleteThreadIfUserIsOwner = () => {
+    useEffect(() => {
+        contentRef.current = document.getElementById("contenido");
+    }, []);
 
+    const handleShowModal = () => {
+        setShowModal(true); // Función para abrir el modal
+    };
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    const handleDeleteThread = () => {
+        deleteThreadIfUserIsOwner();
+        handleCloseModal();
+    };
+
+    const deleteThreadIfUserIsOwner = () => {
         if (store.isUserLogged) {
             if (store.userInfo.id === store.threads.user_id) {
                 actions.deleteThreadIfUserIsOwner(thread_id)
@@ -137,9 +155,11 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                             {/* HORA Y DELETE THREAD */}
                             <div className="text-muted small">
                                 <div className="d-flex align-items-center gap-2">
-                                    
+
                                     {store.isUserLogged && store.userInfo.id === store.threads.user_id && (
-                                        <span onClick={deleteThreadIfUserIsOwner} className="text-muted small p-0 m-0">Eliminar</span>
+                                        <span onClick={handleShowModal} className="text-muted small p-0 m-0">Eliminar</span>
+
+                                        // <span onClick={deleteThreadIfUserIsOwner} className="text-muted small p-0 m-0">Eliminar</span>
                                     )
                                     }
 
@@ -173,6 +193,8 @@ export const ThreadParentMessage = ({ autor, content, date, user_profile_picture
                     </div>
                 </div>
             </div>
+            <ModalConfirmarDeleteThread isOpen={showModal} onClose={handleCloseModal} onDelete={handleDeleteThread} />
+
         </div>
     );
 };

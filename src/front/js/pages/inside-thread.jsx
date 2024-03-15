@@ -60,8 +60,6 @@ export const InsideThread = () => {
 		const fetchDescription = async () => {
 			try {
 				const user = await actions.getUserInfo();
-				setUserId(user);
-	
 				// Obtener la descripción del usuario y esperar a que se resuelva la promesa
 				const description = await actions.getDescriptionById(user);
 			
