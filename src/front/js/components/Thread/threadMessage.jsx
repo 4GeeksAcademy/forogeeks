@@ -116,7 +116,10 @@ export const ThreadMessage = ({ content, date, id, authorId }) => {
                             <div className="col-md-12 d-flex justify-content-end gap-3 text-muted small">
                                 {store.isUserLogged && (
                                     <div className="d-flex align-items-center gap-1">
-                                        <span className="text-muted small">{store.commentLikes.length}</span>
+                                        {store.commentLikes.length !== 0 && (
+                                            <span className="text-muted small">{store.commentLikes.length}</span>
+                                        )}
+
                                         {isLiked ? <IconHeartFilled style={{ cursor: "pointer" }} size={25} stroke={1} className="text-danger" onClick={() => handleLikeComment(id)} /> : <IconHeart style={{ cursor: "pointer" }} size={25} stroke={1} onClick={() => handleLikeComment(id)} />}
                                     </div>
                                 )}
