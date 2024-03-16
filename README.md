@@ -1,4 +1,4 @@
-# Project Title: ForoGeeks
+# ForoGeeks
 
 ![21shots_so](https://github.com/4GeeksAcademy/forocode-finalproject/assets/118123543/9d9a81b3-1866-4bea-8ae3-3439186f5c62)
 
