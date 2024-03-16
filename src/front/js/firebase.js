@@ -6,12 +6,12 @@ import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBmn48UXjLEK5SC7vdcVxp7BwcoFY0eoU4",
-  authDomain: "forogeeks.firebaseapp.com",
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   projectId: "forogeeks",
   storageBucket: "forogeeks.appspot.com",
-  messagingSenderId: "976570062947",
-  appId: "1:976570062947:web:734f8944c4faff2aa40056"
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID
 };
 
 // Initialize Firebase
