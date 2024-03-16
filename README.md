@@ -8,7 +8,7 @@
 
 
 ## Overview
-ForumX is a dynamic forum platform inspired by the likes of Forocoches and Reddit, offering users a seamless experience for engaging in discussions, sharing content, and connecting with others. Built with a focus on performance, interaction features, navigation, and usability, ForumX aims to provide a comprehensive forum experience for its users.
+ForoGeeks is a dynamic forum platform inspired by the likes of Forocoches and Reddit, offering users a seamless experience for engaging in discussions, sharing content, and connecting with others. Built with a focus on performance, interaction features, navigation, and usability, ForoGeeks aims to provide a comprehensive forum experience for its users.
 
 ## Key Features
 ### Performance Improvements
@@ -45,27 +45,23 @@ ForumX is a dynamic forum platform inspired by the likes of Forocoches and Reddi
 - Bootstrap 5
 
 ## Installation
-1. Clone the repository: `git clone https://github.com/yourusername/forumx.git`
-2. Navigate to the project directory: `cd forumx`
+1. Clone the repository
+2. Navigate to the project directory
 3. Install dependencies for the frontend and backend:
    - Frontend: `npm install`
-   - Backend: Refer to backend documentation for installation steps.
+   - Backend: `pipenv install`
 4. Configure Firebase for database and storage functionality.
-5. Run the application: `npm start` for the frontend, and follow backend documentation for backend server setup.
+5. Run the application: `npm start` for the frontend, and backend with `pipenv run start`.
+6. Run SASS compiler with `npm run sass:watch`
 
 ## Contributing
-We welcome contributions from the community! If you'd like to contribute to ForumX, please follow these steps:
+We welcome contributions from the community! If you'd like to contribute to ForoGeeks, please follow these steps:
 1. Fork the repository.
 2. Create your feature branch: `git checkout -b feature/new-feature`.
 3. Commit your changes: `git commit -am 'Add some feature'`.
 4. Push to the branch: `git push origin feature/new-feature`.
 5. Submit a pull request.
 
-## License
-This project is licensed under the [MIT License](link_to_license). Feel free to use and modify this project for your own purposes.
-
-## Acknowledgements
-We would like to express our gratitude to the developers and contributors who have helped make ForumX possible. Special thanks to the open-source community for their invaluable resources and support.
 
 ## Contact
-For any inquiries or feedback, please contact [email@example.com].
+For any inquiries or feedback, please contact [rawraul@outlook.com].
