@@ -1,81 +1,71 @@
-# WebApp boilerplate with React JS and Flask API
+# Project Title: ForoGeeks
 
-Build web applications using React.js for the front end and python/flask for your backend API.
+![21shots_so](https://github.com/4GeeksAcademy/forocode-finalproject/assets/118123543/9d9a81b3-1866-4bea-8ae3-3439186f5c62)
 
-- Documentation can be found here: https://start.4geeksacademy.com/starters/react-flask
-- Here is a video on [how to use this template](https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b)
-- Integrated with Pipenv for package managing.
-- Fast deployment to heroku [in just a few steps here](https://start.4geeksacademy.com/backend/deploy-heroku-posgres).
-- Use of .env file.
-- SQLAlchemy integration for database abstraction.
+![135shots_so](https://github.com/4GeeksAcademy/forocode-finalproject/assets/118123543/998efb53-743c-464b-9b99-d187228f9cf9)
 
-### 1) Installation:
+![272shots_so](https://github.com/4GeeksAcademy/forocode-finalproject/assets/118123543/af205fb6-722b-4c16-a67c-064e44d78914)
 
-> If you use Github Codespaces (recommended) or Gitpod this template will already come with Python, Node and the Posgres Database installed. If you are working locally make sure to install Python 3.10, Node 
 
-It is recomended to install the backend first, make sure you have Python 3.8, Pipenv and a database engine (Posgress recomended)
+## Overview
+ForumX is a dynamic forum platform inspired by the likes of Forocoches and Reddit, offering users a seamless experience for engaging in discussions, sharing content, and connecting with others. Built with a focus on performance, interaction features, navigation, and usability, ForumX aims to provide a comprehensive forum experience for its users.
 
-1. Install the python packages: `$ pipenv install`
-2. Create a .env file based on the .env.example: `$ cp .env.example .env`
-3. Install your database engine and create your database, depending on your database you have to create a DATABASE_URL variable with one of the possible values, make sure you replace the valudes with your database information:
+## Key Features
+### Performance Improvements
+- Utilizes cloud storage for profile images to optimize performance and enhance user experience.
 
-| Engine    | DATABASE_URL                                        |
-| --------- | --------------------------------------------------- |
-| SQLite    | sqlite:////test.db                                  |
-| MySQL     | mysql://username:password@localhost:port/example    |
-| Postgress | postgres://username:password@localhost:5432/example |
+### Interaction Features
+- Allows users to edit text formatting when creating threads.
+- Empowers moderators to handle reported threads effectively.
+- Facilitates private messaging between users.
+- Enables users to save their favorite threads.
+- Incorporates thread liking functionality with visible like counts.
+- Provides detailed statistics for users to analyze forum activity.
 
-4. Migrate the migrations: `$ pipenv run migrate` (skip if you have not made changes to the models on the `./src/api/models.py`)
-5. Run the migrations: `$ pipenv run upgrade`
-6. Run the application: `$ pipenv run start`
+### Navigation and Structure
+- Efficiently handles routes for each category and thread, ensuring smooth navigation.
 
-> Note: Codespaces users can connect to psql by typing: `psql -h localhost -U gitpod example`
+### Admin Panel
+- Equips administrators with a dedicated panel for moderating reported threads.
 
-### Undo a migration
+### Validation and Data Management
+- Implements robust validation for input fields in forms to maintain data integrity.
 
-You are also able to undo a migration by running
+### Usability
+- Includes password reset functionality for enhanced account security.
+- Allows users to change their usernames to personalize their profiles.
 
-```sh
-$ pipenv run downgrade
-```
+## Technologies Used
+- React
+- Flask
+- Firebase
+- Render
+- SASS
+- CSS
+- Bootstrap 5
 
-### Backend Populate Table Users
+## Installation
+1. Clone the repository: `git clone https://github.com/yourusername/forumx.git`
+2. Navigate to the project directory: `cd forumx`
+3. Install dependencies for the frontend and backend:
+   - Frontend: `npm install`
+   - Backend: Refer to backend documentation for installation steps.
+4. Configure Firebase for database and storage functionality.
+5. Run the application: `npm start` for the frontend, and follow backend documentation for backend server setup.
 
-To insert test users in the database execute the following command:
+## Contributing
+We welcome contributions from the community! If you'd like to contribute to ForumX, please follow these steps:
+1. Fork the repository.
+2. Create your feature branch: `git checkout -b feature/new-feature`.
+3. Commit your changes: `git commit -am 'Add some feature'`.
+4. Push to the branch: `git push origin feature/new-feature`.
+5. Submit a pull request.
 
-```sh
-$ flask insert-test-users 5
-```
+## License
+This project is licensed under the [MIT License](link_to_license). Feel free to use and modify this project for your own purposes.
 
-And you will see the following message:
+## Acknowledgements
+We would like to express our gratitude to the developers and contributors who have helped make ForumX possible. Special thanks to the open-source community for their invaluable resources and support.
 
-```
-  Creating test users
-  test_user1@test.com created.
-  test_user2@test.com created.
-  test_user3@test.com created.
-  test_user4@test.com created.
-  test_user5@test.com created.
-  Users created successfully!
-```
-
-### **Important note for the database and the data inside it**
-
-Every Github codespace environment will have **its own database**, so if you're working with more people eveyone will have a different database and different records inside it. This data **will be lost**, so don't spend too much time manually creating records for testing, instead, you can automate adding records to your database by editing ```commands.py``` file inside ```/src/api``` folder. Edit line 32 function ```insert_test_data``` to insert the data according to your model (use the function ```insert_test_users``` above as an example). Then, all you need to do is run ```pipenv run insert-test-data```.
-
-### Front-End Manual Installation:
-
--   Make sure you are using node version 14+ and that you have already successfully installed and runned the backend.
-
-1. Install the packages: `$ npm install`
-2. Start coding! start the webpack dev server `$ npm run start`
-
-## Publish your website!
-
-This boilerplate it's 100% read to deploy with Render.com and Heroku in a matter of minutes. Please read the [official documentation about it](https://start.4geeksacademy.com/deploy).
-
-### Contributors
-
-This template was built as part of the 4Geeks Academy [Coding Bootcamp](https://4geeksacademy.com/us/coding-bootcamp) by [Alejandro Sanchez](https://twitter.com/alesanchezr) and many other contributors. Find out more about our [Full Stack Developer Course](https://4geeksacademy.com/us/coding-bootcamps/part-time-full-stack-developer), and [Data Science Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning).
-
-You can find other templates and resources like this at the [school github page](https://github.com/4geeksacademy/).
+## Contact
+For any inquiries or feedback, please contact [email@example.com].
